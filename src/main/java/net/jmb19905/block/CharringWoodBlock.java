@@ -1,9 +1,8 @@
 package net.jmb19905.block;
 
-import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.jmb19905.Carbonize;
 import net.jmb19905.blockEntity.CharringWoodBlockEntity;
-import net.jmb19905.recipe.BurnRecipe;
+import net.jmb19905.util.BlockHelper;
 import net.jmb19905.util.ObjectHolder;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -131,49 +130,41 @@ public class CharringWoodBlock extends BlockWithEntity {
         }
     }
 
-    private boolean isFlammable(BlockState state) {
-        var entry = FlammableBlockRegistry.getDefaultInstance().get(state.getBlock());
-        return entry != null && entry.getBurnChance() > 0;
-    }
-
     public static Optional<CharringWoodBlockEntity> getEntity(BlockView world, BlockPos pos) {
         return world.getBlockEntity(pos, Carbonize.CHARRING_WOOD_TYPE);
     }
 
 
-    public static int checkValid(World world, BlockPos pos, Direction direction, ObjectHolder<Integer> burnTimeAverage) {
+    public static List<BlockPos> checkValid(World world, BlockPos pos, Direction direction, boolean lenient) {
         List<BlockPos> alreadyChecked = new ArrayList<>();
-        List<BurnRecipe> recipes = world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE);
         alreadyChecked.add(pos.offset(direction));
-        return check(world, pos, alreadyChecked, recipes, burnTimeAverage);
+        return check(world, pos, alreadyChecked, new ObjectHolder<>(new ArrayList<>()), lenient).getValue();
     }
 
-    private static int check(World world, BlockPos pos, List<BlockPos> alreadyChecked, List<BurnRecipe> recipes, ObjectHolder<Integer> burnTimeAverage) {
+    public static ObjectHolder<List<BlockPos>> check(World world, BlockPos pos, List<BlockPos> alreadyChecked, ObjectHolder<List<BlockPos>> count, boolean lenient) {
+        if (alreadyChecked.contains(pos)) return count;
+
+        if (count.isLocked()) return count;
+
         alreadyChecked.add(pos);
         BlockState state = world.getBlockState(pos);
-        if (!state.isIn(Carbonize.CHARCOAL_PILE_VALID_FUEL)) return 0;
-        int i = 1;
-        for (var burnRecipe : recipes) {
-            if (state.isIn(burnRecipe.input())) {
-                burnTimeAverage.updateValue(deviation -> deviation + burnRecipe.burnTime());
-                break;
-            }
-        }
+
+        if (BlockHelper.isNonFlammableFullCube(world, pos, state))
+            return count;
+        else if (!state.isIn(Carbonize.CHARCOAL_PILE_VALID_FUEL) && !state.isOf(Carbonize.CHARRING_WOOD))
+            if (lenient)
+                return count;
+            else return count.setValue(new ArrayList<>()).lock();
+
+        count.changeValue(list -> list.add(pos));
+
         for (Direction dir : Direction.values()) {
-            BlockPos side = pos.offset(dir);
-            if (alreadyChecked.contains(side)) continue;
-            BlockState sideState = world.getBlockState(side);
-            if (sideState.isIn(Carbonize.CHARCOAL_PILE_VALID_WALL)) {
-                alreadyChecked.add(side);
-                continue;
-            }
-            int a = check(world, side, alreadyChecked, recipes, burnTimeAverage);
-            if (a == 0) {
-                return 0;
-            }
-            i += a;
+            check(world, pos.offset(dir), alreadyChecked, count, lenient);
+            if (count.isLocked())
+                break;
         }
-        return i;
+
+        return count;
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")

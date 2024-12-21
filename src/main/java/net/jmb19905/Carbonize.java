@@ -13,7 +13,6 @@ import net.jmb19905.blockEntity.CharringWoodBlockEntity;
 import net.jmb19905.config.CarbonizeConfig;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.recipe.BurnRecipeSerializer;
-import net.jmb19905.util.ObjectHolder;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.Instrument;
@@ -37,6 +36,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class Carbonize implements ModInitializer {
 
@@ -113,7 +114,6 @@ public class Carbonize implements ModInitializer {
 	public static final RecipeType<BurnRecipe> BURN_RECIPE_TYPE = registerRecipeType(BurnRecipeSerializer.ID);
 
 	public static final TagKey<Block> CHARCOAL_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier(MOD_ID, "charcoal_blocks"));
-	public static final TagKey<Block> CHARCOAL_PILE_VALID_WALL = TagKey.of(RegistryKeys.BLOCK, new Identifier(MOD_ID, "charcoal_pile_valid_wall"));
 	public static final TagKey<Block> CHARCOAL_PILE_VALID_FUEL = TagKey.of(RegistryKeys.BLOCK, new Identifier(MOD_ID, "charcoal_pile_valid_fuel"));
 	public static final TagKey<Item> DAMAGE_IGNITERS = TagKey.of(RegistryKeys.ITEM, new Identifier(MOD_ID, "damage_igniters"));
 	public static final TagKey<Item> CONSUME_IGNITERS = TagKey.of(RegistryKeys.ITEM, new Identifier(MOD_ID, "consume_igniters"));
@@ -221,14 +221,10 @@ public class Carbonize implements ModInitializer {
 			if (!world.isClient && stack.isIn(IGNITERS) && player.isSneaking()) {
 				if (hitResult.getType() == HitResult.Type.BLOCK) {
 					BlockPos pos = hitResult.getBlockPos();
-					ObjectHolder<Integer> burnTimeAverage = new ObjectHolder<>(0);
-					int blockCount = CharringWoodBlock.checkValid(world, pos, hitResult.getSide(), burnTimeAverage);
-					if (blockCount >= CONFIG.charcoalPileMinimumCount() && handleIgnition(stack, player, hand)) {
-						BlockState parentState = world.getBlockState(pos);
-						burnTimeAverage.updateValue(i -> i / blockCount);
+					List<BlockPos> blocks = CharringWoodBlock.checkValid(world, pos, hitResult.getSide(), true);
+					if (blocks.size() >= CONFIG.charcoalPileMinimumCount() && handleIgnition(stack, player, hand)) {
 						world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 2, 1);
-						world.setBlockState(pos, CHARRING_WOOD.getDefaultState().with(CharringWoodBlock.STAGE, CharringWoodBlock.Stage.IGNITING));
-						world.getBlockEntity(pos, CHARRING_WOOD_TYPE).ifPresent(blockEntity -> blockEntity.createData(blockCount, burnTimeAverage.getValue(), parentState));
+						CharringWoodBlockEntity.createData(world, blocks);
 						return ActionResult.CONSUME;
 					}
 				}

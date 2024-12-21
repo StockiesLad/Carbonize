@@ -27,10 +27,14 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static net.jmb19905.block.CharringWoodBlock.STAGE;
 import static net.jmb19905.block.CharringWoodBlock.Stage.IGNITING;
+import static net.jmb19905.block.CharringWoodBlock.check;
 
 public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBlockEntity {
     private static final Map<Direction, BooleanProperty> DIRECTION_PROPERTIES = ConnectingBlock.FACING_PROPERTIES.entrySet().stream().filter(entry -> entry.getKey() != Direction.DOWN).collect(Util.toMap());
@@ -49,21 +53,16 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         finalState = Carbonize.CHARCOAL_PLANKS.getDefaultState();
     }
 
-    public void createData(int blockCount, int burnTimeAverage, BlockState parentState) {
-        this.maxBurnTime = (int) (4 * Math.cbrt(blockCount) * burnTimeAverage);
-        updateModel(parentState);
-    }
-
     public void transferData(CharringWoodBlockEntity parent) {
         this.maxBurnTime = parent.maxBurnTime;
         this.extinguished = parent.extinguished;
     }
 
-    public void updateModel(BlockState parent) {
-        updateModel(parent, getCachedState());
+    public void update(BlockState parent) {
+        update(parent, getCachedState());
     }
 
-    public void updateModel(BlockState parent, BlockState current) {
+    public void update(BlockState parent, BlockState current) {
         assert world != null;
         world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE).forEach(burnRecipe -> {
             if (parent.isIn(burnRecipe.input())) {
@@ -103,6 +102,18 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         return maxBurnTime - burnTime;
     }
 
+    public int getSize() {
+        if (world != null) {
+            List<BlockPos> alreadyChecked = new ArrayList<>();
+            List<BlockPos> parsed = new ArrayList<>();
+            check(world, pos, alreadyChecked, new ObjectHolder<>(parsed), true);
+            for (Direction direction : Direction.values()) {
+                check(world, pos.offset(direction), alreadyChecked, new ObjectHolder<>(parsed), true);
+            }
+            return parsed.size();
+        } else return 1;
+    }
+
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
@@ -134,6 +145,32 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         finalState = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), nbt.getCompound("FinalState"));
     }
 
+    public static void createData(World world, List<BlockPos> blocks) {
+        var recipes = world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE);
+
+        Stream<CharringWoodBlockEntity> entities = blocks.stream().map(blockPos -> {
+            var state = world.getBlockState(blockPos);
+            var optionalEntity = world.getBlockEntity(blockPos, Carbonize.CHARRING_WOOD_TYPE);
+            if (!state.isOf(Carbonize.CHARRING_WOOD)) {
+                var parent = world.getBlockState(blockPos);
+                world.setBlockState(blockPos, Carbonize.CHARRING_WOOD.getDefaultState());
+                optionalEntity = world.getBlockEntity(blockPos, Carbonize.CHARRING_WOOD_TYPE);
+                optionalEntity.ifPresent(entity -> entity.update(parent));
+            } return optionalEntity.orElseThrow();
+        });
+
+        var burnTimeAverage = entities.map(entity -> {
+            for (var burnRecipe : recipes)
+                if (entity.parentState.isIn(burnRecipe.input()))
+                    return burnRecipe.burnTime();
+            return SINGLE_BURN_TIME;
+        }).reduce(Integer::sum).orElse(SINGLE_BURN_TIME);
+
+        var maxBurnTime = (int) (5 * Math.cbrt(blocks.size()) * burnTimeAverage / blocks.size());
+
+        blocks.forEach(blockPos -> world.getBlockEntity(blockPos, Carbonize.CHARRING_WOOD_TYPE).ifPresent(entity -> entity.maxBurnTime = maxBurnTime));
+    }
+
     public static void tick(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         CharringWoodBlockEntity entity = (CharringWoodBlockEntity) blockEntity;
         if (!world.isClient) {
@@ -143,11 +180,11 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
             entity.burnTime++;
 
             if (entity.burnTime == entity.maxBurnTime / 3) {
-                entity.updateModel(entity.parentState, state.with(STAGE, CharringWoodBlock.Stage.BURNING));
+                entity.update(entity.parentState, state.with(STAGE, CharringWoodBlock.Stage.BURNING));
             }
 
             if (entity.burnTime == entity.maxBurnTime * 2/3) {
-                entity.updateModel(entity.parentState, state.with(STAGE, CharringWoodBlock.Stage.CHARRING));
+                entity.update(entity.parentState, state.with(STAGE, CharringWoodBlock.Stage.CHARRING));
             }
 
             if (entity.burnTime >= entity.maxBurnTime) {
@@ -166,17 +203,12 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         var sidePos = pos.offset(dir);
         var sideState = world.getBlockState(sidePos);
 
-        if (sideState.isIn(Carbonize.CHARCOAL_PILE_VALID_WALL)) return;
+        if (BlockHelper.isNonFlammableFullCube(world, pos, sideState)) return;
 
         if (sideState.isOf(Carbonize.CHARRING_WOOD)) {
             world.getBlockEntity(sidePos, Carbonize.CHARRING_WOOD_TYPE).ifPresent(blockEntity -> blockEntity.transferData(entity));
         } else if (sideState.isIn(Carbonize.CHARCOAL_PILE_VALID_FUEL)) {
-            var parent = world.getBlockState(sidePos);
-            world.setBlockState(sidePos, Carbonize.CHARRING_WOOD.getDefaultState());
-            world.getBlockEntity(sidePos, Carbonize.CHARRING_WOOD_TYPE).ifPresent(blockEntity -> {
-                blockEntity.transferData(entity);
-                blockEntity.updateModel(parent);
-            });
+            createData(world, CharringWoodBlock.checkValid(world, sidePos, dir, true));
         } else if (!entity.getCachedState().get(STAGE).equals(IGNITING)) {
             if (sideState.isReplaceable() || sideState.isAir()) {
                 var fireState = Blocks.FIRE.getDefaultState();
