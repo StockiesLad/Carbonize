@@ -2,9 +2,9 @@ package net.jmb19905.charcoal_pit.multiblock;
 
 import net.jmb19905.Carbonize;
 import net.jmb19905.util.BlockPosWrapper;
-import net.jmb19905.util.worker.ConcurrentWorker;
-import net.jmb19905.util.worker.QueueableWorker;
-import net.jmb19905.util.worker.WrappedQueueableWorker;
+import net.jmb19905.util.queue.Queuer;
+import net.jmb19905.util.queue.TaskManager;
+import net.jmb19905.util.queue.WrappedQueuer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -21,12 +21,12 @@ import java.util.function.Function;
  *  is stored inside the multi-blocks themselves, this manager will just access it for you. The reasoning behind this structuring is to make everything more
  *  readable.
  */
-public class CharcoalPitManager extends PersistentState implements WrappedQueueableWorker<CharcoalPitManager> {
+public class CharcoalPitManager extends PersistentState implements WrappedQueuer<CharcoalPitManager> {
     public static final Identifier CHARCOAL_PIT_ID = new Identifier(Carbonize.MOD_ID, "charcoal_pit_data");
 
     protected final ServerWorld world;
     private final List<CharcoalPitMultiblock> storage;
-    private final ConcurrentWorker<CharcoalPitManager> worker;
+    private final Queuer<CharcoalPitManager> worker;
 
     /**
      * This manager is automatically made and ticked by the ServerWorld. There is no need to manually create one.
@@ -41,24 +41,27 @@ public class CharcoalPitManager extends PersistentState implements WrappedQueuea
     public CharcoalPitManager(ServerWorld world, List<CharcoalPitMultiblock> list) {
         this.world = world;
         this.storage = list;
-        this.worker = new ConcurrentWorker<>();
+        this.worker = new TaskManager<>();
     }
 
     /**
      * Prescribed directly from {@link ServerWorld#tick(BooleanSupplier)}. Always
-     * wrap any modifications (like deleting multiblocks) using {@link QueueableWorker}. If
+     * wrap any modifications (like deleting multiblocks) using {@link Queuer}. If
      * it's not done, CME's will occur. The reason for this is a multiblock might need to
      * delete itself if merged with a neighbouring one. Since it occurs within the iteration,
      * it requires scheduling to occur the next tick. This is fairly similar to how Minecraft
      * handles it as well.
      */
     public void tick() {
-        tryExecute(this, () -> storage.forEach(QueueableWorker::queue));
-        storage.forEach(data -> {
-            if (data.isInvalidated())
-                queue(() -> storage.remove(data));
+        executeQueue(this);
+        for (int i = 0; i < storage.size(); i++) {
+            var data = storage.get(i);
+            ifQueued(() -> data.queue());
             if (data.canTick()) data.tick();
-        });
+            if (data.isInvalidated()) {
+                queue(() -> storage.remove(data));
+            }
+        }
     }
 
     public void add(Function<CharcoalPitManager, CharcoalPitMultiblock> getter) {
@@ -69,7 +72,7 @@ public class CharcoalPitManager extends PersistentState implements WrappedQueuea
 
     public void add(CharcoalPitMultiblock multiblock) {
         if (!exists(multiblock))
-            queue(() -> storage.add(multiblock));
+            storage.add(multiblock);
 
     }
 
@@ -101,7 +104,7 @@ public class CharcoalPitManager extends PersistentState implements WrappedQueuea
     }
 
     @Override
-    public QueueableWorker<CharcoalPitManager> getWorker() {
+    public Queuer<CharcoalPitManager> getQueuer() {
         return worker;
     }
 
@@ -148,8 +151,9 @@ public class CharcoalPitManager extends PersistentState implements WrappedQueuea
         return data;
     }
     public static CharcoalPitManager get(ServerWorld world) {
-        //data.markDirty();
-        return world.getPersistentStateManager().getOrCreate(nbt -> createFromNbt(nbt, world), () -> new CharcoalPitManager(world), CHARCOAL_PIT_ID.toString());
+        CharcoalPitManager data = world.getPersistentStateManager().getOrCreate(nbt -> createFromNbt(nbt, world), () -> new CharcoalPitManager(world), CHARCOAL_PIT_ID.toString());
+        data.markDirty();
+        return data;
     }
 
     private static String withIndex(String string, int index) {

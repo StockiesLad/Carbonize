@@ -6,9 +6,9 @@ import net.jmb19905.charcoal_pit.block.CharringWoodBlockEntity;
 import net.jmb19905.util.BlockHelper;
 import net.jmb19905.util.BlockPosWrapper;
 import net.jmb19905.util.ObjectHolder;
-import net.jmb19905.util.worker.QueueableWorker;
-import net.jmb19905.util.worker.ConcurrentWorker;
-import net.jmb19905.util.worker.WrappedQueueableWorker;
+import net.jmb19905.util.queue.Queuer;
+import net.jmb19905.util.queue.TaskManager;
+import net.jmb19905.util.queue.WrappedQueuer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ConnectingBlock;
@@ -44,13 +44,13 @@ import static net.jmb19905.charcoal_pit.block.CharringWoodBlock.Stage.*;
  * <p></p> NOTE: The world is accessed via the handler.
  *
  */
-public class CharcoalPitMultiblock implements WrappedQueueableWorker<CharcoalPitMultiblock> {
+public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultiblock> {
     private static final Identifier AETHER = new Identifier("aether", "the_aether");
     public static final Map<Direction, BooleanProperty> DIRECTION_PROPERTIES = ConnectingBlock.FACING_PROPERTIES.entrySet().stream().filter(entry -> entry.getKey() != Direction.DOWN).collect(Util.toMap());
     public static final BlockState FIRE_STATE = Blocks.FIRE.getDefaultState();
     public static final int SINGLE_BURN_TIME = 200;
 
-    private final ConcurrentWorker<CharcoalPitMultiblock> worker;
+    private final Queuer<CharcoalPitMultiblock> worker;
     private final CharcoalPitManager pitManager;
     private final List<BlockPosWrapper> blockPositions;
     private final List<ChunkPos> chunkPositions;
@@ -61,7 +61,7 @@ public class CharcoalPitMultiblock implements WrappedQueueableWorker<CharcoalPit
     public CharcoalPitMultiblock(@Nullable CharcoalPitManager charcoalPitManager, List<BlockPos> blockPositions,
                                  int maxBurnTime, int burnTime, boolean extinguished) {
         this.pitManager = charcoalPitManager;
-        this.worker = new ConcurrentWorker<>();
+        this.worker = new TaskManager<>();
         this.blockPositions = new LinkedList<>(blockPositions.stream().map(BlockPosWrapper::new).toList());
         this.chunkPositions = new LinkedList<>();
         this.maxBurnTime = maxBurnTime;
@@ -78,14 +78,14 @@ public class CharcoalPitMultiblock implements WrappedQueueableWorker<CharcoalPit
     }
 
     /**
-     * Ticks are managed prescribed by {@link CharcoalPitManager#tick()}. This is where {@link QueueableWorker} executes queued tasks.
+     * Ticks are managed prescribed by {@link CharcoalPitManager#tick()}. This is where {@link Queuer} executes queued tasks.
      */
     public void tick() {
         burnTime++;
 
         testSides();
 
-        tryExecute(this);
+        executeQueue(this);
 
         if (burnTime == maxBurnTime / 6)
             update();
@@ -189,7 +189,7 @@ public class CharcoalPitMultiblock implements WrappedQueueableWorker<CharcoalPit
     }
 
     @Override
-    public QueueableWorker<CharcoalPitMultiblock> getWorker() {
+    public Queuer<CharcoalPitMultiblock> getQueuer() {
         return worker;
     }
 
