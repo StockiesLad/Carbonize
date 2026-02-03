@@ -5,6 +5,7 @@ import net.jmb19905.Carbonize;
 import net.jmb19905.charcoal_pit.CharcoalPitInit;
 import net.jmb19905.charcoal_pit.multiblock.CharcoalPitManager;
 import net.jmb19905.charcoal_pit.multiblock.CharcoalPitMultiblock;
+import net.jmb19905.charcoal_pit.multiblock.CharcoalPitMultiblock.Info;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.util.BlockHelper;
 import net.jmb19905.util.queue.Queuer;
@@ -28,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import static net.jmb19905.charcoal_pit.block.CharringWoodBlock.STAGE;
+import static net.jmb19905.charcoal_pit.multiblock.CharcoalPitProviders.createMultiBlock;
 
 /**
  * This class has no inherent functionality. Its job is purely just to sync itself with {@link CharcoalPitMultiblock}. The only thing
@@ -126,14 +128,15 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
                     this.parentState = parent;
                     this.mediumState = BlockHelper.transferState(burnRecipe.medium().getDefaultState(), parent);
                     this.finalState = BlockHelper.transferState(burnRecipe.result().getDefaultState(), parent);
-                    if (dataCache == null /*|| !dataCache.hasPosition(pos)*/)
-                        getCharcoalPitData().add(charcoalPitManager ->  new CharcoalPitMultiblock(
+                    if (dataCache == null /*|| !dataCache.hasPosition(pos)*/) {
+                        getCharcoalPitData().add(charcoalPitManager -> createMultiBlock(world, new Info(
                                 charcoalPitManager,
                                 pos,
                                 burnRecipe.burnTime(),
                                 0,
                                 false
-                        ));
+                        )).orElseThrow(() -> new IllegalStateException("A charring wood block was created in conditions that do not satisfy the existence of a charcoal pit.")));
+                    }
                     break;
                 }
             update();

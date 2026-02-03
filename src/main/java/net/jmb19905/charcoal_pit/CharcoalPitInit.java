@@ -28,24 +28,41 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
 import static net.jmb19905.Carbonize.*;
+import static net.jmb19905.charcoal_pit.multiblock.CharcoalPitProviders.addMultiBlock;
 
 public class CharcoalPitInit {
-    public static final Block CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
-    public static final Identifier CHARRING_WOOD_ID = new Identifier(MOD_ID, "charring_wood");
-    public static final BlockEntityType<CharringWoodBlockEntity> CHARRING_WOOD_TYPE = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            CHARRING_WOOD_ID,
-            FabricBlockEntityTypeBuilder.create(CharringWoodBlockEntity::new).addBlock(CHARRING_WOOD).build()
-    );
-    public static final Block CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
+    private static final Identifier AETHER = new Identifier("aether", "the_aether");
+    private static final Identifier NETHER = new Identifier("the_nether");
 
+
+    public static final Block CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
+    public static final Block CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
     public static final BlockItem CHARRING_WOOD_ITEM = new BlockItem(CHARRING_WOOD, new FabricItemSettings());
 
+    public static final Block SOUL_CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
+    public static final Block SOUL_CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
+    public static final BlockItem SOUL_CHARRING_WOOD_ITEM = new BlockItem(SOUL_CHARRING_WOOD, new FabricItemSettings());
+
+    public static final BlockEntityType<CharringWoodBlockEntity> CHARRING_WOOD_TYPE = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new Identifier(MOD_ID, "charring_wood"),
+            FabricBlockEntityTypeBuilder.create(CharringWoodBlockEntity::new).addBlocks(CHARRING_WOOD, SOUL_CHARRING_WOOD).build()
+    );
+
     public static void init() {
+        addMultiBlock(world -> {
+            var id = world.getDimensionKey().getValue();
+            return !(id.equals(AETHER) || id.equals(NETHER));
+        }, CharcoalPitMultiblock::new);
+        addMultiBlock(world -> world.getDimensionKey().getValue().equals(NETHER), CharcoalPitMultiblock::new);
+
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "charring_wood"), CHARRING_WOOD);
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "charring_stack"), CHARRING_STACK);
-
         Registry.register(Registries.ITEM, new Identifier(MOD_ID, "charring_wood"), CHARRING_WOOD_ITEM);
+
+        Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "soul_charring_wood"), SOUL_CHARRING_WOOD);
+        Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "soul_charring_stack"), SOUL_CHARRING_STACK);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "soul_charring_wood"), SOUL_CHARRING_WOOD_ITEM);
         FlammableBlockRegistry.getDefaultInstance().add(CHARRING_WOOD, 15, 30);
         FlammableBlockRegistry.getDefaultInstance().add(CHARRING_STACK, 15, 30);
 

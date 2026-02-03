@@ -20,6 +20,8 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(Carbonize.CHARCOAL_PLANKS);
         blockStateModelGenerator.registerSimpleCubeAll(Carbonize.CHARCOAL_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(CharcoalPitInit.CHARRING_WOOD);
+        blockStateModelGenerator.registerSimpleCubeAll(CharcoalPitInit.SOUL_CHARRING_WOOD);
+
     }
 
 

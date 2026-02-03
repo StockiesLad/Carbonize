@@ -18,17 +18,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static net.jmb19905.charcoal_pit.CharcoalPitInit.CHARRING_WOOD;
@@ -45,7 +41,6 @@ import static net.jmb19905.charcoal_pit.block.CharringWoodBlock.Stage.*;
  *
  */
 public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultiblock> {
-    private static final Identifier AETHER = new Identifier("aether", "the_aether");
     public static final Map<Direction, BooleanProperty> DIRECTION_PROPERTIES = ConnectingBlock.FACING_PROPERTIES.entrySet().stream().filter(entry -> entry.getKey() != Direction.DOWN).collect(Util.toMap());
     public static final BlockState FIRE_STATE = Blocks.FIRE.getDefaultState();
     public static final int SINGLE_BURN_TIME = 200;
@@ -71,6 +66,10 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
 
     public CharcoalPitMultiblock(CharcoalPitManager charcoalPitManager, BlockPos pos, int maxBurnTime, int burnTime, boolean extinguished) {
         this(charcoalPitManager, List.of(pos), maxBurnTime, burnTime, extinguished);
+    }
+
+    public CharcoalPitMultiblock(Info info) {
+        this(info.charcoalPitManager(), info.blockPositions(), info.maxBurnTime(), info.burnTime(), info.extinguished());
     }
 
     public static CharcoalPitMultiblock def() {
@@ -101,7 +100,7 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
     }
 
     /**
-     * Ensures ALL the chunks are tickable. Prevents unecessary ticking & syncs the entire charcoal pit.
+     * Ensures ALL the chunks are tickable. Prevents unnecessary ticking & syncs the entire charcoal pit.
      * <p></p> This is useful for preventing:
      * <p> 1 - Charcoal pits falling out of sync on chunk borders.
      * <p> 2. - Charcoal pits ticking, setting blockStates and other things it SHOULD NOT BE DOING if its chunks aren't loaded.
@@ -260,7 +259,7 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
         // Checks if a block is not flammable and a full cube to determine if it's a valid wall; replaces 'charcoal_pile_valid_wall'.
         if (BlockHelper.isNonFlammableFullCube(getWorld(), pos, sideState)) return;
 
-        // Terminate loop if the side pos is already a member of this multi-block - avoids unecessary checks. One of the multi-block-exclusive optimisations.
+        // Terminate loop if the side pos is already a member of this multi-block - avoids unnecessary checks. One of the multi-block-exclusive optimisations.
         if (hasPosition(sidePos)) return;
 
         if (sideState.isOf(CHARRING_WOOD)) {
@@ -359,7 +358,6 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
 
     private static ObjectHolder<List<BlockPos>> collect(ServerWorld world, BlockPos pos,
             ObjectHolder<List<BlockPos>> parsedPositions, List<BlockPos> checkedPositions, boolean checkExisting) {
-        if (world.getDimensionKey().getValue().equals(AETHER)) return parsedPositions.getValue(List::clear).lock();
         if (checkedPositions.contains(pos)) return parsedPositions;
         if (parsedPositions.isLocked()) return parsedPositions;
 
@@ -388,5 +386,13 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
 
     private static int calculateBurnTime(int firstBurnTime, int secondBurnTime, int totalBlockCount) {
         return (int) (Math.max(firstBurnTime, secondBurnTime) + Math.min(firstBurnTime, secondBurnTime) / Math.cbrt(Math.min(totalBlockCount, 1)));
+    }
+
+    public record Info(@Nullable CharcoalPitManager charcoalPitManager, List<BlockPos> blockPositions,
+                       int maxBurnTime, int burnTime, boolean extinguished) {
+        public Info(@Nullable CharcoalPitManager charcoalPitManager, BlockPos blockPosition,
+                    int maxBurnTime, int burnTime, boolean extinguished) {
+            this(charcoalPitManager, new ArrayList<>(Collections.singletonList(blockPosition)), maxBurnTime, burnTime, extinguished);
+        }
     }
 }

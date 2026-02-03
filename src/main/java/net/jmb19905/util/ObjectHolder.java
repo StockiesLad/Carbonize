@@ -9,6 +9,7 @@ public class ObjectHolder<T> {
 
     public ObjectHolder(T def) {
         this.value = def;
+        this.locked = false;
     }
 
     public T getValue() {
