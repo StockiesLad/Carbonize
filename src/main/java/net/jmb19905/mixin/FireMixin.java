@@ -1,14 +1,14 @@
 package net.jmb19905.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.jmb19905.Carbonize;
 import net.jmb19905.block.AshBlock;
+import net.jmb19905.block.UnregisteredFireBlock;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
-import net.minecraft.block.TntBlock;
-import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -21,54 +21,46 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FireBlock.class)
-public abstract class FireMixin {
-
+public class FireMixin extends AbstractFireMixin {
     @Shadow
-    protected abstract int getSpreadChance(BlockState state);
-
-    @Shadow
-    protected abstract BlockState getStateWithAge(WorldAccess world, BlockPos pos, int age);
-
-    @Inject(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/BlockPos;south()Lnet/minecraft/util/math/BlockPos;"))
-    private void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
-        if (!Carbonize.CONFIG.increasedFireSpreadRange()) return;
-        int k = world.getBiome(pos).isIn(BiomeTags.INCREASED_FIRE_BURNOUT) ? -50 : 0;
-        this.trySpreadingFire(world, pos.east(2), 300 + k, random, 0);
-        this.trySpreadingFire(world, pos.west(2), 300 + k, random, 0);
-        this.trySpreadingFire(world, pos.down(2), 250 + k, random, 0);
-        this.trySpreadingFire(world, pos.up(2), 250 + k, random, 0);
-        this.trySpreadingFire(world, pos.north(2), 300 + k, random, 0);
-        this.trySpreadingFire(world, pos.south(2), 300 + k, random, 0);
+    private void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge) {
     }
 
     @Shadow
-    protected abstract void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge);
+    private BlockState getStateWithAge(WorldAccess world, BlockPos pos, int age) {
+        return null;
+    }
 
-    @Inject(method = "trySpreadingFire", at = @At("HEAD"))
-    private void tryCatchFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge, CallbackInfo ci){
-        int i = this.getSpreadChance(world.getBlockState(pos));
-        if (random.nextInt(spreadFactor) < i) {
-            BlockState blockState = world.getBlockState(pos);
-            if (random.nextInt(currentAge + 10) < 5 && !world.hasRain(pos)) {
-                int j = Math.min(currentAge + random.nextInt(5) / 4, 15);
-                if (!transformByBurning(world, pos, random)) world.setBlockState(pos, this.getStateWithAge(world, pos, j), 3);
-            } else {
-                if (!transformByBurning(world, pos, random)) world.removeBlock(pos, false);
-            }
+    @Inject(method = "registerDefaultFlammables", at = @At("TAIL"))
+    private static void registerSoulFire(CallbackInfo ci) {
+        UnregisteredFireBlock.registerDefaultFlammables();
+    }
 
-            Block block = blockState.getBlock();
-            if (block instanceof TntBlock) {
-                TntBlock.primeTnt(world, pos);
-            }
-        }
+    @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;trySpreadingFire(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/math/random/Random;I)V"))
+    private void spreadFireAggressively(FireBlock fire, World world, BlockPos newPos, int spreadFactor, Random random, int currentAge, @Local(argsOnly = true) BlockPos pos, @Local(name = "k") int bonus) {
+        this.trySpreadingFire(world, pos, spreadFactor, random, currentAge);
+        if (!Carbonize.CONFIG.increasedFireSpreadRange()) return;
+        var offset = newPos.subtract(pos);
+        var diagonal = new BlockPos(1, 1, 1).multiply(offset.getX() + offset.getY() + offset.getZ()).subtract(offset);
+        this.trySpreadingFire(world, diagonal.add(pos), (diagonal.getY() == 0 ? 300 : 250) + bonus, random, currentAge);
+        offset = offset.multiply(2);
+        this.trySpreadingFire(world, offset.add(pos), (offset.getY() == 0 ? 300 : 250) + bonus, random, currentAge);
+    }
+
+    @Redirect(method = "trySpreadingFire", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z"))
+    private boolean tryCarbonize(World world, BlockPos pos, BlockState state, int flags, @Local(name = "j") int j, @Local(argsOnly = true) Random random) {
+        if (random.nextInt(10) == 0 && !tryProduceBiproduct(world, pos, random))
+            return world.setBlockState(pos, getStateWithAge(world, pos, j), Block.NOTIFY_ALL);
+        return true;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
-    private boolean transformByBurning(World world, BlockPos pos, Random random) {
+    private boolean tryProduceBiproduct(World world, BlockPos pos, Random random) {
         BlockState state = world.getBlockState(pos);
         world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE);
         if (Carbonize.CONFIG.burnCrafting()) {
@@ -111,4 +103,36 @@ public abstract class FireMixin {
         return val;
     }
 
+
+    @Redirect(method = "getStateWithAge", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
+    protected boolean override$getStateWithAge(BlockState state, Block block) {
+        if ((Object) this instanceof UnregisteredFireBlock fireBlock)
+            block = fireBlock.parentSupplier.get();
+        return state.isOf(block);
+    }
+
+    @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;scheduleBlockTick(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;I)V"))
+    protected void override$scheduleBlockTick(ServerWorld world, BlockPos pos, Block block, int i) {
+        if ((Object) this instanceof UnregisteredFireBlock fireBlock) {
+            block = fireBlock.parentSupplier.get();
+            i = i / 3;
+        }
+        world.scheduleBlockTick(pos, block, i);
+    }
+
+    @Redirect(method = "onBlockAdded", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;scheduleBlockTick(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;I)V"))
+    protected void override$onBlockAdded(World world, BlockPos pos, Block block, int i) {
+        if ((Object) this instanceof UnregisteredFireBlock fireBlock) {
+            block = fireBlock.parentSupplier.get();
+            i = i / 3;
+        }
+        world.scheduleBlockTick(pos, block, i);
+    }
+
+    @Redirect(method = "getStateForPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;getDefaultState()Lnet/minecraft/block/BlockState;"))
+    protected BlockState override$getDefaultState(FireBlock block) {
+        if ((Object) this instanceof UnregisteredFireBlock fireBlock)
+            return fireBlock.parentSupplier.get().getDefaultState();
+        return block.getDefaultState();
+    }
 }

@@ -3,11 +3,15 @@
   "package": "net.jmb19905.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractBlockMixin",
+    "AbstractFireMixin",
+    "BlockMixin",
     "FallingBlockEntityMixin",
     "FenceMixin",
     "FireMixin",
     "IFireAccess",
     "ServerWorldMixin",
+    "SoulFireMixin",
     "StairsBlockMixin"
   ],
   "injectors": {

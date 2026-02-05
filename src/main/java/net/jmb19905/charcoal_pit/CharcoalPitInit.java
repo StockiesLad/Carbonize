@@ -34,6 +34,8 @@ public class CharcoalPitInit {
     private static final Identifier AETHER = new Identifier("aether", "the_aether");
     private static final Identifier NETHER = new Identifier("the_nether");
 
+    //This is for owo-lib. DO NOT REMOVE
+    public static final Identifier CHARRING_WOOD_ID = new Identifier(MOD_ID, "charring_wood");
 
     public static final Block CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
     public static final Block CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
