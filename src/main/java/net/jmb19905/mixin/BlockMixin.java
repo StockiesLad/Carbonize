@@ -2,7 +2,7 @@ package net.jmb19905.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.jmb19905.block.Unregistered;
+import net.jmb19905.block.Unregisterable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.DefaultedRegistry;
@@ -27,7 +27,7 @@ public class BlockMixin extends AbstractBlockMixin {
 
     @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/DefaultedRegistry;createEntry(Ljava/lang/Object;)Lnet/minecraft/registry/entry/RegistryEntry$Reference;"))
     private <T> Reference<T> discardWhenUnregistered(DefaultedRegistry<T> instance, T block, Operation<Reference<T>> operation) {
-        if (block instanceof Unregistered)
+        if (block instanceof Unregisterable unregisterable && !unregisterable.shouldRegister())
             return null;
         else return operation.call(instance, block);
     }

@@ -6,6 +6,7 @@ import net.jmb19905.block.AshBlock;
 import net.jmb19905.block.GenericFireBlock;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.util.BlockHelper;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,8 +28,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static net.jmb19905.block.GenericFireBlock.DEFAULT_SPREAD_CHANCE;
+import static net.jmb19905.block.GenericFireBlock.DEFAULT_SPREAD_FACTOR;
+
 @Mixin(FireBlock.class)
-public class FireMixin extends AbstractFireMixin {
+public abstract class FireMixin extends AbstractFireMixin {
     @Shadow
     private void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge) {
     }
@@ -43,9 +48,14 @@ public class FireMixin extends AbstractFireMixin {
     }
 
     @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;trySpreadingFire(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/math/random/Random;I)V"))
-    private void spreadFireAggressively(FireBlock fire, World world, BlockPos newPos, int spreadFactor, Random random, int currentAge, @Local(argsOnly = true) BlockPos pos, @Local(name = "k") int bonus) {
-        this.trySpreadingFire(world, newPos, spreadFactor, random, currentAge);
-        if (!Carbonize.CONFIG.increasedFireSpreadRange()) return;
+    private void spreadFireAggressively(FireBlock fire, World world, BlockPos newPos, @SuppressWarnings("ParameterCanBeLocal") int spreadFactor, Random random, int currentAge, @Local(argsOnly = true) BlockPos pos, @Local(name = "k") int bonus) {
+        if ((Object) this instanceof GenericFireBlock fireBlock)
+            spreadFactor = fireBlock.spreadFactor;
+        else spreadFactor = DEFAULT_SPREAD_FACTOR + bonus;
+        this.trySpreadingFire(world, newPos, spreadFactor + (pos.subtract(newPos).getY() > 0 ? -25 : 25), random, currentAge);
+        if (!Carbonize.CONFIG.increasedFireSpreadRange() && !world.isRaining()) return;
+
+        if (random.nextBoolean()) return;
         var offset = newPos.subtract(pos);
         var diagonal = new BlockPos(1, 1, 1).multiply(offset.getX() + offset.getY() + offset.getZ()).subtract(offset);
         var oppDiagonal = new BlockPos(1, 1, 1)
@@ -53,16 +63,18 @@ public class FireMixin extends AbstractFireMixin {
                         .multiply(2)
                         .multiply(offset.getX() + offset.getY() + offset.getZ())
                 ).multiply(offset.getX() + offset.getY() + offset.getZ()).subtract(offset);
-        this.trySpreadingFire(world, diagonal.add(pos), (diagonal.getY() == 0 ? 300 : 250) + bonus, random, currentAge);
-        this.trySpreadingFire(world, oppDiagonal.add(pos), (diagonal.getY() == 0 ? 300 : 250) + bonus, random, currentAge);
+        this.trySpreadingFire(world, diagonal.add(pos), spreadFactor + (diagonal.getY() > 0 ? -15 : 15), random, currentAge);
+        this.trySpreadingFire(world, oppDiagonal.add(pos), spreadFactor + (oppDiagonal.getY() > 0 ? -15 : 15), random, currentAge);
+
+        if (random.nextBoolean()) return;
         offset = offset.multiply(2);
-        this.trySpreadingFire(world, offset.add(pos), (offset.getY() == 0 ? 300 : 250) + bonus, random, currentAge);
+        this.trySpreadingFire(world, offset.add(pos), spreadFactor + (offset.getY() > 0 ? -50 : 50), random, currentAge);
     }
 
     @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
-    private boolean checkDerivativeInfiniburn(BlockState state, TagKey<Block> tagKey) {
+    private boolean checkPlacementConditions(BlockState state, TagKey<Block> tagKey) {
         if ((Object) this instanceof GenericFireBlock fireBlock)
-            return fireBlock.checkInfiniburn.test(state);
+            return fireBlock.checkPlacementConditions.test(state, tagKey);
         return state.isIn(tagKey);
     }
 
@@ -76,10 +88,10 @@ public class FireMixin extends AbstractFireMixin {
 
     @Redirect(method = "trySpreadingFire", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z"))
     private boolean tweakFireSpreadChance(World world, BlockPos pos, boolean move) {
-        var speed = 1;
-        if ((Object) this instanceof GenericFireBlock)
-            speed = 2;
-        if (world.random.nextInt(3) <= speed)
+        var speed = DEFAULT_SPREAD_CHANCE;
+        if ((Object) this instanceof GenericFireBlock fireBlock)
+            speed = fireBlock.spreadChance;
+        if (world.random.nextFloat() <= speed)
             return world.setBlockState(pos, this.getStateWithAge(world, pos, 0), Block.NOTIFY_ALL);
         else return world.removeBlock(pos, move);
     }
@@ -93,12 +105,12 @@ public class FireMixin extends AbstractFireMixin {
         if (Carbonize.CONFIG.burnCrafting()) {
             for (BurnRecipe burnRecipe : world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE)) {
                 if (state.isIn(burnRecipe.input())) {
-                    float exposure = getExposed(world, pos);
-                    float randomVal = random.nextFloat();
-                    if (randomVal > exposure) {
+                    float surfaceExposurePercentage = getExposedSurfacePercentage(world, pos);
+                    float randomFloat = random.nextFloat();
+                    if (randomFloat > surfaceExposurePercentage) {
                         world.setBlockState(pos, BlockHelper.transferState(burnRecipe.result().getDefaultState(), state));
                         return true;
-                    } else if (randomVal > 0.3f && Carbonize.CONFIG.createAsh()) {
+                    } else if (randomFloat > 0.3f && Carbonize.CONFIG.createAsh()) {
                         world.setBlockState(pos, Carbonize.ASH_LAYER.getDefaultState().with(AshBlock.LAYERS, getAshLayerCount(random, state)));
                         return true;
                     }
@@ -120,7 +132,7 @@ public class FireMixin extends AbstractFireMixin {
     }
 
     @Unique
-    private float getExposed(World world, BlockPos pos) {
+    private float getExposedSurfacePercentage(World world, BlockPos pos) {
         float val = 0.0f;
         for (Direction dir : Direction.values()) {
             if (world.getBlockState(pos.offset(dir)).isAir()) {
@@ -136,6 +148,13 @@ public class FireMixin extends AbstractFireMixin {
         if ((Object) this instanceof GenericFireBlock fireBlock)
             block = fireBlock.parentSupplier.get();
         return state.isOf(block);
+    }
+
+    @Redirect(method = "getStateWithAge", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;getState(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+    private BlockState getProperState(BlockView view, BlockPos pos) {
+        if ((Object) this instanceof GenericFireBlock fireBlock)
+            return fireBlock.placementState.apply(view, pos);
+        else return AbstractFireBlock.getState(view, pos);
     }
 
     @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;scheduleBlockTick(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;I)V"))

@@ -1,11 +1,12 @@
 package net.jmb19905.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import net.jmb19905.block.ISoulFireAccess;
 import net.jmb19905.block.GenericFireBlock;
+import net.jmb19905.block.ISoulFireAccess;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -37,16 +38,29 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
     public static boolean isSoulBase(BlockState state) {return false;}
 
     @Unique
-    private static final FireBlock FIRE_BLOCK = new GenericFireBlock(AbstractBlock.Settings.create()
-            .mapColor(MapColor.LIGHT_BLUE)
-            .replaceable()
-            .noCollision()
-            .breakInstantly()
-            .luminance((state) -> 10)
-            .sounds(BlockSoundGroup.WOOL)
-            .pistonBehavior(PistonBehavior.DESTROY),
+    private static final GenericFireBlock FIRE_BLOCK = new GenericFireBlock(
+            false,
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.LIGHT_BLUE)
+                    .replaceable()
+                    .noCollision()
+                    .breakInstantly()
+                    .luminance((state) -> 10)
+                    .sounds(BlockSoundGroup.WOOL)
+                    .pistonBehavior(PistonBehavior.DESTROY),
             () -> (AbstractFireBlock) Blocks.SOUL_FIRE,
-            SoulFireMixin::isSoulBase
+            (state, tagKey) -> isSoulBase(state),
+            (view, pos) -> {
+                BlockPos blockPos = pos.down();
+                BlockState state = view.getBlockState(blockPos);
+                TagKey<Block> tag = null;
+                if (view instanceof World world)
+                    tag = world.getDimension().infiniburn();
+                return state.isIn(tag) ? ((IFireAccess)Blocks.FIRE).carbonize$getStateForPosition(view, pos) :
+                        ((ISoulFireAccess)Blocks.SOUL_FIRE).carbonize$getStateForPosition(view, pos);
+            },
+            0.75F,
+            300
     );
 
     @Unique
@@ -56,7 +70,8 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(AbstractBlock.Settings settings, CallbackInfo ci) {
         setDefaultState(getStateManager().getDefaultState()
-                .with(AGE, 0).with(NORTH, false)
+                .with(AGE, 0)
+                .with(NORTH, false)
                 .with(EAST, false)
                 .with(SOUTH, false)
                 .with(WEST, false)
