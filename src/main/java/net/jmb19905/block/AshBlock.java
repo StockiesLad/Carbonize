@@ -119,16 +119,12 @@ public class AshBlock extends FallingBlock {
         if (state.isOf(this)) {
             int layers = state.get(LAYERS) + fallingLayers;
             int more = Math.max(layers - MAX_LAYERS, 0);
-            System.out.println("Layers: " + (state.get(LAYERS)) + " + " + fallingLayers + " = " + layers + " (More: " + more + ")");
             if (state.get(LAYERS) < MAX_LAYERS) {
-                System.out.println("Added to block: " + pos);
                 world.setBlockState(pos, getDefaultState().with(LAYERS, Math.min(layers, 8)));
                 if (more > 0) {
-                    System.out.println("Added new block: " + pos.up());
                     world.setBlockState(pos.up(), getDefaultState().with(LAYERS, Math.min(more, 8)));
                 }
             } else if (state.get(LAYERS) == MAX_LAYERS) {
-                System.out.println("Added new block: " + pos.up());
                 BlockState upState = world.getBlockState(pos.up());
                 if (upState.isOf(this)) {
                     world.setBlockState(pos.up(), getDefaultState().with(LAYERS, Math.min(upState.get(LAYERS) + fallingLayers, 8)));

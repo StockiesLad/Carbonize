@@ -1,6 +1,7 @@
 package net.jmb19905.mixin;
 
 import com.google.common.collect.ImmutableMap;
+import net.jmb19905.block.FireView;
 import net.jmb19905.block.GenericFireBlock;
 import net.jmb19905.block.ISoulFireAccess;
 import net.minecraft.block.*;
@@ -91,6 +92,10 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
         ci.cancel();
     }
 
+    @Override
+    public void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        ((IFireAccess)FIRE_BLOCK).carbonize$appendProperties(builder);
+    }
 
     @Inject(method = "getStateForNeighborUpdate", at = @At("HEAD"), cancellable = true)
     private void override$getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
@@ -140,6 +145,11 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
     @Override
     public boolean carbonize$isFlammable(BlockState state) {
         return ((IFireAccess)FIRE_BLOCK).carbonize$isFlammable(state);
+    }
+
+    @Override
+    public int carbonize$getSpreadChance(BlockState state) {
+        return ((FireView)FIRE_BLOCK).carbonize$getSpreadChance(state);
     }
 
     @Override

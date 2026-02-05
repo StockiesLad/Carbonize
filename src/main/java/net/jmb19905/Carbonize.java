@@ -156,18 +156,13 @@ public class Carbonize implements ModInitializer {
 
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.NOTE_BLOCK, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.CRAFTING_TABLE, 5, 5);
-			FlammableBlockRegistry.getDefaultInstance().add(Blocks.LADDER, 5, 5);
+			FlammableBlockRegistry.getDefaultInstance().add(Blocks.LADDER, 15, 60);
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.CARTOGRAPHY_TABLE, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.FLETCHING_TABLE, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.SMITHING_TABLE, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(Blocks.LOOM, 5, 5);
-
 			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.BANNERS, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.BEDS, 5, 5);
-			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.WOODEN_DOORS, 5, 5);
-			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.WOODEN_TRAPDOORS, 5, 5);
-			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.WOODEN_BUTTONS, 5, 5);
-			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.WOODEN_PRESSURE_PLATES, 5, 5);
 			FlammableBlockRegistry.getDefaultInstance().add(BlockTags.ALL_SIGNS, 5, 5);
 		}
 

@@ -6,13 +6,19 @@
     "AbstractBlockMixin",
     "AbstractFireMixin",
     "BlockMixin",
+    "ButtonMixin",
+    "DoorMixin",
     "FallingBlockEntityMixin",
     "FenceMixin",
     "FireMixin",
+    "HangingSignMixin",
     "IFireAccess",
+    "PressurePlateMixin",
     "ServerWorldMixin",
+    "SignMixin",
     "SoulFireMixin",
-    "StairsBlockMixin"
+    "StairsBlockMixin",
+    "TrapdoorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

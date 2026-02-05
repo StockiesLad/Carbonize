@@ -1,13 +1,19 @@
 package net.jmb19905.block;
 
 import net.minecraft.block.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
+
+import static net.minecraft.block.Blocks.*;
 
 /**
  * This class uses {@link net.jmb19905.mixin.FireMixin FireMixin} to remove hardcoded fire behaviour and make it generalisable.
@@ -15,7 +21,9 @@ import java.util.function.Supplier;
  * @see net.jmb19905.mixin.SoulFireMixin SoulFireMixin
  */
 public class GenericFireBlock extends FireBlock implements Unregisterable {
-    public static final Supplier<AbstractFireBlock> DEAULT_PARENT_SUPPLIER = () -> (AbstractFireBlock) Blocks.FIRE;
+    private static final Queue<Runnable> TASKS = new ArrayDeque<>();
+
+    public static final Supplier<AbstractFireBlock> DEAULT_PARENT_SUPPLIER = () -> (AbstractFireBlock) FIRE;
     public static final BiPredicate<BlockState, TagKey<Block>>  DEFAULT_PLACEMENT_CONDITIONS = AbstractBlockState::isIn;
     public static final BiFunction<BlockView, BlockPos, BlockState> DEFAULT_PLACEMENT_STATE = AbstractFireBlock::getState;
 
@@ -56,11 +64,56 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
         return shouldRegister;
     }
 
-    public static void registerDefaultFlammables() {
-        var soulFireBlock = (ISoulFireAccess) Blocks.SOUL_FIRE;
+    public static FireView getSoulFire() {
+        return (FireView) SOUL_FIRE;
+    }
 
-        soulFireBlock.carbonize$registerFlammableBlock(Blocks.CRIMSON_PLANKS, 50, 50);
-        soulFireBlock.carbonize$registerFlammableBlock(Blocks.CRIMSON_HYPHAE, 50, 50);
-        soulFireBlock.carbonize$registerFlammableBlock(Blocks.WARPED_PLANKS, 50, 50);
+    public static FireView getFire() {
+        return (FireView) FIRE;
+    }
+
+    public static void registerEarly(Runnable runnable) {
+        TASKS.add(runnable);
+    }
+
+    public static void registerDefaultFlammables() {
+        register(WARPED_PLANKS, 5, 20);
+        register(CRIMSON_PLANKS, 5, 20);
+        register(WARPED_SLAB, 5, 20);
+        register(CRIMSON_SLAB, 5, 20);
+        register(WARPED_FENCE_GATE, 5, 20);
+        register(CRIMSON_FENCE_GATE, 5, 20);
+        register(WARPED_FENCE, 5, 20);
+        register(CRIMSON_FENCE, 5, 20);
+        register(WARPED_STAIRS, 5, 20);
+        register(CRIMSON_STAIRS, 5, 20);
+        register(WARPED_STEM, 5, 5);
+        register(CRIMSON_STEM, 5, 5);
+        register(WARPED_HYPHAE, 5, 5);
+        register(CRIMSON_HYPHAE, 5, 5);
+        register(STRIPPED_WARPED_STEM, 5, 5);
+        register(STRIPPED_CRIMSON_STEM, 5, 5);
+        register(STRIPPED_WARPED_HYPHAE, 5, 5);
+        register(STRIPPED_CRIMSON_HYPHAE, 5, 5);
+        register(WARPED_WART_BLOCK, 30, 60);
+        register(NETHER_WART_BLOCK, 30, 60);
+        register(SHROOMLIGHT, 30, 60);
+        register(WARPED_ROOTS, 60, 100);
+        register(CRIMSON_ROOTS, 60, 100);
+        register(WARPED_FUNGUS, 60, 100);
+        register(CRIMSON_FUNGUS, 60, 100);
+        register(WEEPING_VINES, 15, 100);
+        register(TWISTING_VINES, 15, 100);
+
+        while (!TASKS.isEmpty())
+            TASKS.poll().run();
+    }
+
+    private static void register(Block block, int burnChance, int spreadChance) {
+        getSoulFire().carbonize$registerFlammableBlock(block, burnChance, spreadChance);
+    }
+
+    private static void register(Identifier blockId, int burnChance, int spreadChance) {
+        register(Registries.BLOCK.get(blockId), burnChance, spreadChance);
     }
 }
