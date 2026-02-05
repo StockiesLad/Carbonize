@@ -2,7 +2,7 @@ package net.jmb19905.mixin;
 
 import com.google.common.collect.ImmutableMap;
 import net.jmb19905.block.ISoulFireAccess;
-import net.jmb19905.block.UnregisteredFireBlock;
+import net.jmb19905.block.GenericFireBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,8 +33,11 @@ import static net.minecraft.block.FireBlock.*;
 
 @Mixin(SoulFireBlock.class)
 public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess {
+    @Shadow
+    public static boolean isSoulBase(BlockState state) {return false;}
+
     @Unique
-    private static final FireBlock FIRE_BLOCK = new UnregisteredFireBlock(AbstractBlock.Settings.create()
+    private static final FireBlock FIRE_BLOCK = new GenericFireBlock(AbstractBlock.Settings.create()
             .mapColor(MapColor.LIGHT_BLUE)
             .replaceable()
             .noCollision()
@@ -41,7 +45,8 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
             .luminance((state) -> 10)
             .sounds(BlockSoundGroup.WOOL)
             .pistonBehavior(PistonBehavior.DESTROY),
-            () -> (AbstractFireBlock) Blocks.SOUL_FIRE
+            () -> (AbstractFireBlock) Blocks.SOUL_FIRE,
+            SoulFireMixin::isSoulBase
     );
 
     @Unique
