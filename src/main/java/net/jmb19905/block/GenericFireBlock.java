@@ -16,9 +16,11 @@ import java.util.function.Supplier;
 import static net.minecraft.block.Blocks.*;
 
 /**
- * This class uses {@link net.jmb19905.mixin.FireMixin FireMixin} to remove hardcoded fire behaviour and make it generalisable.
+ * This class uses {@link net.jmb19905.mixin.FireMixin FireMixin} to remove hardcoded fire behaviour and make it generalisable;
+ * <p> meaning, use this only to copy fire block, don't expect freedom to configure everything.</p>
  * <p>Extend this as any normal class to make a custom fire block at your peril.</p>
  * @see net.jmb19905.mixin.SoulFireMixin SoulFireMixin
+ * @implNote Do not implement FireView. Use {@link GenericFireBlock#asFireView()}.
  */
 public class GenericFireBlock extends FireBlock implements Unregisterable {
     private static final Queue<Runnable> TASKS = new ArrayDeque<>();
@@ -57,6 +59,10 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
 
     public GenericFireBlock(Settings settings) {
         this(true, settings, DEAULT_PARENT_SUPPLIER, DEFAULT_PLACEMENT_CONDITIONS, DEFAULT_PLACEMENT_STATE, DEFAULT_SPREAD_CHANCE, DEFAULT_SPREAD_FACTOR);
+    }
+
+    public FireView asFireView() {
+        return (FireView) this;
     }
 
     @Override

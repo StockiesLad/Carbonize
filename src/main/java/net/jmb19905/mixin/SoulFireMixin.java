@@ -1,7 +1,6 @@
 package net.jmb19905.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import net.jmb19905.block.FireView;
 import net.jmb19905.block.GenericFireBlock;
 import net.jmb19905.block.ISoulFireAccess;
 import net.minecraft.block.*;
@@ -88,13 +87,13 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
 
     @Override
     protected void override$appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        ((IFireAccess)FIRE_BLOCK).carbonize$appendProperties(builder);
+        FIRE_BLOCK.asFireView().carbonize$appendProperties(builder);
         ci.cancel();
     }
 
     @Override
     public void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        ((IFireAccess)FIRE_BLOCK).carbonize$appendProperties(builder);
+        FIRE_BLOCK.asFireView().carbonize$appendProperties(builder);
     }
 
     @Inject(method = "getStateForNeighborUpdate", at = @At("HEAD"), cancellable = true)
@@ -134,26 +133,26 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
 
     @Inject(method = "isFlammable", at = @At("HEAD"), cancellable = true)
     protected void override$isFlammable(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(((IFireAccess)FIRE_BLOCK).carbonize$isFlammable(state));
+        cir.setReturnValue(FIRE_BLOCK.asFireView().carbonize$isFlammable(state));
     }
 
     @Override
     public void carbonize$registerFlammableBlock(Block block, int burnChance, int spreadChance) {
-        ((IFireAccess)FIRE_BLOCK).carbonize$registerFlammableBlock(block, burnChance, spreadChance);
+        FIRE_BLOCK.asFireView().carbonize$registerFlammableBlock(block, burnChance, spreadChance);
     }
 
     @Override
     public boolean carbonize$isFlammable(BlockState state) {
-        return ((IFireAccess)FIRE_BLOCK).carbonize$isFlammable(state);
+        return FIRE_BLOCK.asFireView().carbonize$isFlammable(state);
     }
 
     @Override
     public int carbonize$getSpreadChance(BlockState state) {
-        return ((FireView)FIRE_BLOCK).carbonize$getSpreadChance(state);
+        return FIRE_BLOCK.asFireView().carbonize$getSpreadChance(state);
     }
 
     @Override
     public BlockState carbonize$getStateForPosition(BlockView world, BlockPos pos) {
-        return ((IFireAccess)FIRE_BLOCK).carbonize$getStateForPosition(world, pos);
+        return FIRE_BLOCK.asFireView().carbonize$getStateForPosition(world, pos);
     }
 }
