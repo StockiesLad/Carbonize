@@ -1,6 +1,0 @@
-{
-  "type": "carbonize:burn",
-  "burnTime": "150",
-  "input": "minecraft:planks",
-  "output": "carbonize:charcoal_planks"
-}

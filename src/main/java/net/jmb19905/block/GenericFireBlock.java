@@ -1,9 +1,10 @@
 package net.jmb19905.block;
 
-import net.minecraft.block.*;
-import net.minecraft.registry.Registries;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FireBlock;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
@@ -13,6 +14,7 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
+import static net.jmb19905.charcoal_pit.FireType.SOUL_FIRE_TYPE;
 import static net.minecraft.block.Blocks.*;
 
 /**
@@ -33,6 +35,7 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
     public static final int DEFAULT_SPREAD_FACTOR = 400;
 
     private final boolean shouldRegister;
+    public final String serialId;
     public final Supplier<AbstractFireBlock> parentSupplier;
     public final BiPredicate<BlockState, TagKey<Block>> checkPlacementConditions;
     public final BiFunction<BlockView, BlockPos, BlockState> placementState;
@@ -42,6 +45,7 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
     public GenericFireBlock(
             boolean shouldRegister,
             Settings settings,
+            String serialId,
             Supplier<AbstractFireBlock> parentSupplier,
             BiPredicate<BlockState, TagKey<Block>> checkPlacementConditions,
             BiFunction<BlockView, BlockPos, BlockState> getPlacementState,
@@ -50,6 +54,7 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
     ) {
         super(settings);
         this.shouldRegister = shouldRegister;
+        this.serialId = serialId;
         this.parentSupplier = parentSupplier;
         this.checkPlacementConditions = checkPlacementConditions;
         this.placementState = getPlacementState;
@@ -58,7 +63,7 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
     }
 
     public GenericFireBlock(Settings settings) {
-        this(true, settings, DEAULT_PARENT_SUPPLIER, DEFAULT_PLACEMENT_CONDITIONS, DEFAULT_PLACEMENT_STATE, DEFAULT_SPREAD_CHANCE, DEFAULT_SPREAD_FACTOR);
+        this(true, settings, "default_fire", DEAULT_PARENT_SUPPLIER, DEFAULT_PLACEMENT_CONDITIONS, DEFAULT_PLACEMENT_STATE, DEFAULT_SPREAD_CHANCE, DEFAULT_SPREAD_FACTOR);
     }
 
     public FireView asFireView() {
@@ -70,56 +75,40 @@ public class GenericFireBlock extends FireBlock implements Unregisterable {
         return shouldRegister;
     }
 
-    public static FireView getSoulFire() {
-        return (FireView) SOUL_FIRE;
-    }
-
-    public static FireView getFire() {
-        return (FireView) FIRE;
-    }
-
     public static void registerEarly(Runnable runnable) {
         TASKS.add(runnable);
     }
 
     public static void registerDefaultFlammables() {
-        register(WARPED_PLANKS, 5, 20);
-        register(CRIMSON_PLANKS, 5, 20);
-        register(WARPED_SLAB, 5, 20);
-        register(CRIMSON_SLAB, 5, 20);
-        register(WARPED_FENCE_GATE, 5, 20);
-        register(CRIMSON_FENCE_GATE, 5, 20);
-        register(WARPED_FENCE, 5, 20);
-        register(CRIMSON_FENCE, 5, 20);
-        register(WARPED_STAIRS, 5, 20);
-        register(CRIMSON_STAIRS, 5, 20);
-        register(WARPED_STEM, 5, 5);
-        register(CRIMSON_STEM, 5, 5);
-        register(WARPED_HYPHAE, 5, 5);
-        register(CRIMSON_HYPHAE, 5, 5);
-        register(STRIPPED_WARPED_STEM, 5, 5);
-        register(STRIPPED_CRIMSON_STEM, 5, 5);
-        register(STRIPPED_WARPED_HYPHAE, 5, 5);
-        register(STRIPPED_CRIMSON_HYPHAE, 5, 5);
-        register(WARPED_WART_BLOCK, 30, 60);
-        register(NETHER_WART_BLOCK, 30, 60);
-        register(SHROOMLIGHT, 30, 60);
-        register(WARPED_ROOTS, 60, 100);
-        register(CRIMSON_ROOTS, 60, 100);
-        register(WARPED_FUNGUS, 60, 100);
-        register(CRIMSON_FUNGUS, 60, 100);
-        register(WEEPING_VINES, 15, 100);
-        register(TWISTING_VINES, 15, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_PLANKS, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_PLANKS, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_SLAB, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_SLAB, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_FENCE_GATE, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_FENCE_GATE, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_FENCE, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_FENCE, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_STAIRS, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_STAIRS, 5, 20);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_STEM, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_STEM, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_HYPHAE, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_HYPHAE, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(STRIPPED_WARPED_STEM, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(STRIPPED_CRIMSON_STEM, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(STRIPPED_WARPED_HYPHAE, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(STRIPPED_CRIMSON_HYPHAE, 5, 5);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_WART_BLOCK, 30, 60);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(NETHER_WART_BLOCK, 30, 60);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(SHROOMLIGHT, 30, 60);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_ROOTS, 60, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_ROOTS, 60, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WARPED_FUNGUS, 60, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(CRIMSON_FUNGUS, 60, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(WEEPING_VINES, 15, 100);
+        SOUL_FIRE_TYPE.carbonize$registerFlammableBlock(TWISTING_VINES, 15, 100);
 
         while (!TASKS.isEmpty())
             TASKS.poll().run();
-    }
-
-    private static void register(Block block, int burnChance, int spreadChance) {
-        getSoulFire().carbonize$registerFlammableBlock(block, burnChance, spreadChance);
-    }
-
-    private static void register(Identifier blockId, int burnChance, int spreadChance) {
-        register(Registries.BLOCK.get(blockId), burnChance, spreadChance);
     }
 }

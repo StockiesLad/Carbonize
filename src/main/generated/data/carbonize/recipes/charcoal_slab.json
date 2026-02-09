@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 100,
+  "fireType": "default_fire",
+  "input": "minecraft:woodenslabs",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:charcoal_slab"
+}

@@ -1,8 +1,8 @@
 package net.jmb19905.mixin;
 
 import com.google.common.collect.ImmutableMap;
+import net.jmb19905.block.FireView;
 import net.jmb19905.block.GenericFireBlock;
-import net.jmb19905.block.ISoulFireAccess;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import static net.minecraft.block.FireBlock.*;
 
 @Mixin(SoulFireBlock.class)
-public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess {
+public class SoulFireMixin extends AbstractFireMixin implements FireView {
     @Shadow
     public static boolean isSoulBase(BlockState state) {return false;}
 
@@ -48,6 +48,7 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
                     .luminance((state) -> 10)
                     .sounds(BlockSoundGroup.WOOL)
                     .pistonBehavior(PistonBehavior.DESTROY),
+            "soul_fire",
             () -> (AbstractFireBlock) Blocks.SOUL_FIRE,
             (state, tagKey) -> isSoulBase(state),
             (view, pos) -> {
@@ -56,8 +57,8 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
                 TagKey<Block> tag = null;
                 if (view instanceof World world)
                     tag = world.getDimension().infiniburn();
-                return state.isIn(tag) ? ((IFireAccess)Blocks.FIRE).carbonize$getStateForPosition(view, pos) :
-                        ((ISoulFireAccess)Blocks.SOUL_FIRE).carbonize$getStateForPosition(view, pos);
+                return state.isIn(tag) ? ((FireView)Blocks.FIRE).carbonize$getStateForPosition(view, pos) :
+                        ((FireView)Blocks.SOUL_FIRE).carbonize$getStateForPosition(view, pos);
             },
             0.75F,
             300
@@ -81,7 +82,7 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
                 .getStates()
                 .stream()
                 .filter((state) -> state.get(AGE) == 0)
-                .collect(Collectors.toMap(Function.identity(), IFireAccess::carbonize$getShapeForState))
+                .collect(Collectors.toMap(Function.identity(), IFireBlock::carbonize$getShapeForState))
         );
     }
 
@@ -149,6 +150,16 @@ public class SoulFireMixin extends AbstractFireMixin implements ISoulFireAccess 
     @Override
     public int carbonize$getSpreadChance(BlockState state) {
         return FIRE_BLOCK.asFireView().carbonize$getSpreadChance(state);
+    }
+
+    @Override
+    public int carbonize$getBurnChance(BlockState state) {
+        return FIRE_BLOCK.asFireView().carbonize$getBurnChance(state);
+    }
+
+    @Override
+    public String carbonize$getSerialId() {
+        return FIRE_BLOCK.serialId;
     }
 
     @Override

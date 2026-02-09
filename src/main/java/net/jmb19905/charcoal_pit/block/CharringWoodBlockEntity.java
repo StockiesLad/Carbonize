@@ -54,7 +54,7 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         this.dataCache = null;
         this.parentState = Blocks.OAK_PLANKS.getDefaultState();
         this.mediumState = state;
-        this.finalState = Carbonize.CHARCOAL_PLANKS.getDefaultState();
+        this.finalState = Carbonize.CHARCOAL_SET.charcoalPlanks.getDefaultState();
 
     }
 
@@ -88,7 +88,7 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
     }
 
     /**
-     * This is specifically for debugging purposes - makes it easier to track the model when the calls are seperated.
+     * This is specifically for debugging purposes - makes it easier to track the model when the calls are separated.
      */
     public BlockState getMimicState() {
         return switch (getCachedState().get(STAGE)) {

@@ -39,11 +39,9 @@ public class CharcoalPitInit {
 
     public static final Block CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
     public static final Block CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
-    public static final BlockItem CHARRING_WOOD_ITEM = new BlockItem(CHARRING_WOOD, new FabricItemSettings());
 
-    public static final Block SOUL_CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(15).sounds(BlockSoundGroup.WOOD).dropsNothing());
+    public static final Block SOUL_CHARRING_WOOD = new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(10).sounds(BlockSoundGroup.WOOD).dropsNothing());
     public static final Block SOUL_CHARRING_STACK = new StackBlock(FabricBlockSettings.create().nonOpaque());
-    public static final BlockItem SOUL_CHARRING_WOOD_ITEM = new BlockItem(SOUL_CHARRING_WOOD, new FabricItemSettings());
 
     public static final BlockEntityType<CharringWoodBlockEntity> CHARRING_WOOD_TYPE = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
@@ -60,11 +58,11 @@ public class CharcoalPitInit {
 
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "charring_wood"), CHARRING_WOOD);
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "charring_stack"), CHARRING_STACK);
-        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "charring_wood"), CHARRING_WOOD_ITEM);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "charring_wood"), new BlockItem(CHARRING_WOOD, new FabricItemSettings()));
 
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "soul_charring_wood"), SOUL_CHARRING_WOOD);
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "soul_charring_stack"), SOUL_CHARRING_STACK);
-        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "soul_charring_wood"), SOUL_CHARRING_WOOD_ITEM);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "soul_charring_wood"), new BlockItem(SOUL_CHARRING_WOOD, new FabricItemSettings()));
         FlammableBlockRegistry.getDefaultInstance().add(CHARRING_WOOD, 15, 30);
         FlammableBlockRegistry.getDefaultInstance().add(CHARRING_STACK, 15, 30);
 

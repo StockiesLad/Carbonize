@@ -1,0 +1,7 @@
+{
+  "parent": "carbonize:block/layer_height_8",
+  "textures": {
+    "particle": "carbonize:block/ash_block",
+    "texture": "carbonize:block/ash_block"
+  }
+}

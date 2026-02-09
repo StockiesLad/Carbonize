@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 150,
+  "fireType": "default_fire",
+  "input": "minecraft:fencegates",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:charcoal_fence_gate"
+}

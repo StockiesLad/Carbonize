@@ -12,7 +12,7 @@
     "FenceMixin",
     "FireMixin",
     "HangingSignMixin",
-    "IFireAccess",
+    "IFireBlock",
     "PressurePlateMixin",
     "ServerWorldMixin",
     "SignMixin",

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#carbonize:consume_igniters",
+    "#carbonize:damage_igniters"
+  ]
+}

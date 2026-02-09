@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.jmb19905.Carbonize.CONFIG;
 import static net.jmb19905.block.GenericFireBlock.*;
+import static net.jmb19905.charcoal_pit.FireType.DEFAULT_FIRE_TYPE;
+import static net.jmb19905.charcoal_pit.FireType.SOUL_FIRE_TYPE;
 
 @Mixin(HangingSignBlock.class)
 public class HangingSignMixin {
@@ -19,9 +21,9 @@ public class HangingSignMixin {
         registerEarly(() -> {
             if (!CONFIG.moreBurnableBlocks()) return;
             if (WoodTypeUtil.isNether(type))
-                getSoulFire().carbonize$registerFlammableBlock((HangingSignBlock)(Object)this, 5, 5);
+                SOUL_FIRE_TYPE.carbonize$registerFlammableBlock((HangingSignBlock)(Object)this, 5, 5);
             else if (!WoodTypeUtil.isStable(type))
-                getFire().carbonize$registerFlammableBlock((HangingSignBlock)(Object)this, 5, 5);
+                DEFAULT_FIRE_TYPE.carbonize$registerFlammableBlock((HangingSignBlock)(Object)this, 5, 5);
         });
     }
 }

@@ -3,7 +3,9 @@ package net.jmb19905.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.jmb19905.Carbonize;
 import net.jmb19905.block.AshBlock;
+import net.jmb19905.block.FireView;
 import net.jmb19905.block.GenericFireBlock;
+import net.jmb19905.charcoal_pit.FireType;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.util.BlockHelper;
 import net.minecraft.block.AbstractFireBlock;
@@ -12,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +35,7 @@ import static net.jmb19905.block.GenericFireBlock.DEFAULT_SPREAD_CHANCE;
 import static net.jmb19905.block.GenericFireBlock.DEFAULT_SPREAD_FACTOR;
 
 @Mixin(FireBlock.class)
-public abstract class FireMixin extends AbstractFireMixin {
+public abstract class FireMixin extends AbstractFireMixin implements FireView {
     @Shadow
     private void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge) {
     }
@@ -41,6 +44,24 @@ public abstract class FireMixin extends AbstractFireMixin {
     private BlockState getStateWithAge(WorldAccess world, BlockPos pos, int age) {
         return null;
     }
+
+    @Shadow
+    private void registerFlammableBlock(Block block, int burnChance, int spreadChance) {}
+
+    @Shadow
+    protected abstract boolean isFlammable(BlockState state);
+
+    @Shadow
+    protected abstract int getSpreadChance(BlockState state);
+
+    @Shadow
+    protected abstract int getBurnChance(BlockState state);
+
+    @Shadow
+    protected abstract void appendProperties(StateManager.Builder<Block, BlockState> builder);
+
+    @Shadow
+    protected abstract BlockState getStateForPosition(BlockView world, BlockPos pos);
 
     @Inject(method = "registerDefaultFlammables", at = @At("TAIL"))
     private static void registerSoulFire(CallbackInfo ci) {
@@ -81,7 +102,7 @@ public abstract class FireMixin extends AbstractFireMixin {
 
     @Redirect(method = "trySpreadingFire", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z"))
     private boolean tryCarbonize(World world, BlockPos pos, BlockState state, int flags, @Local(name = "j") int j, @Local(argsOnly = true) Random random) {
-        if (random.nextInt(10) == 0 && !tryProduceBiproduct(world, pos, random))
+        if (random.nextInt(5) == 0 && hasNotProducedBiproduct(world, pos, random))
             return world.setBlockState(pos, getStateWithAge(world, pos, j), Block.NOTIFY_ALL);
         return true;
     }
@@ -97,31 +118,27 @@ public abstract class FireMixin extends AbstractFireMixin {
     }
 
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
-    private boolean tryProduceBiproduct(World world, BlockPos pos, Random random) {
+    private boolean hasNotProducedBiproduct(World world, BlockPos pos, Random random) {
         BlockState state = world.getBlockState(pos);
         world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE);
         if (Carbonize.CONFIG.burnCrafting()) {
             for (BurnRecipe burnRecipe : world.getRecipeManager().listAllOfType(Carbonize.BURN_RECIPE_TYPE)) {
-                if (state.isIn(burnRecipe.input())) {
+                if (state.isIn(burnRecipe.input()) && burnRecipe.fireType().equals(FireType.find(this).orElseThrow())) {
                     float surfaceExposurePercentage = getExposedSurfacePercentage(world, pos);
                     float randomFloat = random.nextFloat();
                     if (randomFloat > surfaceExposurePercentage) {
                         world.setBlockState(pos, BlockHelper.transferState(burnRecipe.result().getDefaultState(), state));
-                        return true;
-                    } else if (randomFloat > 0.3f && Carbonize.CONFIG.createAsh()) {
-                        world.setBlockState(pos, Carbonize.ASH_LAYER.getDefaultState().with(AshBlock.LAYERS, getAshLayerCount(random, state)));
-                        return true;
+                        return false;
                     }
                 }
             }
         }
         if (random.nextFloat() > 0.3f && Carbonize.CONFIG.createAsh()) {
             world.setBlockState(pos, Carbonize.ASH_LAYER.getDefaultState().with(AshBlock.LAYERS, getAshLayerCount(random, state)));
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Unique
@@ -141,7 +158,6 @@ public abstract class FireMixin extends AbstractFireMixin {
         }
         return val;
     }
-
 
     @Redirect(method = "getStateWithAge", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
     protected boolean override$getStateWithAge(BlockState state, Block block) {
@@ -180,5 +196,40 @@ public abstract class FireMixin extends AbstractFireMixin {
         if ((Object) this instanceof GenericFireBlock fireBlock)
             return fireBlock.parentSupplier.get().getDefaultState();
         return block.getDefaultState();
+    }
+
+    @Override
+    public void carbonize$registerFlammableBlock(Block block, int burnChance, int spreadChance) {
+        registerFlammableBlock(block, burnChance, spreadChance);
+    }
+
+    @Override
+    public boolean carbonize$isFlammable(BlockState state) {
+        return isFlammable(state);
+    }
+
+    @Override
+    public int carbonize$getSpreadChance(BlockState state) {
+        return getSpreadChance(state);
+    }
+
+    @Override
+    public int carbonize$getBurnChance(BlockState state) {
+        return getBurnChance(state);
+    }
+
+    @Override
+    public String carbonize$getSerialId() {
+        return (Object)this instanceof GenericFireBlock fireBlock ? fireBlock.serialId : "default_fire";
+    }
+
+    @Override
+    public void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        appendProperties(builder);
+    }
+
+    @Override
+    public BlockState carbonize$getStateForPosition(BlockView world, BlockPos pos) {
+        return getStateForPosition(world, pos);
     }
 }

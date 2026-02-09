@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 150,
+  "fireType": "soul_fire",
+  "input": "minecraft:logs",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:soul_charcoal_log"
+}

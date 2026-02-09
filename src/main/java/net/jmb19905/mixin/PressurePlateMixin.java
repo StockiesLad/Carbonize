@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.jmb19905.Carbonize.CONFIG;
 import static net.jmb19905.block.GenericFireBlock.*;
+import static net.jmb19905.charcoal_pit.FireType.DEFAULT_FIRE_TYPE;
+import static net.jmb19905.charcoal_pit.FireType.SOUL_FIRE_TYPE;
 
 @Mixin(PressurePlateBlock.class)
 public class PressurePlateMixin {
@@ -18,9 +20,9 @@ public class PressurePlateMixin {
         registerEarly(() -> {
             if (!CONFIG.moreBurnableBlocks()) return;
             if (BlockSetTypeUtil.isNether(type))
-                getSoulFire().carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
+                SOUL_FIRE_TYPE.carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
             else if (!BlockSetTypeUtil.isStable(type))
-                getFire().carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
+                DEFAULT_FIRE_TYPE.carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
         });
     }
 }

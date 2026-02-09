@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 250,
+  "fireType": "default_fire",
+  "input": "minecraft:logs",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:charcoal_log"
+}

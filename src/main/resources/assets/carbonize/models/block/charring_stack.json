@@ -1,6 +1,0 @@
-{
-     "parent": "carbonize:block/raw_stack",
-     "textures": {
-       "texture": "carbonize:block/charring_wood"
-     }
-   }

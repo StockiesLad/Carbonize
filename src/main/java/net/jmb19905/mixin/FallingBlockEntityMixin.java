@@ -41,7 +41,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
     public void setOnFire(boolean onFire) {
         this.dataTracker.set(ON_FIRE, onFire);
         super.setOnFire(onFire);
-        LOGGER.debug("Set on fire: " + onFire);
+        LOGGER.debug("Set on fire: {}", onFire);
     }
 
     public boolean isOnFire() {
@@ -62,7 +62,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/FallingBlockEntity;onDestroyedOnLanding(Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V", shift = At.Shift.AFTER), method = "tick", cancellable = true)
-    private void tick$dontDropAshLayer(CallbackInfo ci) {
+    private void tick$doNotDropAshLayer(CallbackInfo ci) {
         var entity = (FallingBlockEntity) (Object) this;
         var pos = entity.getBlockPos();
         var world = entity.getWorld();
@@ -76,7 +76,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/FallingBlockEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"), cancellable = true)
     private void tick$dropAsItem(CallbackInfo ci){
         FallingBlockEntity instance = (FallingBlockEntity) (Object) this;
-        if (instance.getBlockState().isOf(Carbonize.ASH_LAYER) || instance.getBlockState().isOf(Carbonize.CHARCOAL_LOG) || instance.getBlockState().isOf(Carbonize.CHARCOAL_PLANKS)) {
+        if (instance.getBlockState().isOf(Carbonize.ASH_LAYER) || instance.getBlockState().isOf(Carbonize.CHARCOAL_SET.charcoalLog) || instance.getBlockState().isOf(Carbonize.CHARCOAL_SET.charcoalPlanks)) {
             Block.dropStacks(instance.getBlockState(), instance.getWorld(), instance.getBlockPos());
             this.setVelocity(this.getVelocity().multiply(0.98));
             ci.cancel();

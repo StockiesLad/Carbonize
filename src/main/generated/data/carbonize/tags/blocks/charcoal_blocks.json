@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "carbonize:charcoal_log",
+    "carbonize:charcoal_planks",
+    "carbonize:charcoal_stack",
+    "carbonize:charcoal_stairs",
+    "carbonize:charcoal_fence",
+    "carbonize:charcoal_fence_gate",
+    "carbonize:charcoal_slab",
+    "carbonize:soul_charcoal_log",
+    "carbonize:soul_charcoal_planks",
+    "carbonize:soul_charcoal_stack",
+    "carbonize:soul_charcoal_stairs",
+    "carbonize:soul_charcoal_fence",
+    "carbonize:soul_charcoal_fence_gate",
+    "carbonize:soul_charcoal_slab"
+  ]
+}

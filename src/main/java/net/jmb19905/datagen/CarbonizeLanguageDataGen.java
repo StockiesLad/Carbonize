@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.jmb19905.Carbonize;
 import net.jmb19905.charcoal_pit.CharcoalPitInit;
+import net.jmb19905.core.CharcoalSet;
+import net.minecraft.registry.Registries;
 
 public class CarbonizeLanguageDataGen extends FabricLanguageProvider {
 
@@ -15,15 +17,16 @@ public class CarbonizeLanguageDataGen extends FabricLanguageProvider {
     public void generateTranslations(TranslationBuilder translationBuilder) {
         translationBuilder.add(CharcoalPitInit.CHARRING_WOOD, "Charring Wood");
         translationBuilder.add(Carbonize.WOOD_STACK, "Wood Stack");
-        translationBuilder.add(Carbonize.CHARCOAL_STACK, "Charcoal Stack");
-        translationBuilder.add(Carbonize.CHARCOAL_LOG, "Charcoal Log");
-        translationBuilder.add(Carbonize.CHARCOAL_PLANKS, "Charcoal Planks");
-        translationBuilder.add(Carbonize.CHARCOAL_STAIRS, "Charcoal Stairs");
-        translationBuilder.add(Carbonize.CHARCOAL_SLAB, "Charcoal Slab");
-        translationBuilder.add(Carbonize.CHARCOAL_FENCE, "Charcoal Fence");
-        translationBuilder.add(Carbonize.CHARCOAL_FENCE_GATE, "Charcoal Fence Gate");
+        CharcoalSet.iterateBlocks((set,block) -> {
+            StringBuilder id = new StringBuilder(Registries.BLOCK.getId(block).getPath());
+            var subStrings = id.toString().split("_");
+            id = new StringBuilder();
+            for (String subString : subStrings) {
+                id.append(" ").append(subString.replaceFirst(subString.charAt(0) + "", (subString.charAt(0) + "").toUpperCase()));
+            }
+            translationBuilder.add(block, id.toString().trim());
+        });
 
-        translationBuilder.add(Carbonize.CHARCOAL_BLOCK, "Charcoal Block");
         translationBuilder.add(Carbonize.ASH_LAYER, "Ash Layer");
         translationBuilder.add(Carbonize.ASH_BLOCK, "Ash Block");
         translationBuilder.add(Carbonize.ASH, "Ash");
@@ -41,6 +44,7 @@ public class CarbonizeLanguageDataGen extends FabricLanguageProvider {
         translationBuilder.add("config.jade.plugin_carbonize.show_size", "Show Size");
         translationBuilder.add("config.jade.plugin_carbonize.show_stage", "Show Stage");
         translationBuilder.add("config.jade.plugin_carbonize.show_remaining_burn_time", "Show Remaining Time");
+        translationBuilder.add("itemGroup.carbonize.charcoals", "Charcoals");
 
     }
 }

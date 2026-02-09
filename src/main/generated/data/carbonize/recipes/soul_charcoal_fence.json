@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 150,
+  "fireType": "soul_fire",
+  "input": "minecraft:fences",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:soul_charcoal_fence"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 300,
+  "fireType": "default_fire",
+  "input": "minecraft:woodenstacks",
+  "medium": "carbonize:charring_stack",
+  "output": "carbonize:charcoal_stack"
+}

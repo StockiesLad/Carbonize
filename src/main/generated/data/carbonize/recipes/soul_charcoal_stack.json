@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 150,
+  "fireType": "soul_fire",
+  "input": "minecraft:stacks",
+  "medium": "carbonize:charring_stack",
+  "output": "carbonize:soul_charcoal_stack"
+}

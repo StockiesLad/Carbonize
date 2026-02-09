@@ -1,0 +1,8 @@
+{
+  "type": "carbonize:burn",
+  "burnTime": 200,
+  "fireType": "default_fire",
+  "input": "minecraft:planks",
+  "medium": "carbonize:charring_wood",
+  "output": "carbonize:charcoal_planks"
+}

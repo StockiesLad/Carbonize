@@ -11,5 +11,7 @@ public class CarbonizeDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(CarbonizeLanguageDataGen::new);
 		pack.addProvider(CarbonizeLootDataGen::new);
 		pack.addProvider(CarbonizeRecipeDataGen::new);
+		pack.addProvider(CarbonizeBlockTagDataGen::new);
+		pack.addProvider(CarbonizeItemTagDataGen::new);
 	}
 }
