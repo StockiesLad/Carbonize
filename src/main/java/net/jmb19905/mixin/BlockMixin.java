@@ -2,6 +2,7 @@ package net.jmb19905.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.jmb19905.block.ModularFireBlock;
 import net.jmb19905.block.Unregisterable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
 public class BlockMixin extends AbstractBlockMixin {
@@ -34,5 +36,11 @@ public class BlockMixin extends AbstractBlockMixin {
 
     @Inject(method = "appendProperties", at = @At("HEAD"), cancellable = true)
     protected void override$appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
+    }
+
+    @Inject(method = "toString", at = @At("HEAD"), cancellable = true)
+    public void fixString(CallbackInfoReturnable<String> cir) {
+        if ((Block)(Object) this instanceof ModularFireBlock fireBlock && !fireBlock.shouldRegister())
+            cir.setReturnValue(fireBlock.getType().asBlock().toString());
     }
 }

@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.Optional;
 
-import static net.jmb19905.Carbonize.MOD_ID;
+import static net.jmb19905.core.CarbonCore.MOD_ID;
 import static net.minecraft.data.client.BlockStateModelGenerator.buildBlockStateVariants;
 import static net.minecraft.data.client.BlockStateModelGenerator.createSingletonBlockState;
 
@@ -69,7 +69,7 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
     }
 
     private void registerFire(BlockStateModelGenerator blockStateModelGenerator, FireType fireType) {
-        var block = fireType.fireBlock();
+        var block = fireType.asBlock();
         When when = When.create().set(Properties.NORTH, false).set(Properties.EAST, false).set(Properties.SOUTH, false).set(Properties.WEST, false).set(Properties.UP, false);
         List<Identifier> list = blockStateModelGenerator.getFireFloorModels(block);
         List<Identifier> list2 = blockStateModelGenerator.getFireSideModels(block);

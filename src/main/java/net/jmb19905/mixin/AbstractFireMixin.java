@@ -1,5 +1,6 @@
 package net.jmb19905.mixin;
 
+import net.jmb19905.block.ModularFireBlock;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -26,5 +27,11 @@ public class AbstractFireMixin extends BlockMixin {
 
     @Inject(method = "onBlockAdded", at = @At("HEAD"), cancellable = true)
     public void override$onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify, CallbackInfo ci) {
+    }
+
+    @Inject(method = "getState", at = @At("HEAD"), cancellable = true)
+    private static void getAppropriateState(BlockView view, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
+        cir.setReturnValue(ModularFireBlock.findAppropriateFire(view, pos, null));
+        cir.cancel();
     }
 }

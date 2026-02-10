@@ -1,6 +1,6 @@
 package net.jmb19905.charcoal_pit.multiblock;
 
-import net.jmb19905.Carbonize;
+import net.jmb19905.core.CarbonCore;
 import net.jmb19905.util.BlockPosWrapper;
 import net.jmb19905.util.queue.Queuer;
 import net.jmb19905.util.queue.TaskManager;
@@ -22,7 +22,7 @@ import java.util.function.Function;
  *  readable.
  */
 public class CharcoalPitManager extends PersistentState implements WrappedQueuer<CharcoalPitManager> {
-    public static final Identifier CHARCOAL_PIT_ID = new Identifier(Carbonize.MOD_ID, "charcoal_pit_data");
+    public static final Identifier CHARCOAL_PIT_ID = new Identifier(CarbonCore.MOD_ID, "charcoal_pit_data");
 
     protected final ServerWorld world;
     private final List<CharcoalPitMultiblock> storage;

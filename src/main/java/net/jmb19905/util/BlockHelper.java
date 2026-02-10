@@ -1,10 +1,9 @@
 package net.jmb19905.util;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.jmb19905.block.FireView;
+import net.jmb19905.charcoal_pit.FireType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -14,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static net.jmb19905.Carbonize.MOD_ID;
+import static net.jmb19905.core.CarbonCore.MOD_ID;
 
 /**
  * The following methods copy one state to another. This had to be done as the provided method for this in {@link BlockState} just doesn't work properly for some reason...
@@ -31,8 +30,8 @@ public class BlockHelper {
     }
 
     public static boolean isFlammable(BlockState state) {
-        FireView access = ((FireView) Blocks.FIRE);
-        return access.carbonize$isFlammable(state) || access.carbonize$getSpreadChance(state) > 0 || state.isBurnable();
+        var access = FireType.DEFAULT_FIRE_TYPE.asFireView();
+        return access.isBlockFlammable(state) || access.getBlockSpreadChance(state) > 0 || state.isBurnable();
     }
 
     public static boolean isNonFlammableFullCube(World world, BlockPos pos, BlockState state) {

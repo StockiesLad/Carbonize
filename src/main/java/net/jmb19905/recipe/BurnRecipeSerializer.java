@@ -2,10 +2,10 @@ package net.jmb19905.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.jmb19905.Carbonize;
 import net.jmb19905.charcoal_pit.CharcoalPitInit;
 import net.jmb19905.charcoal_pit.FireType;
 import net.jmb19905.charcoal_pit.multiblock.CharcoalPitMultiblock;
+import net.jmb19905.core.CarbonCore;
 import net.minecraft.block.Block;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 public class BurnRecipeSerializer implements RecipeSerializer<BurnRecipe> {
 
     public static final BurnRecipeSerializer INSTANCE = new BurnRecipeSerializer();
-    public static final Identifier ID = new Identifier(Carbonize.MOD_ID, "burn");
+    public static final Identifier ID = new Identifier(CarbonCore.MOD_ID, "burn");
 
     @Override
     public BurnRecipe read(Identifier id, JsonObject json) {
@@ -53,7 +53,7 @@ public class BurnRecipeSerializer implements RecipeSerializer<BurnRecipe> {
     }
 
     public void write(JsonObject json, BurnRecipe recipe) {
-        json.addProperty("fireType", recipe.fireType().serialId());
+        json.addProperty("fireType", recipe.fireType().getSerialId());
         json.addProperty("burnTime", recipe.burnTime());
         json.addProperty("input", recipe.input().id().toString());
         json.addProperty("medium", Registries.BLOCK.getId(recipe.medium()).toString());
@@ -62,7 +62,7 @@ public class BurnRecipeSerializer implements RecipeSerializer<BurnRecipe> {
 
     @Override
     public void write(PacketByteBuf buf, BurnRecipe recipe) {
-        buf.writeString(recipe.fireType().serialId());
+        buf.writeString(recipe.fireType().getSerialId());
         buf.writeInt(recipe.burnTime());
         buf.writeIdentifier(recipe.input().id());
         buf.writeIdentifier(Registries.BLOCK.getId(recipe.medium()));

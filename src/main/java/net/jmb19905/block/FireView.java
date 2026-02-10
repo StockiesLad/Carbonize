@@ -1,19 +1,46 @@
 package net.jmb19905.block;
 
-import net.minecraft.block.Block;
+import net.jmb19905.charcoal_pit.FireType;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
+import java.util.function.Consumer;
+
+/**
+ * An interface that retrieves important data from fire blocks.
+ * <p>
+ *     {@link #getLifeSpeedModifier()} determines charcoal pit individual burnTimes
+ * </p>
+ * <p>
+ *     {@link #getGlobalSpreadChance()} determines charcoal pit ignition time
+ * </p>
+ * <p>
+ *     {@link #getGlobalSpreadFactor()} determines charcoal pit burnTime drop off.
+ * </p>
+ */
 public interface FireView {
-    void carbonize$registerFlammableBlock(Block block, int burnChance, int spreadChance);
-    boolean carbonize$isFlammable(BlockState state);
-    int carbonize$getSpreadChance(BlockState state);
-    int carbonize$getBurnChance(BlockState state);
-    String carbonize$getSerialId();
+    FireType asFireType();
+    AbstractFireBlock asBlock();
+    boolean isBaseInfiniburn(BlockView view, BlockPos pos);
+    boolean isBlockFlammable(BlockState state);
+    int getBlockSpreadChance(BlockState state);
+    int getBlockBurnChance(BlockState state);
+    float getGlobalSpreadChance();
+    int getGlobalSpreadFactor();
+    double getLifeSpeedModifier();
 
-    void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder);
-    BlockState carbonize$getStateForPosition(BlockView world, BlockPos pos);
+    default String getSerialId() {
+        return asFireType().getSerialId();
+    }
 
+    default boolean canPlace(BlockView view, BlockPos pos) {
+        return isBaseInfiniburn(view, pos) || isBaseInfiniburn(view, pos);
+    }
+
+    default void ifCapability(Consumer<FireCapability> consumer) {
+        if (this instanceof FireCapability capability)
+            consumer.accept(capability);
+    }
 }

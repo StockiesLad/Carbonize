@@ -1,6 +1,5 @@
 package net.jmb19905.compat;
 
-import net.jmb19905.Carbonize;
 import net.jmb19905.charcoal_pit.block.CharringWoodBlock;
 import net.jmb19905.charcoal_pit.block.CharringWoodBlockEntity;
 import net.minecraft.block.Block;
@@ -10,12 +9,14 @@ import net.minecraft.util.Identifier;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
+import static net.jmb19905.core.CarbonCore.MOD_ID;
+
 @WailaPlugin
 public class CarbonizeJadeCompat implements IWailaPlugin, IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
-    public static final Identifier SHOW_SIZE = new Identifier(Carbonize.MOD_ID, "show_size");
-    public static final Identifier SHOW_STAGE = new Identifier(Carbonize.MOD_ID, "show_stage");
-    public static final Identifier SHOW_REMAINING_BURN_TIME = new Identifier(Carbonize.MOD_ID, "show_remaining_burn_time");
-    private static final Identifier UID = new Identifier(Carbonize.MOD_ID, "plugin");
+    public static final Identifier SHOW_SIZE = new Identifier(MOD_ID, "show_size");
+    public static final Identifier SHOW_STAGE = new Identifier(MOD_ID, "show_stage");
+    public static final Identifier SHOW_REMAINING_BURN_TIME = new Identifier(MOD_ID, "show_remaining_burn_time");
+    private static final Identifier UID = new Identifier(MOD_ID, "plugin");
 
     @Override
     public void registerClient(IWailaClientRegistration register) {

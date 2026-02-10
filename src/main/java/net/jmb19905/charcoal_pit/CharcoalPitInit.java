@@ -29,6 +29,8 @@ import net.minecraft.util.math.BlockPos;
 
 import static net.jmb19905.Carbonize.*;
 import static net.jmb19905.charcoal_pit.multiblock.CharcoalPitProviders.addMultiBlock;
+import static net.jmb19905.core.CarbonCore.CONFIG;
+import static net.jmb19905.core.CarbonCore.MOD_ID;
 
 public class CharcoalPitInit {
     private static final Identifier AETHER = new Identifier("aether", "the_aether");

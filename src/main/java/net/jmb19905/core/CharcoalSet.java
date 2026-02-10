@@ -70,7 +70,8 @@ public class CharcoalSet {
         TASKS.add(() -> {
             allBlocks.add(block);
             registerBlockAndItem((type.isEmpty() ? "" : (type + "_")) + name, block);
-            fireType.carbonize$registerFlammableBlock(block, 15, 30);
+            if (fireType.asFireView() instanceof FireCapability capability)
+                capability.registerFlammable(block, 15, 30);
         });
         return block;
     }

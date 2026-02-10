@@ -1,12 +1,12 @@
 package net.jmb19905.mixin;
 
-import com.google.common.collect.ImmutableMap;
-import net.jmb19905.block.FireView;
-import net.jmb19905.block.GenericFireBlock;
+import net.jmb19905.block.FireAccess;
+import net.jmb19905.block.FireCapability;
+import net.jmb19905.block.ModularFireBlock;
+import net.jmb19905.charcoal_pit.FireType;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -27,18 +27,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import static net.minecraft.block.FireBlock.*;
+import static net.minecraft.block.FireBlock.AGE;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(SoulFireBlock.class)
-public class SoulFireMixin extends AbstractFireMixin implements FireView {
+public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
     @Shadow
     public static boolean isSoulBase(BlockState state) {return false;}
 
     @Unique
-    private static final GenericFireBlock FIRE_BLOCK = new GenericFireBlock(
+    private static final ModularFireBlock FIRE_BLOCK = new ModularFireBlock(
             false,
             AbstractBlock.Settings.create()
                     .mapColor(MapColor.LIGHT_BLUE)
@@ -48,53 +47,23 @@ public class SoulFireMixin extends AbstractFireMixin implements FireView {
                     .luminance((state) -> 10)
                     .sounds(BlockSoundGroup.WOOL)
                     .pistonBehavior(PistonBehavior.DESTROY),
-            "soul_fire",
-            () -> (AbstractFireBlock) Blocks.SOUL_FIRE,
-            (state, tagKey) -> isSoulBase(state),
-            (view, pos) -> {
-                BlockPos blockPos = pos.down();
-                BlockState state = view.getBlockState(blockPos);
-                TagKey<Block> tag = null;
-                if (view instanceof World world)
-                    tag = world.getDimension().infiniburn();
-                return state.isIn(tag) ? ((FireView)Blocks.FIRE).carbonize$getStateForPosition(view, pos) :
-                        ((FireView)Blocks.SOUL_FIRE).carbonize$getStateForPosition(view, pos);
-            },
-            0.75F,
-            300
+            () -> FireType.SOUL_FIRE_TYPE
     );
 
     @Unique
     private Map<BlockState, VoxelShape> shapesByState;
 
-    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(AbstractBlock.Settings settings, CallbackInfo ci) {
-        setDefaultState(getStateManager().getDefaultState()
-                .with(AGE, 0)
-                .with(NORTH, false)
-                .with(EAST, false)
-                .with(SOUTH, false)
-                .with(WEST, false)
-                .with(UP, false)
-        );
-        shapesByState = ImmutableMap.copyOf(getStateManager()
-                .getStates()
-                .stream()
-                .filter((state) -> state.get(AGE) == 0)
-                .collect(Collectors.toMap(Function.identity(), IFireBlock::carbonize$getShapeForState))
-        );
+        var fireAccess = FireAccess.tryGet(FIRE_BLOCK, false).orElseThrow();
+        setDefaultState(fireAccess.carbonize$getDefaultState(getStateManager()));
+        shapesByState = fireAccess.carbonize$getVoxelShapes(getStateManager());
     }
 
     @Override
     protected void override$appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        FIRE_BLOCK.asFireView().carbonize$appendProperties(builder);
+        FireAccess.tryGet(FIRE_BLOCK, false).orElseThrow().carbonize$appendProperties(builder);
         ci.cancel();
-    }
-
-    @Override
-    public void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        FIRE_BLOCK.asFireView().carbonize$appendProperties(builder);
     }
 
     @Inject(method = "getStateForNeighborUpdate", at = @At("HEAD"), cancellable = true)
@@ -127,43 +96,73 @@ public class SoulFireMixin extends AbstractFireMixin implements FireView {
     }
 
     @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)
-    private void override$CanPlaceAt(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-         cir.setReturnValue(cir.getReturnValue() || FIRE_BLOCK.canPlaceAt(state, world, pos));
+    private void override$canPlaceAt(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+         cir.setReturnValue(FIRE_BLOCK.canPlaceAt(state, world, pos));
          cir.cancel();
     }
 
     @Inject(method = "isFlammable", at = @At("HEAD"), cancellable = true)
     protected void override$isFlammable(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(FIRE_BLOCK.asFireView().carbonize$isFlammable(state));
+        cir.setReturnValue(getLocal().isBlockFlammable(state));
     }
 
     @Override
-    public void carbonize$registerFlammableBlock(Block block, int burnChance, int spreadChance) {
-        FIRE_BLOCK.asFireView().carbonize$registerFlammableBlock(block, burnChance, spreadChance);
+    public void registerFlammable(Block block, int burnChance, int spreadChance) {
+        getLocal().registerFlammable(block, burnChance, spreadChance);
     }
 
     @Override
-    public boolean carbonize$isFlammable(BlockState state) {
-        return FIRE_BLOCK.asFireView().carbonize$isFlammable(state);
+    public BlockState findAppropriateState(BlockView view, BlockPos pos) {
+        return getLocal().findAppropriateState(view, pos);
     }
 
     @Override
-    public int carbonize$getSpreadChance(BlockState state) {
-        return FIRE_BLOCK.asFireView().carbonize$getSpreadChance(state);
+    public boolean isBlockFlammable(BlockState state) {
+        return getLocal().isBlockFlammable(state);
     }
 
     @Override
-    public int carbonize$getBurnChance(BlockState state) {
-        return FIRE_BLOCK.asFireView().carbonize$getBurnChance(state);
+    public int getBlockSpreadChance(BlockState state) {
+        return getLocal().getBlockSpreadChance(state);
     }
 
     @Override
-    public String carbonize$getSerialId() {
-        return FIRE_BLOCK.serialId;
+    public int getBlockBurnChance(BlockState state) {
+        return getLocal().getBlockBurnChance(state);
     }
 
     @Override
-    public BlockState carbonize$getStateForPosition(BlockView world, BlockPos pos) {
-        return FIRE_BLOCK.asFireView().carbonize$getStateForPosition(world, pos);
+    public float getGlobalSpreadChance() {
+        return 0.75F;
+    }
+
+    @Override
+    public int getGlobalSpreadFactor() {
+        return 300;
+    }
+
+    @Override
+    public double getLifeSpeedModifier() {
+        return (float) 1 / 3;
+    }
+
+    @Override
+    public FireType asFireType() {
+        return getLocal().asFireType();
+    }
+
+    @Override
+    public AbstractFireBlock asBlock() {
+        return (AbstractFireBlock) (Object) this;
+    }
+
+    @Override
+    public boolean isBaseInfiniburn(BlockView view, BlockPos pos) {
+        return isSoulBase(view.getBlockState(pos.down()));
+    }
+
+    @Unique
+    private FireAccess getLocal() {
+        return FIRE_BLOCK.access((AbstractFireBlock) (Object) this);
     }
 }

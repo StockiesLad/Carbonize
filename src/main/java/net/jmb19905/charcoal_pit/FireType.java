@@ -1,12 +1,14 @@
 package net.jmb19905.charcoal_pit;
 
+import net.jmb19905.block.FireCapability;
 import net.jmb19905.block.FireView;
+import net.jmb19905.block.ModularFireBlock;
 import net.minecraft.block.*;
-import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Represents a type of fire.
@@ -25,19 +27,26 @@ import java.util.*;
  *     A more niche example includes implicit charcoal pits. In an instance one block is universally flammable, it can
  *     be discriminated by their "infiniburn" block (Soulsand for Soul Fire and Netherrack for normal Fire)
  * </p>
+ *
+ * @see ModularFireBlock GenericFireBlock
  */
-public record FireType(String serialId, AbstractFireBlock fireBlock) implements FireView {
+public final class FireType implements FireView {
     private static final Map<String, FireType> FIRE_TYPES = new HashMap<>();
     public static final FireType DEFAULT_FIRE_TYPE = new FireType("default_fire", (FireBlock) Blocks.FIRE);
     public static final FireType SOUL_FIRE_TYPE = new FireType("soul_fire", (SoulFireBlock) Blocks.SOUL_FIRE);
+    private final String serialId;
+    private final AbstractFireBlock fireBlock;
+
 
     public FireType(String serialId, AbstractFireBlock fireBlock) {
         this.serialId = serialId;
         this.fireBlock = fireBlock;
-        if (!(fireBlock instanceof FireView))
-            throw new IllegalArgumentException("Fire types are expected to be retrofitted with FireView. " +
-                    "\n This is because it's burn behaviour influences charcoal pits. See JavaDoc of FireType for more info.");
         FIRE_TYPES.put(serialId, this);
+
+        if (!(fireBlock instanceof FireView))
+            throw new IllegalArgumentException("Fire types are expected to be retrofitted with FireView. See JavaDoc of FireType for more info.");
+        if (!asBlock().equals(asFireView().asBlock()))
+            throw new IllegalStateException("The provided fire block doesn't match it's FireView#asBlock implementation.");
     }
 
     public FireView asFireView() {
@@ -45,43 +54,75 @@ public record FireType(String serialId, AbstractFireBlock fireBlock) implements 
     }
 
     @Override
-    public void carbonize$registerFlammableBlock(Block block, int burnChance, int spreadChance) {
-        asFireView().carbonize$registerFlammableBlock(block, burnChance, spreadChance);
+    public String getSerialId() {
+        return serialId;
     }
 
     @Override
-    public boolean carbonize$isFlammable(BlockState state) {
-        return asFireView().carbonize$isFlammable(state);
+    public AbstractFireBlock asBlock() {
+        return fireBlock;
     }
 
     @Override
-    public int carbonize$getSpreadChance(BlockState state) {
-        return asFireView().carbonize$getSpreadChance(state);
+    public FireType asFireType() {
+        return this;
     }
 
     @Override
-    public int carbonize$getBurnChance(BlockState state) {
-        return asFireView().carbonize$getBurnChance(state);
+    public boolean isBlockFlammable(BlockState state) {
+        return asFireView().isBlockFlammable(state);
     }
 
     @Override
-    public String carbonize$getSerialId() {
-        return asFireView().carbonize$getSerialId();
+    public int getBlockSpreadChance(BlockState state) {
+        return asFireView().getBlockSpreadChance(state);
     }
 
     @Override
-    public void carbonize$appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        asFireView().carbonize$appendProperties(builder);
+    public int getBlockBurnChance(BlockState state) {
+        return asFireView().getBlockBurnChance(state);
     }
 
     @Override
-    public BlockState carbonize$getStateForPosition(BlockView world, BlockPos pos) {
-        return asFireView().carbonize$getStateForPosition(world, pos);
+    public float getGlobalSpreadChance() {
+        return asFireView().getGlobalSpreadChance();
+    }
+
+    @Override
+    public int getGlobalSpreadFactor() {
+        return asFireView().getGlobalSpreadFactor();
+    }
+
+    @Override
+    public double getLifeSpeedModifier() {
+        return asFireView().getLifeSpeedModifier();
+    }
+
+    @Override
+    public boolean isBaseInfiniburn(BlockView view, BlockPos pos) {
+        return asFireView().isBaseInfiniburn(view, pos);
+    }
+
+    @Override
+    public void ifCapability(Consumer<FireCapability> consumer) {
+        asFireView().ifCapability(consumer);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof FireType(String id, AbstractFireBlock block) && block.equals(this.fireBlock) && id.equals(this.serialId);
+        return obj instanceof FireType type && type.fireBlock.equals(this.fireBlock) && type.serialId.equals(this.serialId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialId, fireBlock);
+    }
+
+    @Override
+    public String toString() {
+        return "FireType[" +
+                "serialId=" + serialId + ", " +
+                "fireBlock=" + fireBlock + ']';
     }
 
     public static Collection<FireType> getAllTypes() {
@@ -91,8 +132,9 @@ public record FireType(String serialId, AbstractFireBlock fireBlock) implements 
     public static Optional<FireType> find(String serialId) {
         return Optional.of(FIRE_TYPES.get(serialId));
     }
-    
+
     public static Optional<FireType> find(FireView view) {
-        return find(view.carbonize$getSerialId());
+        return find(view.getSerialId());
     }
+
 }

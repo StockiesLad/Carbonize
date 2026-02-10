@@ -8,10 +8,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.jmb19905.Carbonize.CONFIG;
-import static net.jmb19905.block.GenericFireBlock.*;
+import static net.jmb19905.block.ModularFireBlock.Settings;
+import static net.jmb19905.block.ModularFireBlock.registerEarly;
 import static net.jmb19905.charcoal_pit.FireType.DEFAULT_FIRE_TYPE;
 import static net.jmb19905.charcoal_pit.FireType.SOUL_FIRE_TYPE;
+import static net.jmb19905.core.CarbonCore.CONFIG;
 
 @Mixin(PressurePlateBlock.class)
 public class PressurePlateMixin {
@@ -20,9 +21,9 @@ public class PressurePlateMixin {
         registerEarly(() -> {
             if (!CONFIG.moreBurnableBlocks()) return;
             if (BlockSetTypeUtil.isNether(type))
-                SOUL_FIRE_TYPE.carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
+                SOUL_FIRE_TYPE.ifCapability(c -> c.registerFlammable((PressurePlateBlock)(Object)this, 5, 5));
             else if (!BlockSetTypeUtil.isStable(type))
-                DEFAULT_FIRE_TYPE.carbonize$registerFlammableBlock((PressurePlateBlock)(Object)this, 5, 5);
+                DEFAULT_FIRE_TYPE.ifCapability(c -> c.registerFlammable((PressurePlateBlock)(Object)this, 5, 5));
         });
     }
 }

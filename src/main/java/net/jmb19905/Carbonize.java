@@ -8,7 +8,6 @@ import net.jmb19905.block.AshBlock;
 import net.jmb19905.block.StackBlock;
 import net.jmb19905.charcoal_pit.CharcoalPitInit;
 import net.jmb19905.charcoal_pit.FireType;
-import net.jmb19905.config.CarbonizeConfig;
 import net.jmb19905.core.CarbonizeItemGroup;
 import net.jmb19905.core.CharcoalSet;
 import net.jmb19905.recipe.BurnRecipe;
@@ -28,17 +27,13 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+import static net.jmb19905.core.CarbonCore.CONFIG;
+import static net.jmb19905.core.CarbonCore.MOD_ID;
+
 public class Carbonize implements ModInitializer {
-	public static final String MOD_ID = "carbonize";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
-	public static final CarbonizeConfig CONFIG = CarbonizeConfig.createAndLoad();
-
 	public static final CharcoalSet CHARCOAL_SET = new CharcoalSet();
 	public static final CharcoalSet SOUL_CHARCOAL_SET = new CharcoalSet("soul", FireType.SOUL_FIRE_TYPE);
 
