@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.jmb19905.block.ModularFireBlock.Settings;
-import static net.jmb19905.block.ModularFireBlock.registerEarly;
-import static net.jmb19905.charcoal_pit.FireType.DEFAULT_FIRE_TYPE;
-import static net.jmb19905.charcoal_pit.FireType.SOUL_FIRE_TYPE;
-import static net.jmb19905.core.CarbonCore.CONFIG;
+import static net.jmb19905.block.fire.ModularFireBlock.Settings;
+import static net.jmb19905.block.fire.ModularFireBlock.registerEarly;
+import static net.jmb19905.api.FireType.DEFAULT_FIRE_TYPE;
+import static net.jmb19905.api.FireType.SOUL_FIRE_TYPE;
+import static net.jmb19905.core.CarbonizeConstants.CONFIG;
 
 @Mixin(HangingSignBlock.class)
 public class HangingSignMixin {

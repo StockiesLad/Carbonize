@@ -1,12 +1,13 @@
 package net.jmb19905.mixin;
 
-import net.jmb19905.block.FireAccess;
-import net.jmb19905.block.FireCapability;
-import net.jmb19905.block.ModularFireBlock;
-import net.jmb19905.charcoal_pit.FireType;
+import net.jmb19905.api.FireAccess;
+import net.jmb19905.api.FireCapability;
+import net.jmb19905.block.fire.ModularFireBlock;
+import net.jmb19905.api.FireType;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -112,6 +113,11 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
     }
 
     @Override
+    public void registerFlammable(TagKey<Block> tag, int burnChance, int spreadChance) {
+        getLocal().registerFlammable(tag, burnChance, spreadChance);
+    }
+
+    @Override
     public BlockState findAppropriateState(BlockView view, BlockPos pos) {
         return getLocal().findAppropriateState(view, pos);
     }
@@ -132,8 +138,8 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
     }
 
     @Override
-    public float getGlobalSpreadChance() {
-        return 0.75F;
+    public int getDeltaTemperature() {
+        return 1200;
     }
 
     @Override
@@ -142,7 +148,7 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
     }
 
     @Override
-    public double getLifeSpeedModifier() {
+    public double getTickSpeedModifier() {
         return (float) 1 / 3;
     }
 

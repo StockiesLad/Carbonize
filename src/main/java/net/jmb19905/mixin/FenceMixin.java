@@ -1,6 +1,6 @@
 package net.jmb19905.mixin;
 
-import net.jmb19905.Carbonize;
+import net.jmb19905.core.CarbonizeCommon;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.registry.tag.BlockTags;
@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class FenceMixin {
     @Inject(method = "canConnectToFence", at = @At(value = "RETURN"), cancellable = true)
     public void carbonize$fixFences(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(cir.getReturnValue() || (state.isIn(BlockTags.FENCES) && (state.isIn(BlockTags.WOODEN_FENCES) || state.isIn(Carbonize.CHARCOAL_BLOCKS))));
+        cir.setReturnValue(cir.getReturnValue() || (state.isIn(BlockTags.FENCES) && (state.isIn(BlockTags.WOODEN_FENCES) || state.isIn(CarbonizeCommon.CHARCOAL_BLOCKS))));
     }
 }

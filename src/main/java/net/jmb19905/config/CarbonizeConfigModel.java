@@ -3,11 +3,11 @@ package net.jmb19905.config;
 import io.wispforest.owo.config.annotation.Config;
 import io.wispforest.owo.config.annotation.Modmenu;
 import io.wispforest.owo.config.annotation.RestartRequired;
-import net.jmb19905.core.CarbonCore;
+import net.jmb19905.core.CarbonizeConstants;
 
 @SuppressWarnings("unused")
-@Modmenu(modId = CarbonCore.MOD_ID)
-@Config(name = CarbonCore.MOD_ID, wrapperName = "CarbonizeConfig")
+@Modmenu(modId = CarbonizeConstants.MOD_ID)
+@Config(name = CarbonizeConstants.MOD_ID, wrapperName = "CarbonizeConfig")
 public class CarbonizeConfigModel {
     @RestartRequired
     public boolean moreBurnableBlocks = true;

@@ -1,6 +1,6 @@
 package net.jmb19905.mixin;
 
-import net.jmb19905.block.FlammableFallingStairsBlock;
+import net.jmb19905.block.charcoal.FlammableFallingStairsBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StairsBlock;
 import org.spongepowered.asm.mixin.Mixin;

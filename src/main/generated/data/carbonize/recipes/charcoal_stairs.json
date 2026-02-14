@@ -1,8 +1,8 @@
 {
   "type": "carbonize:burn",
+  "burnBlock": "carbonize:charring_wood",
   "burnTime": 150,
-  "fireType": "default_fire",
-  "input": "minecraft:woodenstairs",
-  "medium": "carbonize:charring_wood",
-  "output": "carbonize:charcoal_stairs"
+  "failResult": "carbonize:charcoal_stairs",
+  "input": "#minecraft:woodenstairs",
+  "successResult": "carbonize:charcoal_stairs"
 }

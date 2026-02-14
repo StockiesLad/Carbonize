@@ -2,10 +2,9 @@ package net.jmb19905.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.jmb19905.Carbonize;
-import net.jmb19905.charcoal_pit.CharcoalPitInit;
-import net.jmb19905.charcoal_pit.FireType;
-import net.jmb19905.core.CharcoalSet;
+import net.jmb19905.api.FireType;
+import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.core.CarbonizeCommon;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
@@ -15,7 +14,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.Optional;
 
-import static net.jmb19905.core.CarbonCore.MOD_ID;
+import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 import static net.minecraft.data.client.BlockStateModelGenerator.buildBlockStateVariants;
 import static net.minecraft.data.client.BlockStateModelGenerator.createSingletonBlockState;
 
@@ -31,17 +30,15 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        registerSnowLike(blockStateModelGenerator, Carbonize.ASH_BLOCK, Carbonize.ASH_LAYER);
-        blockStateModelGenerator.registerSimpleCubeAll(CharcoalPitInit.CHARRING_WOOD);
-        blockStateModelGenerator.registerSimpleCubeAll(CharcoalPitInit.SOUL_CHARRING_WOOD);
-
+        registerSnowLike(blockStateModelGenerator, CarbonizeCommon.ASH_BLOCK, CarbonizeCommon.ASH_LAYER);
         registerFire(blockStateModelGenerator, FireType.SOUL_FIRE_TYPE);
+        registerStack(blockStateModelGenerator, CarbonizeCommon.WOOD_STACK, Blocks.SPRUCE_PLANKS);
 
-        registerStack(blockStateModelGenerator, Carbonize.WOOD_STACK, Blocks.SPRUCE_PLANKS);
-        registerStack(blockStateModelGenerator, CharcoalPitInit.CHARRING_STACK, CharcoalPitInit.CHARRING_WOOD);
-        registerStack(blockStateModelGenerator, CharcoalPitInit.SOUL_CHARRING_STACK, CharcoalPitInit.SOUL_CHARRING_WOOD);
+        blockStateModelGenerator.registerSimpleCubeAll(CarbonizeCommon.CHARCOAL_SET.emberPlanks);
 
-        CharcoalSet.iterateSets(set -> {
+        BurningSet.iterateSets(set -> {
+            blockStateModelGenerator.registerSimpleCubeAll(set.charringWood);
+            registerStack(blockStateModelGenerator, set.charringStack, set.charringWood);
             blockStateModelGenerator.registerSimpleCubeAll(set.charcoalBlock);
             blockStateModelGenerator.registerLog(set.charcoalLog).log(set.charcoalLog);
             registerStack(blockStateModelGenerator, set.charcoalStack, set.charcoalPlanks);
@@ -55,7 +52,7 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(Carbonize.ASH, Models.GENERATED);
+        itemModelGenerator.register(CarbonizeCommon.ASH, Models.GENERATED);
     }
 
     public void registerStack(BlockStateModelGenerator generator, Block stack, Block texture) {

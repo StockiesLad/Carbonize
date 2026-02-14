@@ -2,7 +2,7 @@ package net.jmb19905.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.jmb19905.block.ModularFireBlock;
+import net.jmb19905.block.fire.ModularFireBlock;
 import net.jmb19905.block.Unregisterable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

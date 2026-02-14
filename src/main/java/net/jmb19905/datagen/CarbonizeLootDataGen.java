@@ -2,9 +2,9 @@ package net.jmb19905.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.jmb19905.Carbonize;
+import net.jmb19905.core.CarbonizeCommon;
 import net.jmb19905.block.AshBlock;
-import net.jmb19905.charcoal_pit.CharcoalPitInit;
+import net.jmb19905.block.charcoal.BurningSet;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.enchantment.Enchantments;
@@ -34,16 +34,16 @@ public class CarbonizeLootDataGen extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        this.addDrop(Carbonize.ASH_BLOCK, block -> this.drops(block, Carbonize.ASH, ConstantLootNumberProvider.create(4)));
-        this.addDrop(Carbonize.ASH_LAYER, block -> LootTable.builder().pool(LootPool.builder().conditionally(EntityPropertiesLootCondition.create(LootContext.EntityTarget.THIS)).with(AlternativeEntry.builder(AlternativeEntry.builder(AshBlock.LAYERS.getValues(), integer -> ((LeafEntry.Builder<?>) ItemEntry.builder(Carbonize.ASH).conditionally(BlockStatePropertyLootCondition.builder(block).properties(StatePredicate.Builder.create().exactMatch(AshBlock.LAYERS, integer)))).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(integer)))).conditionally(WITHOUT_SILK_TOUCH), AlternativeEntry.builder(AshBlock.LAYERS.getValues(), integer -> integer == 8 ? ItemEntry.builder(Carbonize.ASH_BLOCK) : ((LootPoolEntry.Builder<?>) ItemEntry.builder(Carbonize.ASH_LAYER).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(integer)))).conditionally(BlockStatePropertyLootCondition.builder(block).properties(StatePredicate.Builder.create().exactMatch(AshBlock.LAYERS, integer))))))));
-        this.addDrop(Carbonize.WOOD_STACK, block -> this.drops(block, Items.STICK, UniformLootNumberProvider.create(6, 8)));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalStack, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3, 4))).apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalLog, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(2))).apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE).conditionally(RandomChanceLootCondition.builder(0.5f))))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalPlanks, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalFence, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalFenceGate, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalStairs, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.375f))))));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalSlab, block -> LootTable.builder().pool(LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F))
+        this.addDrop(CarbonizeCommon.ASH_BLOCK, block -> this.drops(block, CarbonizeCommon.ASH, ConstantLootNumberProvider.create(4)));
+        this.addDrop(CarbonizeCommon.ASH_LAYER, block -> LootTable.builder().pool(LootPool.builder().conditionally(EntityPropertiesLootCondition.create(LootContext.EntityTarget.THIS)).with(AlternativeEntry.builder(AlternativeEntry.builder(AshBlock.LAYERS.getValues(), integer -> ((LeafEntry.Builder<?>) ItemEntry.builder(CarbonizeCommon.ASH).conditionally(BlockStatePropertyLootCondition.builder(block).properties(StatePredicate.Builder.create().exactMatch(AshBlock.LAYERS, integer)))).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(integer)))).conditionally(WITHOUT_SILK_TOUCH), AlternativeEntry.builder(AshBlock.LAYERS.getValues(), integer -> integer == 8 ? ItemEntry.builder(CarbonizeCommon.ASH_BLOCK) : ((LootPoolEntry.Builder<?>) ItemEntry.builder(CarbonizeCommon.ASH_LAYER).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(integer)))).conditionally(BlockStatePropertyLootCondition.builder(block).properties(StatePredicate.Builder.create().exactMatch(AshBlock.LAYERS, integer))))))));
+        this.addDrop(CarbonizeCommon.WOOD_STACK, block -> this.drops(block, Items.STICK, UniformLootNumberProvider.create(6, 8)));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalStack, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3, 4))).apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalLog, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(2))).apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE).conditionally(RandomChanceLootCondition.builder(0.5f))))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalPlanks, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalFence, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalFenceGate, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.5f))))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalStairs, block -> dropsWithSilkTouch(block, this.applyExplosionDecay(block, ItemEntry.builder(Items.CHARCOAL).apply(SetCountLootFunction.builder(BinomialLootNumberProvider.create(1, 0.375f))))));
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalSlab, block -> LootTable.builder().pool(LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F))
                 .with(this.applyExplosionDecay(block, ItemEntry.builder(block)
                         .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(2.0F))
                                 .conditionally(BlockStatePropertyLootCondition.builder(block).properties(StatePredicate.Builder.create().exactMatch(SlabBlock.TYPE, SlabType.DOUBLE)))
@@ -55,7 +55,7 @@ public class CarbonizeLootDataGen extends FabricBlockLootTableProvider {
                         ).conditionally(WITHOUT_SILK_TOUCH).conditionally(RandomChanceLootCondition.builder(0.25f))
                 )
         ));
-        this.addDrop(Carbonize.CHARCOAL_SET.charcoalBlock);
-        this.excludeFromStrictValidation(CharcoalPitInit.CHARRING_WOOD);
+        this.addDrop(CarbonizeCommon.CHARCOAL_SET.charcoalBlock);
+        BurningSet.iterateSets(set -> excludeFromStrictValidation(set.charringWood));
     }
 }

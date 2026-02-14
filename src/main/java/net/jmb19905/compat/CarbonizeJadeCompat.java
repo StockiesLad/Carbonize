@@ -1,7 +1,7 @@
 package net.jmb19905.compat;
 
-import net.jmb19905.charcoal_pit.block.CharringWoodBlock;
-import net.jmb19905.charcoal_pit.block.CharringWoodBlockEntity;
+import net.jmb19905.block.charring.CharringWoodBlock;
+import net.jmb19905.block.charring.CharringWoodBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
-import static net.jmb19905.core.CarbonCore.MOD_ID;
+import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 
 @WailaPlugin
 public class CarbonizeJadeCompat implements IWailaPlugin, IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
@@ -36,7 +36,7 @@ public class CarbonizeJadeCompat implements IWailaPlugin, IBlockComponentProvide
             if (config.get(SHOW_STAGE))
                 tooltip.add(Text.translatable("text.jade.carbonize.charring_wood.stage", data.getString("Stage")));
             if (config.get(SHOW_REMAINING_BURN_TIME))
-                tooltip.add(Text.translatable("text.jade.carbonize.charring_wood.remaining_burn_time", data.getInt("RemainingBurnTime")));
+                tooltip.add(Text.translatable("text.jade.carbonize.charring_wood.remaining_burn_time", data.getInt("RemainingBurnTime")/20));
         }
     }
 

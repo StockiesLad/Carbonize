@@ -1,6 +1,6 @@
 package net.jmb19905.mixin;
 
-import net.jmb19905.block.ModularFireBlock;
+import net.jmb19905.block.fire.ModularFireBlock;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;

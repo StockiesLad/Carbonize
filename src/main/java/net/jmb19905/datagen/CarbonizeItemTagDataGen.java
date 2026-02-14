@@ -2,7 +2,7 @@ package net.jmb19905.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.jmb19905.Carbonize;
+import net.jmb19905.core.CarbonizeCommon;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 
@@ -15,14 +15,14 @@ public class CarbonizeItemTagDataGen extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        var consumeIgniters = getOrCreateTagBuilder(Carbonize.CONSUME_IGNITERS);
+        var consumeIgniters = getOrCreateTagBuilder(CarbonizeCommon.CONSUME_IGNITERS);
         consumeIgniters.add(Items.FIRE_CHARGE);
 
-        var damageIgniters = getOrCreateTagBuilder(Carbonize.DAMAGE_IGNITERS);
+        var damageIgniters = getOrCreateTagBuilder(CarbonizeCommon.DAMAGE_IGNITERS);
         damageIgniters.add(Items.FLINT_AND_STEEL);
 
-        var igniters = getOrCreateTagBuilder(Carbonize.IGNITERS);
-        igniters.forceAddTag(Carbonize.CONSUME_IGNITERS);
-        igniters.forceAddTag(Carbonize.DAMAGE_IGNITERS);
+        var igniters = getOrCreateTagBuilder(CarbonizeCommon.IGNITERS);
+        igniters.forceAddTag(CarbonizeCommon.CONSUME_IGNITERS);
+        igniters.forceAddTag(CarbonizeCommon.DAMAGE_IGNITERS);
     }
 }

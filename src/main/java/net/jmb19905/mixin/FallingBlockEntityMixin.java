@@ -1,6 +1,6 @@
 package net.jmb19905.mixin;
 
-import net.jmb19905.Carbonize;
+import net.jmb19905.core.CarbonizeCommon;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -67,7 +67,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
         var pos = entity.getBlockPos();
         var world = entity.getWorld();
         var state = world.getBlockState(pos);
-        if (destroyedOnLanding || state.isOf(Carbonize.ASH_LAYER)) {
+        if (destroyedOnLanding || state.isOf(CarbonizeCommon.ASH_LAYER)) {
             this.setVelocity(this.getVelocity().multiply(0.98));
             ci.cancel();
         }
@@ -76,7 +76,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/FallingBlockEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"), cancellable = true)
     private void tick$dropAsItem(CallbackInfo ci){
         FallingBlockEntity instance = (FallingBlockEntity) (Object) this;
-        if (instance.getBlockState().isOf(Carbonize.ASH_LAYER) || instance.getBlockState().isOf(Carbonize.CHARCOAL_SET.charcoalLog) || instance.getBlockState().isOf(Carbonize.CHARCOAL_SET.charcoalPlanks)) {
+        if (instance.getBlockState().isOf(CarbonizeCommon.ASH_LAYER) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charcoalLog) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charcoalPlanks)) {
             Block.dropStacks(instance.getBlockState(), instance.getWorld(), instance.getBlockPos());
             this.setVelocity(this.getVelocity().multiply(0.98));
             ci.cancel();

@@ -1,8 +1,8 @@
 {
   "type": "carbonize:burn",
+  "burnBlock": "carbonize:charring_wood",
   "burnTime": 150,
-  "fireType": "soul_fire",
-  "input": "minecraft:blocks",
-  "medium": "carbonize:charring_wood",
-  "output": "carbonize:soul_charcoal_block"
+  "failResult": "carbonize:soul_charcoal_block",
+  "input": "#minecraft:blocks",
+  "successResult": "carbonize:soul_charcoal_block"
 }

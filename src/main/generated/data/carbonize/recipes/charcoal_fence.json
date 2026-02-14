@@ -1,8 +1,8 @@
 {
   "type": "carbonize:burn",
+  "burnBlock": "carbonize:charring_wood",
   "burnTime": 150,
-  "fireType": "default_fire",
-  "input": "minecraft:fences",
-  "medium": "carbonize:charring_wood",
-  "output": "carbonize:charcoal_fence"
+  "failResult": "carbonize:charcoal_fence",
+  "input": "#minecraft:fences",
+  "successResult": "carbonize:charcoal_fence"
 }
