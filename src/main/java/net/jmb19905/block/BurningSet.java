@@ -1,11 +1,11 @@
-package net.jmb19905.block.charcoal;
+package net.jmb19905.block;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.jmb19905.api.FireType;
-import net.jmb19905.block.ember.EmberBlock;
-import net.jmb19905.block.StackBlock;
+import net.jmb19905.block.charcoal.*;
 import net.jmb19905.block.charring.CharringWoodBlock;
+import net.jmb19905.block.ember.*;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.sound.BlockSoundGroup;
@@ -23,7 +23,7 @@ public class BurningSet {
     private final List<Block> allBlocks = new ArrayList<>();
 
     public final String type;
-    private final String fireTypeSerialId;
+    private final FireType fireType;
 
     public final Block
             charringWood,
@@ -44,7 +44,6 @@ public class BurningSet {
             sootFence,
             sootFenceGate,
 
-
             charcoalBlock,
             charcoalStack,
             charcoalLog,
@@ -54,42 +53,41 @@ public class BurningSet {
             charcoalFence,
             charcoalFenceGate;
 
-    //TODO: add impl for null Blocks
-    public BurningSet(String fireTypeSerialId) {
+    //TODO: make soot release more smoke
+    public BurningSet(FireType fireType) {
+        this.fireType = fireType;
         ALL_SETS.add(this);
-        this.fireTypeSerialId = fireTypeSerialId;
-        var luminanceFunc = new CopyLuminance(fireTypeSerialId);
+        ToIntFunction<BlockState> luminanceFunc = state -> fireType.asFireBlock().getDefaultState().getLuminance();
         
         charringWood = register("charring_wood", new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(luminanceFunc).sounds(BlockSoundGroup.WOOD).dropsNothing()));
 
-        emberStack = null;
-        emberLog = null;
-        emberPlanks = register("ember_planks", new EmberBlock(AbstractBlock.Settings.create().luminance(luminanceFunc).burnable().sounds(BlockSoundGroup.WOOD), this::getFireType));
-        emberStairs = null;
-        emberSlab = null;
-        emberFence = null;
-        emberFenceGate = null;
+        emberLog = register("ember_log", new EmberPillarBlock(FabricBlockSettings.create().luminance(luminanceFunc).mapColor(state -> MapColor.ORANGE).instrument(Instrument.BASS).strength(2.0f).sounds(BlockSoundGroup.WOOD).burnable(), this::getFireType));
+        emberPlanks = register("ember_planks", new EmberBlock(FabricBlockSettings.copy(emberLog).strength(2F, 3F), fireType));
+        emberStack = register("ember_stack", new EmberStackBlock(FabricBlockSettings.copy(emberLog), fireType));
+        emberStairs = register("ember_stairs", new EmberStairsBlock(emberPlanks.getDefaultState(), FabricBlockSettings.copy(emberPlanks), fireType));
+        emberSlab = register("ember_slab", new EmberSlabBlock(FabricBlockSettings.copy(emberPlanks), fireType));
+        emberFence = register("ember_fence", new EmberFenceBlock(FabricBlockSettings.copy(emberPlanks), fireType));
+        emberFenceGate = register("ember_fence_gate", new EmberFenceGateBlock(FabricBlockSettings.copy(emberPlanks), FlammableFaller.EMBER_WOOD_TYPE, fireType));
 
         sootLog = register("soot_log",  new PillarBlock(FabricBlockSettings.create().mapColor(state -> MapColor.BLACK).instrument(Instrument.BASS).strength(1.0f).sounds(BlockSoundGroup.WOOD).burnable()));
         sootPlanks = register("soot_planks", new Block(FabricBlockSettings.copy(sootLog).strength(1.0F, 1.5F)));
-        sootStack = register( "soot_stack", new StackBlock(FabricBlockSettings.copy(sootPlanks).nonOpaque()));
+        sootStack = register( "soot_stack", new StackBlock(FabricBlockSettings.copy(sootLog).nonOpaque()));
         sootStairs = register("soot_stairs", new FlammableFallingStairsBlock(sootPlanks.getDefaultState(), FabricBlockSettings.copy(sootPlanks)));
         sootSlab = register( "soot_slab", new SlabBlock(FabricBlockSettings.copy(sootPlanks)));
         sootFence = register("soot_fence", new FenceBlock(FabricBlockSettings.copy(sootPlanks)));
-        sootFenceGate = register("soot_fence_gate", new FenceGateBlock(FabricBlockSettings.copy(sootPlanks), FlammableFaller.CHARRED_WOOD_TYPE));
+        sootFenceGate = register("soot_fence_gate", new FenceGateBlock(FabricBlockSettings.copy(sootPlanks), FlammableFaller.BURNT_WOOD_TYPE));
 
         charcoalBlock = register("charcoal_block", new Block(FabricBlockSettings.copy(Blocks.COAL_BLOCK)));
         charcoalLog = register("charcoal_log", new FlammableFallingPillarBlock(FabricBlockSettings.copy(sootLog)));
         charcoalPlanks = register("charcoal_planks", new FlammableFallingBlock(FabricBlockSettings.copy(sootPlanks)));
-        charcoalStack = register( "charcoal_stack", new FlammableFallingStackBlock(FabricBlockSettings.copy(sootPlanks).nonOpaque()));
+        charcoalStack = register( "charcoal_stack", new FlammableFallingStackBlock(FabricBlockSettings.copy(sootLog).nonOpaque()));
         charcoalStairs = register("charcoal_stairs", new FlammableFallingStairsBlock(sootPlanks.getDefaultState(), FabricBlockSettings.copy(sootPlanks)));
         charcoalSlab = register( "charcoal_slab", new FlammableFallingSlabBlock(FabricBlockSettings.copy(sootPlanks)));
         charcoalFence = register("charcoal_fence", new FlammableFallingFenceBlock(FabricBlockSettings.copy(sootPlanks)));
         charcoalFenceGate = register("charcoal_fence_gate", new FlammableFallingFenceGateBlock(FabricBlockSettings.copy(sootPlanks)));
 
-        var serialIdSplit = fireTypeSerialId.split("_");
-        this.type = fireTypeSerialId.replace(serialIdSplit[serialIdSplit.length - 1], "")
-                .replace("default", "");
+        var serialIdSplit = fireType.getSerialId().split("_");
+        this.type = fireType.getSerialId().replace("_fire", "").replace("default", "");
         
         FuelRegistry.INSTANCE.add(charcoalBlock, 16000);
         FuelRegistry.INSTANCE.add(charcoalStack, 1600 * 5);
@@ -102,7 +100,7 @@ public class BurningSet {
     }
     
     public FireType getFireType() {
-        return FireType.find(fireTypeSerialId).orElseThrow();
+        return fireType;
     }
 
     public List<Block> getAllBlocks() {
@@ -131,20 +129,5 @@ public class BurningSet {
     public static void init() {
         while (!BurningSet.TASKS.isEmpty())
             Objects.requireNonNull(BurningSet.TASKS.poll()).run();
-    }
-    
-    private static class CopyLuminance implements ToIntFunction<BlockState> {
-        private Object data;
-
-        public CopyLuminance(String fireTypeSerialId) {
-            this.data = fireTypeSerialId;
-        }
-
-        @Override
-        public int applyAsInt(BlockState state) {
-            if (data instanceof String serialId)
-                data = FireType.find(serialId).orElseThrow().asBlock().getDefaultState().getLuminance();
-            return (int) data;
-        }
     }
 }

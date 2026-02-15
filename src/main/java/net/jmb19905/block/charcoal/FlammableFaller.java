@@ -18,11 +18,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-
 @SuppressWarnings("deprecation")
 public interface FlammableFaller extends LandingBlock {
-    BlockSetType CHARRED_SET_TYPE = IBlockSetType.register(new BlockSetType("charred"));
-    WoodType CHARRED_WOOD_TYPE = IWoodType.register(new WoodType("charred", CHARRED_SET_TYPE));
+    BlockSetType BURNT_SET_TYPE = IBlockSetType.register(new BlockSetType("burnt"));
+    BlockSetType EMBER_SET_TYPE = IBlockSetType.register(new BlockSetType("ember"));
+    WoodType BURNT_WOOD_TYPE = IWoodType.register(new WoodType("burnt", BURNT_SET_TYPE));
+    WoodType EMBER_WOOD_TYPE = IWoodType.register(new WoodType("ember", EMBER_SET_TYPE));
 
     Block block();
 

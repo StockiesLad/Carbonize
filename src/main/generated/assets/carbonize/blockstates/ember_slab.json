@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "carbonize:block/ember_slab"
+    },
+    "type=double": {
+      "model": "carbonize:block/ember_planks"
+    },
+    "type=top": {
+      "model": "carbonize:block/ember_slab_top"
+    }
+  }
+}

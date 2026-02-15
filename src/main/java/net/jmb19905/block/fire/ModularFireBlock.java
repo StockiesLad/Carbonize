@@ -17,7 +17,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.function.Supplier;
 
-import static net.jmb19905.api.FireType.DEFAULT_FIRE_TYPE;
 import static net.jmb19905.api.FireType.SOUL_FIRE_TYPE;
 import static net.minecraft.block.Blocks.*;
 
@@ -30,8 +29,6 @@ import static net.minecraft.block.Blocks.*;
  */
 public class ModularFireBlock extends FireBlock implements Unregisterable {
     private static final Queue<Runnable> TASKS = new ArrayDeque<>();
-
-    public static final Supplier<FireType> DEAULT_PARENT_SUPPLIER = () -> DEFAULT_FIRE_TYPE;
 
     private final boolean shouldRegister;
     private final Supplier<FireType> parentSupplier;
@@ -46,15 +43,11 @@ public class ModularFireBlock extends FireBlock implements Unregisterable {
         this.parentSupplier = parentSupplier;
     }
 
-    public ModularFireBlock(Settings settings) {
-        this(true, settings, DEAULT_PARENT_SUPPLIER);
-    }
-
     /**
      * @apiNote Do not use this internally within {@link FireBlock}, use {@link #parentView()} instead.
      */
     public FireAccess access(AbstractFireBlock fireBlock) {
-        if (!fireBlock.equals(getType().asBlock()))
+        if (!fireBlock.equals(getType().asFireBlock()))
             throw new IllegalCallerException("Internals were accessed from a non-parent object.");
         return FireAccess.tryGet(this, false).orElseThrow();
     }
@@ -131,6 +124,6 @@ public class ModularFireBlock extends FireBlock implements Unregisterable {
 
     public static BlockState findAppropriateFire(BlockView view, BlockPos pos, @Nullable FireType parent) {
         var type = findAppropriateFireType(view, pos, parent);
-        return type.asFireView() instanceof FireCapability capability ? capability.findAppropriateState(view, pos) : type.asBlock().getDefaultState();
+        return type.asFireView() instanceof FireCapability capability ? capability.findAppropriateState(view, pos) : type.asFireBlock().getDefaultState();
     }
 }

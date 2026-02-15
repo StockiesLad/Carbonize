@@ -68,7 +68,7 @@ public class CharcoalPitInit {
 
                 world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 2, 1);
                 handleIgnition(stack, player, hand);
-                world.setBlockState(pos, fireType.charringBlock.getDefaultState());
+                world.setBlockState(pos, fireType.asCharringBlock().getDefaultState());
                 world.getBlockEntity(pos, CHARRING_WOOD_TYPE).ifPresent(blockEntity -> blockEntity.sync(parentState));
                 return ActionResult.CONSUME;
             }

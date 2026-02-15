@@ -3,7 +3,7 @@ package net.jmb19905.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.jmb19905.api.FireType;
-import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.block.BurningSet;
 import net.jmb19905.core.CarbonizeCommon;
 import net.jmb19905.core.CarbonizeConstants;
 import net.jmb19905.multiblock.CharcoalPitMultiblock;
@@ -18,10 +18,7 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class CarbonizeRecipeDataGen extends FabricRecipeProvider {
@@ -35,19 +32,37 @@ public class CarbonizeRecipeDataGen extends FabricRecipeProvider {
         offerReversibleCompactingRecipes(exporter, RecipeCategory.MISC, Items.CHARCOAL, RecipeCategory.MISC, CarbonizeCommon.CHARCOAL_SET.charcoalBlock);
         offerReversibleCompactingRecipes(exporter, RecipeCategory.MISC, Items.STICK, RecipeCategory.MISC, CarbonizeCommon.WOOD_STACK);
 
-        /* Carbonize Recipe (Huge) */ {
+        //VERY BROKEN
+        {
+
             Map<String, List<Block>> woodTypes = new HashMap<>();
 
             BurningSet.iterateBlocks(((set, block) -> {
-                var id = Registries.BLOCK.getId(block);
-                var name = id.getPath();
+                var path = Registries.BLOCK.getId(block).getPath();
+                path = set.type.isEmpty() ? path : path.replace(set.type + "_", "");
+                var preNameSplit = path.split("_");
+                var name = path.replace(preNameSplit[0] + "_", "");
+                var nameSplit = name.split("_");
 
-                List.of("stacks", "logs", "planks", "stairs", "slabs", "fences", "fence_gates").forEach(woodType -> {
-                    var fullType = set.fireType + "_" + woodType;
+                List.of("stack", "log", "plank", "stair", "slab", "fence", "fence_gate").forEach(woodType -> {
+                    var fullType = set.getFireType().getSerialId() + "_" + woodType;
                     woodTypes.putIfAbsent(fullType, new ArrayList<>());
                     var array = woodTypes.get(fullType);
-                    if (name.contains(woodType))
-                        array.add(block);
+
+                    var woodTypeSplit = woodType.split("_");
+
+                    if (nameSplit.length != woodTypeSplit.length)
+                        return;
+
+                    var matches = true;
+                    for (int i = 0; i < nameSplit.length; i++) {
+                        if (!nameSplit[i].contains(woodTypeSplit[i])) {
+                            matches = false;
+                            break;
+                        }
+                    }
+
+                    if (matches) array.add(block);
                 });
             }));
 
@@ -73,20 +88,20 @@ public class CarbonizeRecipeDataGen extends FabricRecipeProvider {
 
                 var charcoalVariant = Registries.BLOCK.getId(burningStage.get("charcoal"));
 
-                var woodBlockType = charcoalVariant.getPath().replace("charcoal_", "");
 
                 Map<String, TagKey<Block>> type2Tag = new HashMap<>();
 
-                type2Tag.put("stacks", CarbonizeCommon.WOODEN_STACKS);
-                type2Tag.put("logs", BlockTags.LOGS);
-                type2Tag.put("planks", BlockTags.PLANKS);
-                type2Tag.put("stairs", BlockTags.WOODEN_STAIRS);
-                type2Tag.put("slabs", BlockTags.WOODEN_SLABS);
-                type2Tag.put("fences", BlockTags.WOODEN_FENCES);
-                type2Tag.put("fence_gates", BlockTags.FENCE_GATES);
+                type2Tag.put("stack", CarbonizeCommon.WOODEN_STACKS);
+                type2Tag.put("log", BlockTags.LOGS);
+                type2Tag.put("plank", BlockTags.PLANKS);
+                type2Tag.put("stair", BlockTags.WOODEN_STAIRS);
+                type2Tag.put("slab", BlockTags.WOODEN_SLABS);
+                type2Tag.put("fence", BlockTags.WOODEN_FENCES);
+                type2Tag.put("fence_gate", BlockTags.FENCE_GATES);
 
                 var woodTypeSplit = woodType.split("_");
-                var fireType = woodTypeSplit[0];
+                var fireType = woodTypeSplit[0] + "_" + woodTypeSplit[1];
+                var woodBlockType = woodType.replace(fireType + "_", "");
 
                 exporter.accept(new BurnRecipe(
                         new Identifier(CarbonizeConstants.MOD_ID, charcoalVariant.getPath()),

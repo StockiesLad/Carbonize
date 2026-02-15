@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "carbonize:block/soul_ember_slab"
+    },
+    "type=double": {
+      "model": "carbonize:block/soul_ember_planks"
+    },
+    "type=top": {
+      "model": "carbonize:block/soul_ember_slab_top"
+    }
+  }
+}

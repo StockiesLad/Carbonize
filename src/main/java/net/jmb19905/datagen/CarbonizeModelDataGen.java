@@ -3,16 +3,16 @@ package net.jmb19905.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.jmb19905.api.FireType;
-import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.block.BurningSet;
+import net.jmb19905.block.StackBlock;
 import net.jmb19905.core.CarbonizeCommon;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.data.client.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 import static net.minecraft.data.client.BlockStateModelGenerator.buildBlockStateVariants;
@@ -34,19 +34,40 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
         registerFire(blockStateModelGenerator, FireType.SOUL_FIRE_TYPE);
         registerStack(blockStateModelGenerator, CarbonizeCommon.WOOD_STACK, Blocks.SPRUCE_PLANKS);
 
-        blockStateModelGenerator.registerSimpleCubeAll(CarbonizeCommon.CHARCOAL_SET.emberPlanks);
-
         BurningSet.iterateSets(set -> {
             blockStateModelGenerator.registerSimpleCubeAll(set.charringWood);
-            registerStack(blockStateModelGenerator, set.charringStack, set.charringWood);
             blockStateModelGenerator.registerSimpleCubeAll(set.charcoalBlock);
-            blockStateModelGenerator.registerLog(set.charcoalLog).log(set.charcoalLog);
-            registerStack(blockStateModelGenerator, set.charcoalStack, set.charcoalPlanks);
-            var pool = blockStateModelGenerator.registerCubeAllModelTexturePool(set.charcoalPlanks);
-            pool.fence(set.charcoalFence);
-            pool.fenceGate(set.charcoalFenceGate);
-            pool.stairs(set.charcoalStairs);
-            pool.slab(set.charcoalSlab);
+
+            Map<String, List<Block>> map = new HashMap<>();
+            set.getAllBlocks().forEach(block -> {
+                var blockId = Registries.BLOCK.getId(block).getPath();
+                if (blockId.equals(Registries.BLOCK.getId(set.charcoalBlock).getPath()))
+                    return;
+                for (var type : List.of("charcoal", "soot", "ember")) {
+                    if (blockId.contains(type)) {
+                        map.putIfAbsent(type, new ArrayList<>());
+                        map.get(type).add(block);
+                        break;
+                    }
+                }
+            });
+
+            map.forEach((type, blocks) -> {
+                var planks = blocks.stream()
+                        .filter(block -> Registries.BLOCK.getId(block).getPath().contains("planks"))
+                        .findFirst().orElseThrow();
+                var pool = blockStateModelGenerator.registerCubeAllModelTexturePool(planks);
+                blocks.forEach(block -> {
+                    if (block instanceof FenceBlock) pool.fence(block);
+                    else if (block instanceof FenceGateBlock) pool.fenceGate(block);
+                    else if (block instanceof StairsBlock) pool.stairs(block);
+                    else if (block instanceof SlabBlock) pool.slab(block);
+                    else if (block instanceof PillarBlock)
+                        blockStateModelGenerator.registerLog(block).log(block);
+                    else if (block instanceof StackBlock)
+                        registerStack(blockStateModelGenerator, block, planks);
+                });
+            });
         });
     }
 
@@ -66,7 +87,7 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
     }
 
     private void registerFire(BlockStateModelGenerator blockStateModelGenerator, FireType fireType) {
-        var block = fireType.asBlock();
+        var block = fireType.asFireBlock();
         When when = When.create().set(Properties.NORTH, false).set(Properties.EAST, false).set(Properties.SOUTH, false).set(Properties.WEST, false).set(Properties.UP, false);
         List<Identifier> list = blockStateModelGenerator.getFireFloorModels(block);
         List<Identifier> list2 = blockStateModelGenerator.getFireSideModels(block);

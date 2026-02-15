@@ -1,8 +1,9 @@
 {
   "type": "carbonize:burn",
-  "burnBlock": "carbonize:charring_wood",
-  "burnTime": 150,
-  "failResult": "carbonize:soul_charcoal_planks",
+  "burnBlock": "carbonize:soul_ember_planks",
+  "burnTime": 200,
+  "failResult": "carbonize:soul_soot_planks",
+  "fireType": "soul_fire",
   "input": "#minecraft:planks",
   "successResult": "carbonize:soul_charcoal_planks"
 }

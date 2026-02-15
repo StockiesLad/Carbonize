@@ -1,8 +1,9 @@
 {
   "type": "carbonize:burn",
-  "burnBlock": "carbonize:charring_wood",
-  "burnTime": 150,
-  "failResult": "carbonize:soul_charcoal_fence_gate",
-  "input": "#minecraft:fencegates",
+  "burnBlock": "carbonize:soul_ember_fence_gate",
+  "burnTime": 200,
+  "failResult": "carbonize:soul_soot_fence_gate",
+  "fireType": "soul_fire",
+  "input": "#minecraft:fence_gates",
   "successResult": "carbonize:soul_charcoal_fence_gate"
 }

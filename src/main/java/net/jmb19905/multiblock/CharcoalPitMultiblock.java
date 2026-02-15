@@ -274,14 +274,14 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
         // Terminate loop if the side pos is already a member of this multi-block - avoids unnecessary checks. One of the multi-block-exclusive optimisations.
         if (hasPosition(sidePos)) return;
 
-        if (sideState.isOf(fireType.charringBlock)) {
+        if (sideState.isOf(fireType.asCharringBlock())) {
             queue(() -> pitManager.merge(pos, sidePos));
         } else if (sideState.isIn(CarbonizeCommon.CHARCOAL_PILE_VALID_FUEL)) {
             if (getWorld().random.nextInt(10) != 0) return;
             var parent = getWorld().getBlockState(sidePos);
             //This is an example of a delegation. I have to do this to sync the models properly and I have no idea why, but it just works.
             entity.queue(() -> {
-                getWorld().setBlockState(sidePos, fireType.charringBlock.getDefaultState());
+                getWorld().setBlockState(sidePos, fireType.asCharringBlock().getDefaultState());
                 getWorld().getBlockEntity(sidePos, CHARRING_WOOD_TYPE).ifPresent(blockEntity -> blockEntity.sync(parent));
             });
         } else if (entity.getCachedState().get(STAGE).ordinal() > IGNITING.ordinal()) {
@@ -332,7 +332,7 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
         for (BlockPosWrapper blockPosition : blockPositions) {
             var exposedPos = blockPosition.expose();
             var state = getWorld().getBlockState(exposedPos);
-            if (state.isOf(fireType.charringBlock)) {
+            if (state.isOf(fireType.asCharringBlock())) {
                 var entity = getWorld().getBlockEntity(exposedPos, CHARRING_WOOD_TYPE);
                 consumer.accept(new CharcoalPitContext(exposedPos, state, entity.orElseThrow()));
             } else {
@@ -383,7 +383,7 @@ public class CharcoalPitMultiblock implements WrappedQueuer<CharcoalPitMultibloc
         if (!checkExisting && !state.isIn(CarbonizeCommon.CHARCOAL_PILE_VALID_FUEL))
             return parsedPositions;
 
-        if (checkExisting && !state.isOf(fireType.charringBlock))
+        if (checkExisting && !state.isOf(fireType.asCharringBlock()))
             return parsedPositions;
 
         parsedPositions.getValue().add(pos);

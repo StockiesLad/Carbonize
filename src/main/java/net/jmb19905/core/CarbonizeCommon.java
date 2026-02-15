@@ -4,9 +4,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.jmb19905.api.FireType;
 import net.jmb19905.block.AshBlock;
 import net.jmb19905.block.StackBlock;
-import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.block.BurningSet;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.recipe.BurnRecipeSerializer;
 import net.minecraft.block.*;
@@ -30,11 +31,9 @@ import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 
 //TODO: organise registration into specific registry classes (CarbonizeBlocks)
 public class CarbonizeCommon implements ModInitializer {
-	public static final String FIRE_TYPE_ID = "default_fire";
-	public static final String SOUL_FIRE_TYPE_ID = "soul_fire";
 
-	public static final BurningSet CHARCOAL_SET = new BurningSet(FIRE_TYPE_ID);
-	public static final BurningSet SOUL_CHARCOAL_SET = new BurningSet(SOUL_FIRE_TYPE_ID);
+	public static final BurningSet CHARCOAL_SET = new BurningSet(FireType.DEFAULT_FIRE_TYPE);
+	public static final BurningSet SOUL_CHARCOAL_SET = new BurningSet(FireType.SOUL_FIRE_TYPE);
 
 	public static final Block WOOD_STACK = new StackBlock(FabricBlockSettings.create()
 			.instrument(Instrument.BASS)
@@ -74,6 +73,7 @@ public class CarbonizeCommon implements ModInitializer {
 	public void onInitialize() {
 		CharcoalPitInit.init();
 		BurningSet.init();
+		FireType.verify();
 		Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "wood_stack"), WOOD_STACK);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "wood_stack"), new BlockItem(WOOD_STACK, new FabricItemSettings()));
 

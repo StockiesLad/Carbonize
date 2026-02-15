@@ -1,8 +1,9 @@
 {
   "type": "carbonize:burn",
-  "burnBlock": "carbonize:charring_wood",
+  "burnBlock": "carbonize:ember_planks",
   "burnTime": 200,
-  "failResult": "carbonize:charcoal_planks",
+  "failResult": "carbonize:soot_planks",
+  "fireType": "default_fire",
   "input": "#minecraft:planks",
   "successResult": "carbonize:charcoal_planks"
 }

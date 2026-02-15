@@ -1,13 +1,12 @@
 package net.jmb19905.mixin;
 
 import net.jmb19905.api.FireAccess;
-import net.jmb19905.api.FireCapability;
-import net.jmb19905.block.fire.ModularFireBlock;
+import net.jmb19905.api.FireCapabilityProvider;
 import net.jmb19905.api.FireType;
+import net.jmb19905.block.fire.ModularFireBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -33,19 +32,21 @@ import static net.minecraft.block.FireBlock.AGE;
 
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(SoulFireBlock.class)
-public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
+public class SoulFireMixin extends AbstractFireMixin implements FireCapabilityProvider {
     @Shadow
     public static boolean isSoulBase(BlockState state) {return false;}
 
+    //TODO: making this non-static might break things
     @Unique
-    private static final ModularFireBlock FIRE_BLOCK = new ModularFireBlock(
+    private static ModularFireBlock FIRE_BLOCK = new ModularFireBlock(
             false,
             AbstractBlock.Settings.create()
                     .mapColor(MapColor.LIGHT_BLUE)
                     .replaceable()
                     .noCollision()
                     .breakInstantly()
-                    .luminance((state) -> 10)
+                    //.luminance((state) -> ((SoulFireBlock) (Object) this).getDefaultState().getLuminance())
+                    .luminance(state -> 10)
                     .sounds(BlockSoundGroup.WOOL)
                     .pistonBehavior(PistonBehavior.DESTROY),
             () -> FireType.SOUL_FIRE_TYPE
@@ -104,37 +105,7 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
 
     @Inject(method = "isFlammable", at = @At("HEAD"), cancellable = true)
     protected void override$isFlammable(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(getLocal().isBlockFlammable(state));
-    }
-
-    @Override
-    public void registerFlammable(Block block, int burnChance, int spreadChance) {
-        getLocal().registerFlammable(block, burnChance, spreadChance);
-    }
-
-    @Override
-    public void registerFlammable(TagKey<Block> tag, int burnChance, int spreadChance) {
-        getLocal().registerFlammable(tag, burnChance, spreadChance);
-    }
-
-    @Override
-    public BlockState findAppropriateState(BlockView view, BlockPos pos) {
-        return getLocal().findAppropriateState(view, pos);
-    }
-
-    @Override
-    public boolean isBlockFlammable(BlockState state) {
-        return getLocal().isBlockFlammable(state);
-    }
-
-    @Override
-    public int getBlockSpreadChance(BlockState state) {
-        return getLocal().getBlockSpreadChance(state);
-    }
-
-    @Override
-    public int getBlockBurnChance(BlockState state) {
-        return getLocal().getBlockBurnChance(state);
+        cir.setReturnValue(isBlockFlammable(state));
     }
 
     @Override
@@ -153,22 +124,12 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapability {
     }
 
     @Override
-    public FireType asFireType() {
-        return getLocal().asFireType();
-    }
-
-    @Override
-    public AbstractFireBlock asBlock() {
-        return (AbstractFireBlock) (Object) this;
-    }
-
-    @Override
     public boolean isBaseInfiniburn(BlockView view, BlockPos pos) {
         return isSoulBase(view.getBlockState(pos.down()));
     }
 
-    @Unique
-    private FireAccess getLocal() {
+    @Override
+    public FireAccess getCapability() {
         return FIRE_BLOCK.access((AbstractFireBlock) (Object) this);
     }
 }

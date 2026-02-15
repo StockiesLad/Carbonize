@@ -1,21 +1,21 @@
 package net.jmb19905.block.ember;
 
 import net.jmb19905.api.FireType;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-import java.util.function.Supplier;
-
 
 @SuppressWarnings("deprecation")
 public class EmberFenceBlock extends FenceBlock implements BurningBlock {
-    private final Supplier<FireType> fireType;
+    private final FireType fireType;
 
-    public EmberFenceBlock(Settings settings, Supplier<FireType> fireType) {
+    public EmberFenceBlock(Settings settings, FireType fireType) {
         super(settings);
         this.fireType = fireType;
         BurningBlock.super.addDefaultStates();
@@ -23,7 +23,7 @@ public class EmberFenceBlock extends FenceBlock implements BurningBlock {
 
     @Override
     public FireType getFireType() {
-        return fireType.get();
+        return fireType;
     }
 
     @Override

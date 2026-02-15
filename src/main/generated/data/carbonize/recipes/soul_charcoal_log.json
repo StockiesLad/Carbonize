@@ -1,8 +1,9 @@
 {
   "type": "carbonize:burn",
-  "burnBlock": "carbonize:charring_wood",
-  "burnTime": 150,
-  "failResult": "carbonize:soul_charcoal_log",
+  "burnBlock": "carbonize:soul_ember_log",
+  "burnTime": 300,
+  "failResult": "carbonize:soul_soot_log",
+  "fireType": "soul_fire",
   "input": "#minecraft:logs",
   "successResult": "carbonize:soul_charcoal_log"
 }

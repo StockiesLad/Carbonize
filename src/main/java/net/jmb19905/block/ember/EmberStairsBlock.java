@@ -10,13 +10,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-import java.util.function.Supplier;
-
 
 public class EmberStairsBlock extends StairsBlock implements BurningBlock {
-    private final Supplier<FireType> fireType;
+    private final FireType fireType;
 
-    public EmberStairsBlock(BlockState baseState, Settings settings, Supplier<FireType> fireType) {
+    public EmberStairsBlock(BlockState baseState, Settings settings, FireType fireType) {
         super(baseState, settings);
         this.fireType = fireType;
         BurningBlock.super.addDefaultStates();
@@ -24,7 +22,7 @@ public class EmberStairsBlock extends StairsBlock implements BurningBlock {
 
     @Override
     public FireType getFireType() {
-        return fireType.get();
+        return fireType;
     }
 
     @Override

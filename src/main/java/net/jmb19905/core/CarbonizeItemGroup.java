@@ -2,7 +2,7 @@ package net.jmb19905.core;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.block.BurningSet;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;

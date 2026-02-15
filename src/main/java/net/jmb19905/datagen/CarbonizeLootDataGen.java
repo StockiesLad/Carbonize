@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.jmb19905.core.CarbonizeCommon;
 import net.jmb19905.block.AshBlock;
-import net.jmb19905.block.charcoal.BurningSet;
+import net.jmb19905.block.BurningSet;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.enchantment.Enchantments;
@@ -26,6 +26,7 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
 
+//TODO: loot tables for charcoal sets
 public class CarbonizeLootDataGen extends FabricBlockLootTableProvider {
 
     protected CarbonizeLootDataGen(FabricDataOutput dataOutput) {

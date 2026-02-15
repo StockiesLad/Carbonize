@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.registry.DefaultedRegistry;
 import net.minecraft.registry.entry.RegistryEntry.Reference;
 import net.minecraft.state.StateManager;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +28,10 @@ public class BlockMixin extends AbstractBlockMixin {
         return null;
     }
 
+    @Shadow
+    @Final
+    protected StateManager<Block, BlockState> stateManager;
+
     @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/DefaultedRegistry;createEntry(Ljava/lang/Object;)Lnet/minecraft/registry/entry/RegistryEntry$Reference;"))
     private <T> Reference<T> discardWhenUnregistered(DefaultedRegistry<T> instance, T block, Operation<Reference<T>> operation) {
         if (block instanceof Unregisterable unregisterable && !unregisterable.shouldRegister())
@@ -41,6 +46,6 @@ public class BlockMixin extends AbstractBlockMixin {
     @Inject(method = "toString", at = @At("HEAD"), cancellable = true)
     public void fixString(CallbackInfoReturnable<String> cir) {
         if ((Block)(Object) this instanceof ModularFireBlock fireBlock && !fireBlock.shouldRegister())
-            cir.setReturnValue(fireBlock.getType().asBlock().toString());
+            cir.setReturnValue(fireBlock.getType().asFireBlock().toString());
     }
 }

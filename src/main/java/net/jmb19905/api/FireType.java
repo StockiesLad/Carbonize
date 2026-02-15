@@ -2,14 +2,16 @@ package net.jmb19905.api;
 
 import net.jmb19905.block.charring.CharringWoodBlock;
 import net.jmb19905.block.fire.ModularFireBlock;
-import net.minecraft.block.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
+import net.minecraft.block.SoulFireBlock;
 
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import static net.jmb19905.core.CarbonizeCommon.*;
+import static net.jmb19905.core.CarbonizeCommon.CHARCOAL_SET;
+import static net.jmb19905.core.CarbonizeCommon.SOUL_CHARCOAL_SET;
 
 /**
  * Represents a type of fire.
@@ -31,28 +33,19 @@ import static net.jmb19905.core.CarbonizeCommon.*;
  * @apiNote serialIds are separated to avoid registry issues.
  * @see ModularFireBlock GenericFireBlock
  */
-public final class FireType implements FireView {
+public final class FireType implements FireViewProvider {
     private static final Map<String, FireType> FIRE_TYPES = new HashMap<>();
-    public static final FireType DEFAULT_FIRE_TYPE = new FireType(FIRE_TYPE_ID, (FireBlock) Blocks.FIRE, (CharringWoodBlock) CHARCOAL_SET.charringWood);
-    public static final FireType SOUL_FIRE_TYPE = new FireType(SOUL_FIRE_TYPE_ID, (SoulFireBlock) Blocks.SOUL_FIRE, (CharringWoodBlock) SOUL_CHARCOAL_SET.charringWood);
+    public static final FireType DEFAULT_FIRE_TYPE = new FireType("default_fire", () -> (FireBlock) Blocks.FIRE, () -> (CharringWoodBlock) CHARCOAL_SET.charringWood);
+    public static final FireType SOUL_FIRE_TYPE = new FireType("soul_fire", () -> (SoulFireBlock) Blocks.SOUL_FIRE, () -> (CharringWoodBlock) SOUL_CHARCOAL_SET.charringWood);
     private final String serialId;
-    private final AbstractFireBlock fireBlock;
-    public final CharringWoodBlock charringBlock;
+    private final Supplier<AbstractFireBlock> fireBlock;
+    private final Supplier<CharringWoodBlock> charringBlock;
 
-    public FireType(String serialId, AbstractFireBlock fireBlock, CharringWoodBlock charringBlock) {
+    public FireType(String serialId, Supplier<AbstractFireBlock> fireBlock, Supplier<CharringWoodBlock> charringBlock) {
         this.serialId = serialId;
         this.fireBlock = fireBlock;
         this.charringBlock = charringBlock;
         FIRE_TYPES.put(serialId, this);
-
-        if (!(fireBlock instanceof FireView))
-            throw new IllegalArgumentException("Fire types are expected to be retrofitted with FireView. See JavaDoc of FireType for more info.");
-        if (!asBlock().equals(asFireView().asBlock()))
-            throw new IllegalStateException("The provided fire block doesn't match it's FireView#asBlock implementation.");
-    }
-
-    public FireView asFireView() {
-        return (FireView) fireBlock;
     }
 
     @Override
@@ -61,58 +54,20 @@ public final class FireType implements FireView {
     }
 
     @Override
-    public AbstractFireBlock asBlock() {
-        return fireBlock;
+    public AbstractFireBlock asFireBlock() {
+        return fireBlock.get();
     }
 
     @Override
-    public FireType asFireType() {
-        return this;
-    }
-
-    @Override
-    public boolean isBlockFlammable(BlockState state) {
-        return asFireView().isBlockFlammable(state);
-    }
-
-    @Override
-    public int getBlockSpreadChance(BlockState state) {
-        return asFireView().getBlockSpreadChance(state);
-    }
-
-    @Override
-    public int getBlockBurnChance(BlockState state) {
-        return asFireView().getBlockBurnChance(state);
-    }
-
-    @Override
-    public int getDeltaTemperature() {
-        return asFireView().getDeltaTemperature();
-    }
-
-    @Override
-    public int getGlobalSpreadFactor() {
-        return asFireView().getGlobalSpreadFactor();
-    }
-
-    @Override
-    public double getTickSpeedModifier() {
-        return asFireView().getTickSpeedModifier();
-    }
-
-    @Override
-    public boolean isBaseInfiniburn(BlockView view, BlockPos pos) {
-        return asFireView().isBaseInfiniburn(view, pos);
-    }
-
-    @Override
-    public void ifCapability(Consumer<FireCapability> consumer) {
-        asFireView().ifCapability(consumer);
+    public CharringWoodBlock asCharringBlock() {
+        return charringBlock.get();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof FireType type && type.fireBlock.equals(this.fireBlock) && type.serialId.equals(this.serialId);
+        return obj instanceof FireType type &&
+                type.fireBlock.equals(this.fireBlock) &&
+                type.serialId.equals(this.serialId);
     }
 
     @Override
@@ -125,6 +80,15 @@ public final class FireType implements FireView {
         return "FireType[" +
                 "serialId=" + serialId + ", " +
                 "fireBlock=" + fireBlock + ']';
+    }
+
+    public static void verify() {
+        for (FireType fireType : getAllTypes()) {
+            if (!(fireType.asFireBlock() instanceof FireView))
+                throw new IllegalArgumentException("Fire types are expected to be retrofitted with FireView. See JavaDoc of FireType for more info.");
+            if (!fireType.asFireBlock().equals(fireType.asFireView().asFireBlock()))
+                throw new IllegalStateException("The provided fire block doesn't match it's FireView#asBlock implementation.");
+        }
     }
 
     public static Collection<FireType> getAllTypes() {

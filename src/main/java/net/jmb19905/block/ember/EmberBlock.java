@@ -9,14 +9,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-import java.util.function.Supplier;
-
 
 @SuppressWarnings("deprecation")
 public class EmberBlock extends Block implements BurningBlock {
-    private final Supplier<FireType> fireType;
+    private final FireType fireType;
 
-    public EmberBlock(Settings settings, Supplier<FireType> fireType) {
+    public EmberBlock(Settings settings, FireType fireType) {
         super(settings);
         this.fireType = fireType;
         BurningBlock.super.addDefaultStates();
@@ -24,7 +22,7 @@ public class EmberBlock extends Block implements BurningBlock {
 
     @Override
     public FireType getFireType() {
-        return fireType.get();
+        return fireType;
     }
 
     @Override

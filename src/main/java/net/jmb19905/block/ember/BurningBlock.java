@@ -41,7 +41,7 @@ public interface BurningBlock {
     }
 
     default void addDefaultStates() {
-        iBlock().setDefaultState(block().getDefaultState().with(DORMANT, false).with(STAGE, SMOLDERING));
+        iBlock().carbonize$setDefaultState(block().getDefaultState().with(DORMANT, false).with(STAGE, SMOLDERING));
     }
 
     default void appendProperties(StateManager.Builder<Block, BlockState> builder) {

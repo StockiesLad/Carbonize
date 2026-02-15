@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "carbonize:block/soul_ember_planks"
+  }
+}

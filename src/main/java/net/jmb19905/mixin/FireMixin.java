@@ -10,7 +10,10 @@ import net.jmb19905.block.fire.ModularFireBlock;
 import net.jmb19905.core.CarbonizeCommon;
 import net.jmb19905.recipe.BurnRecipe;
 import net.jmb19905.util.BlockHelper;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FireBlock;
+import net.minecraft.block.TntBlock;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -19,10 +22,12 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,9 +37,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Map;
+
 import static net.jmb19905.core.CarbonizeConstants.CONFIG;
 
 //TODO: expose state manager and setDefault state to make ModularFireBlock easier to use.
+//TODO: add OPTIONAL support for ember blocks (in case some fires dont want it).
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(FireBlock.class)
 public class FireMixin extends AbstractFireMixin implements FireAccess {
@@ -65,6 +73,10 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
 
     @Shadow
     protected BlockState getStateForPosition(BlockView world, BlockPos pos) {return null;}
+
+    @Shadow
+    @Final
+    private Map<BlockState, VoxelShape> shapesByState;
 
     @Inject(method = "registerDefaultFlammables", at = @At("TAIL"))
     private static void registerOtherFlammables(CallbackInfo ci) {
@@ -177,7 +189,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Redirect(method = "getStateWithAge", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
     protected boolean override$getStateWithAge(BlockState state, Block block) {
         if ((Object) this instanceof ModularFireBlock fireBlock)
-            block = fireBlock.getType().asBlock();
+            block = fireBlock.getType().asFireBlock();
         return state.isOf(block);
     }
 
@@ -191,7 +203,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;scheduleBlockTick(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;I)V"))
     protected void override$scheduleBlockTick(ServerWorld world, BlockPos pos, Block block, int i) {
         if ((Object) this instanceof ModularFireBlock fireBlock) {
-            block = fireBlock.getType().asBlock();
+            block = fireBlock.getType().asFireBlock();
             i = (int) Math.ceil(i * getTickSpeedModifier());
         }
         world.scheduleBlockTick(pos, block, i);
@@ -200,7 +212,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Redirect(method = "onBlockAdded", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;scheduleBlockTick(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;I)V"))
     protected void override$onBlockAdded(World world, BlockPos pos, Block block, int i) {
         if ((Object) this instanceof ModularFireBlock fireBlock) {
-            block = fireBlock.getType().asBlock();
+            block = fireBlock.getType().asFireBlock();
             i = (int) Math.ceil(i * getTickSpeedModifier());
         }
         world.scheduleBlockTick(pos, block, i);
@@ -209,7 +221,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Redirect(method = "getStateForPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;getDefaultState()Lnet/minecraft/block/BlockState;"))
     protected BlockState override$getDefaultState(FireBlock block) {
         if ((Object) this instanceof ModularFireBlock fireBlock)
-            return fireBlock.getType().asBlock().getDefaultState();
+            return fireBlock.getType().asFireBlock().getDefaultState();
         return block.getDefaultState();
     }
 
@@ -314,11 +326,6 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Override
     public FireType asFireType() {
         return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType() : FireType.DEFAULT_FIRE_TYPE;
-    }
-
-    @Override
-    public AbstractFireBlock asBlock() {
-        return (AbstractFireBlock) (Object) this;
     }
 
     @Override

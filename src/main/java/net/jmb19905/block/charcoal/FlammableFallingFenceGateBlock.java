@@ -14,7 +14,7 @@ import net.minecraft.world.WorldAccess;
 @SuppressWarnings("deprecation")
 public class FlammableFallingFenceGateBlock extends FenceGateBlock implements FlammableFaller {
     public FlammableFallingFenceGateBlock(Settings settings) {
-        super(settings, FlammableFaller.CHARRED_WOOD_TYPE);
+        super(settings, FlammableFaller.BURNT_WOOD_TYPE);
     }
 
     @Override
