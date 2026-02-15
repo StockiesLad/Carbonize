@@ -157,7 +157,7 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         }
     }
 
-    private CharcoalPitMultiblock getDataSafely() {
+    public CharcoalPitMultiblock getDataSafely() {
         return dataCache == null ? DUMMY_DATA : dataCache;
     }
 

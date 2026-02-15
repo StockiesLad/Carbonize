@@ -3,6 +3,7 @@ package net.jmb19905.core;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.jmb19905.block.BurningSet;
+import net.jmb19905.block.charring.CharringWoodBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
@@ -22,11 +23,11 @@ public class CarbonizeItemGroup {
                 .displayName(Text.translatable("itemGroup.carbonize.charcoals"))
                 .icon(CHARCOAL_SET.charringWood.asItem()::getDefaultStack)
                 .entries((displayContext, entries) -> {
+                    BurningSet.iterateBlocks(((set, block) -> entries.add(block)));
                     entries.add(WOOD_STACK);
                     entries.add(CarbonizeCommon.ASH_BLOCK);
                     entries.add(CarbonizeCommon.ASH_LAYER);
                     entries.add(CarbonizeCommon.ASH);
-                    BurningSet.iterateBlocks(((set, block) -> entries.add(block)));
                 })
                 .build();
         KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of("carbonize", "charcoals"));
@@ -36,8 +37,10 @@ public class CarbonizeItemGroup {
 
     public static void init() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
+            BurningSet.iterateBlocks((set, block) -> {
+                if (!(block instanceof CharringWoodBlock)) content.add(block);
+            });
             content.add(WOOD_STACK);
-            BurningSet.iterateBlocks((set, block) -> content.add(block));
             content.add(ASH_LAYER);
             content.add(ASH_BLOCK);
         });

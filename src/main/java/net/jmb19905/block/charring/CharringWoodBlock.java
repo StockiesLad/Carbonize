@@ -104,6 +104,10 @@ public class CharringWoodBlock extends BlockWithEntity {
         double z;
         double y;
         double x;
+
+        var particle = getEntity(world, pos).orElseThrow().getDataSafely().fireType().asFlameParticle();
+        particle = particle != null ? particle : ParticleTypes.FLAME;
+
         if (random.nextInt(24) == 0) {
             world.playSound((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0f + random.nextFloat(), random.nextFloat() * 0.7f + 0.3f, false);
         }
@@ -111,7 +115,7 @@ public class CharringWoodBlock extends BlockWithEntity {
             x = (double) pos.getX() + random.nextDouble();
             y = (double) pos.getY() + random.nextDouble() * 0.5 + 0.5;
             z = (double) pos.getZ() + random.nextDouble();
-            world.addParticle(ParticleTypes.FLAME, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+            world.addParticle(particle, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
             if (random.nextFloat() > 0.95f) {
                 world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y + 1, z, 0.0, 0.07, 0.0);
             } else {
@@ -122,7 +126,7 @@ public class CharringWoodBlock extends BlockWithEntity {
         x = (double)pos.getX() + random.nextDouble();
         y = (double)(pos.getY() + 1) - random.nextDouble() * (double)0.1f;
         z = (double)pos.getZ() + random.nextDouble();
-        world.addParticle(ParticleTypes.FLAME, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+        world.addParticle(particle, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
         if (random.nextFloat() > 0.95f) {
             world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y + 1, z, 0.0, 0.07, 0.0);
         } else {

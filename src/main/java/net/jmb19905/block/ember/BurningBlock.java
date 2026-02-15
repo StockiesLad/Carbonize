@@ -6,7 +6,6 @@ import net.jmb19905.mixin.IBlock;
 import net.jmb19905.recipe.BurnRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -107,7 +106,7 @@ public interface BurningBlock {
             world.setBlockState(thisPos, thisState.with(STAGE, exposedSurfaces < 3 ? CHARRING : SOOTING));
         }
 
-        if (random.nextBoolean()) {
+        if (random.nextInt(100) == 0) {
             //TODO: fix block states
             for (BurnRecipe burnRecipe : world.getServer().getRecipeManager().listAllOfType(CarbonizeCommon.BURN_RECIPE_TYPE)) {
                 if (burnRecipe.burnBlock().equals(block()))
@@ -123,13 +122,13 @@ public interface BurningBlock {
 
         double x = (double) pos.getX() + random.nextDouble();
         double z = (double) pos.getZ() + random.nextDouble();
-        world.addParticle(ParticleTypes.FLAME, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+        world.addParticle(getFireType().asFlameParticle(), x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
 
         if (world.getBlockState(pos.up()).isAir()) return;
 
         x = (double)pos.getX() + random.nextDouble();
         z = (double)pos.getZ() + random.nextDouble();
-        world.addParticle(ParticleTypes.FLAME, x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+        world.addParticle(getFireType().asFlameParticle(), x, pos.getY() + random.nextDouble(), z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
     }
 
     record Tag2Block(TagKey<Block> tag, Block block) {}

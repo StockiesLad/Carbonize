@@ -2,6 +2,7 @@ package net.jmb19905.api;
 
 import net.jmb19905.block.charring.CharringWoodBlock;
 import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
@@ -18,6 +19,11 @@ public interface FireView extends AbstractFireView {
     @Override
     default CharringWoodBlock asCharringBlock() {
         return asFireType().asCharringBlock();
+    }
+
+    @Override
+    default DefaultParticleType asFlameParticle() {
+        return asFireType().asFlameParticle();
     }
 
     @Override

@@ -6,6 +6,8 @@ import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.block.SoulFireBlock;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleTypes;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -35,16 +37,35 @@ import static net.jmb19905.core.CarbonizeCommon.SOUL_CHARCOAL_SET;
  */
 public final class FireType implements FireViewProvider {
     private static final Map<String, FireType> FIRE_TYPES = new HashMap<>();
-    public static final FireType DEFAULT_FIRE_TYPE = new FireType("default_fire", () -> (FireBlock) Blocks.FIRE, () -> (CharringWoodBlock) CHARCOAL_SET.charringWood);
-    public static final FireType SOUL_FIRE_TYPE = new FireType("soul_fire", () -> (SoulFireBlock) Blocks.SOUL_FIRE, () -> (CharringWoodBlock) SOUL_CHARCOAL_SET.charringWood);
+
+    public static final FireType DEFAULT_FIRE_TYPE = new FireType("default_fire",
+            () -> (FireBlock) Blocks.FIRE,
+            () -> (CharringWoodBlock) CHARCOAL_SET.charringWood,
+            () -> ParticleTypes.FLAME
+    );
+    public static final FireType SOUL_FIRE_TYPE = new FireType("soul_fire",
+            () -> (SoulFireBlock) Blocks.SOUL_FIRE,
+            () -> (CharringWoodBlock) SOUL_CHARCOAL_SET.charringWood,
+            () -> ParticleTypes.SOUL_FIRE_FLAME
+    );
+
+
     private final String serialId;
     private final Supplier<AbstractFireBlock> fireBlock;
     private final Supplier<CharringWoodBlock> charringBlock;
+    private final Supplier<DefaultParticleType> flameParticle;
 
-    public FireType(String serialId, Supplier<AbstractFireBlock> fireBlock, Supplier<CharringWoodBlock> charringBlock) {
+    public FireType(
+            String serialId,
+            Supplier<AbstractFireBlock> fireBlock,
+            Supplier<CharringWoodBlock> charringBlock,
+            Supplier<DefaultParticleType> flameParticle
+    ) {
         this.serialId = serialId;
         this.fireBlock = fireBlock;
         this.charringBlock = charringBlock;
+        this.flameParticle = flameParticle;
+
         FIRE_TYPES.put(serialId, this);
     }
 
@@ -61,6 +82,11 @@ public final class FireType implements FireViewProvider {
     @Override
     public CharringWoodBlock asCharringBlock() {
         return charringBlock.get();
+    }
+
+    @Override
+    public DefaultParticleType asFlameParticle() {
+        return flameParticle.get();
     }
 
     @Override
