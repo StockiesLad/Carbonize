@@ -86,7 +86,6 @@ public class BurningSet {
         charcoalFence = register("charcoal_fence", new FlammableFallingFenceBlock(FabricBlockSettings.copy(sootPlanks)));
         charcoalFenceGate = register("charcoal_fence_gate", new FlammableFallingFenceGateBlock(FabricBlockSettings.copy(sootPlanks)));
 
-        var serialIdSplit = fireType.getSerialId().split("_");
         this.type = fireType.getSerialId().replace("_fire", "").replace("default", "");
         
         FuelRegistry.INSTANCE.add(charcoalBlock, 16000);
@@ -115,11 +114,12 @@ public class BurningSet {
         ALL_SETS.forEach(consumer);
     }
 
+    //TODO: improve flammability registration
     private Block register(String name, Block block) {
         allBlocks.add(block);
         TASKS.add(() -> {
             registerBlockAndItem((type.isEmpty() ? "" : (type + "_")) + name, block);
-            if (name.contains("charcoal"))
+            if (name.contains("charcoal") || name.contains("soot"))
                 getFireType().ifCapability(capability ->
                         capability.registerFlammable(block, 15, 30));
         });

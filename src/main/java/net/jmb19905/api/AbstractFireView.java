@@ -12,28 +12,32 @@ import java.util.function.Consumer;
 /**
  * An interface that retrieves important data from fire blocks.
  * <p>
- *     {@link #getTickSpeedModifier()} influences charcoal pit individual burnTimes... stored energy
+ *     {@link #getTickSpeedFactor()} influences charcoal pit individual burnTimes... stored energy
  * </p>
  * <p>
- *     {@link #getDeltaTemperature()} determines charcoal pit ignition time... heat
+ *     {@link #getMaxTemperature()} determines charcoal pit ignition time... heat
  * </p>
  * <p>
- *     {@link #getGlobalSpreadFactor()} determines charcoal pit burnTime drop off... expansion
+ *     {@link #getReflectivity()} determines charcoal pit burnTime drop off... expansion
  * </p>
  */
 public interface AbstractFireView {
+    String getSerialId();
+    boolean canPlace(BlockView view, BlockPos pos);
+    void ifCapability(Consumer<FireCapability> consumer);
+
     AbstractFireBlock asFireBlock();
     CharringWoodBlock asCharringBlock();
     DefaultParticleType asFlameParticle();
+
     boolean isBaseInfiniburn(BlockView view, BlockPos pos);
     boolean isBlockFlammable(BlockState state);
     int getBlockSpreadChance(BlockState state);
     int getBlockBurnChance(BlockState state);
-    int getDeltaTemperature();
-    int getGlobalSpreadFactor();
-    double getTickSpeedModifier();
 
-    String getSerialId();
-    boolean canPlace(BlockView view, BlockPos pos);
-    void ifCapability(Consumer<FireCapability> consumer);
+    int getMaxTemperature();
+    int getReflectivity();
+    double getTickSpeedFactor();
+    int getDeltaTemperature();
+    double getEmissivity();
 }

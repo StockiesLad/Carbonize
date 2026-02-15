@@ -23,9 +23,9 @@ public class BlockHelper {
         return to.withIfExists(property, from.get(property));
     }
 
-    public static BlockState transferState(BlockState parent, BlockState child) {
-        var stateHolder = new ObjectHolder<>(parent);
-        child.getProperties().forEach(value -> stateHolder.updateValue(oldState -> transferStateProperty(child, oldState, value)));
+    public static BlockState transferState(BlockState child, BlockState parent) {
+        var stateHolder = new ObjectHolder<>(child);
+        parent.getProperties().forEach(value -> stateHolder.updateValue(oldState -> transferStateProperty(parent, oldState, value)));
         return stateHolder.getValue();
     }
 

@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.WoodType;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
@@ -13,13 +14,13 @@ import net.minecraft.world.World;
 
 
 @SuppressWarnings("deprecation")
-public class EmberFenceGateBlock extends FenceGateBlock implements BurningBlock {
+public class EmberFenceGateBlock extends FenceGateBlock implements AbstractEmberBlock {
     private final FireType fireType;
 
     public EmberFenceGateBlock(Settings settings, WoodType woodType, FireType fireType) {
         super(settings, woodType);
         this.fireType = fireType;
-        BurningBlock.super.addDefaultStates();
+        AbstractEmberBlock.super.addDefaultStates();
     }
 
     @Override
@@ -29,24 +30,30 @@ public class EmberFenceGateBlock extends FenceGateBlock implements BurningBlock 
 
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        BurningBlock.super.appendProperties(builder);
+        AbstractEmberBlock.super.appendProperties(builder);
         super.appendProperties(builder);
     }
 
     @Override
+    public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
+        AbstractEmberBlock.super.onSteppedOn(world, pos, state, entity);
+        super.onSteppedOn(world, pos, state, entity);
+    }
+
+    @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        BurningBlock.super.onBlockAdded(state, world, pos, oldState, notify);
+        AbstractEmberBlock.super.onBlockAdded(state, world, pos, oldState, notify);
         super.onBlockAdded(state, world, pos, oldState, notify);
     }
 
     @Override
     public void scheduledTick(BlockState thisState, ServerWorld world, BlockPos thisPos, Random random) {
-        BurningBlock.super.scheduledTick(thisState, world, thisPos, random);
+        AbstractEmberBlock.super.scheduledTick(thisState, world, thisPos, random);
         super.scheduledTick(thisState, world, thisPos, random);
     }
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        BurningBlock.super.randomDisplayTick(state, world, pos, random);
+        AbstractEmberBlock.super.randomDisplayTick(state, world, pos, random);
         super.randomDisplayTick(state, world, pos, random);
     }
 }

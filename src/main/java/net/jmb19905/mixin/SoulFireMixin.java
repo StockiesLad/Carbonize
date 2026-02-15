@@ -109,17 +109,17 @@ public class SoulFireMixin extends AbstractFireMixin implements FireCapabilityPr
     }
 
     @Override
-    public int getDeltaTemperature() {
-        return 1200;
+    public int getMaxTemperature() {
+        return -1100;
     }
 
     @Override
-    public int getGlobalSpreadFactor() {
+    public int getReflectivity() {
         return 300;
     }
 
     @Override
-    public double getTickSpeedModifier() {
+    public double getTickSpeedFactor() {
         return (float) 1 / 3;
     }
 

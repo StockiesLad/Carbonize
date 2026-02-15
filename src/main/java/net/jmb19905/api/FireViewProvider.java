@@ -27,18 +27,18 @@ public interface FireViewProvider extends AbstractFireView {
     }
 
     @Override
-    default int getDeltaTemperature() {
-        return asFireView().getDeltaTemperature();
+    default int getMaxTemperature() {
+        return asFireView().getMaxTemperature();
     }
 
     @Override
-    default int getGlobalSpreadFactor() {
-        return asFireView().getGlobalSpreadFactor();
+    default int getReflectivity() {
+        return asFireView().getReflectivity();
     }
 
     @Override
-    default double getTickSpeedModifier() {
-        return asFireView().getTickSpeedModifier();
+    default double getTickSpeedFactor() {
+        return asFireView().getTickSpeedFactor();
     }
 
     @Override
@@ -54,5 +54,15 @@ public interface FireViewProvider extends AbstractFireView {
     @Override
     default boolean canPlace(BlockView view, BlockPos pos) {
         return asFireView().canPlace(view, pos);
+    }
+
+    @Override
+    default double getEmissivity() {
+        return asFireView().getEmissivity();
+    }
+
+    @Override
+    default int getDeltaTemperature() {
+        return asFireView().getDeltaTemperature();
     }
 }

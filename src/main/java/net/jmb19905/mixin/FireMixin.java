@@ -22,12 +22,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,8 +34,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Map;
 
 import static net.jmb19905.core.CarbonizeConstants.CONFIG;
 
@@ -74,10 +70,6 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     @Shadow
     protected BlockState getStateForPosition(BlockView world, BlockPos pos) {return null;}
 
-    @Shadow
-    @Final
-    private Map<BlockState, VoxelShape> shapesByState;
-
     @Inject(method = "registerDefaultFlammables", at = @At("TAIL"))
     private static void registerOtherFlammables(CallbackInfo ci) {
         ModularFireBlock.registerDefaultFlammables();
@@ -91,9 +83,9 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     }
 
     @Redirect(method = "scheduledTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;trySpreadingFire(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/math/random/Random;I)V"))
-    private void spreadFireAggressively(FireBlock fire, World world, BlockPos newPos, @SuppressWarnings("ParameterCanBeLocal") int spreadFactor, Random random, int currentAge, @Local(argsOnly = true) BlockPos pos, @Local(name = "k") int bonus) {
-        spreadFactor = getGlobalSpreadFactor() + bonus;
-        carbonize$trySpread(world, pos, newPos, spreadFactor + (pos.subtract(newPos).getY() > 0 ? -25 : 25), random, currentAge);
+    private void spreadFireAggressively(FireBlock fire, World world, BlockPos newPos, @SuppressWarnings("ParameterCanBeLocal") int reflectivity, Random random, int currentAge, @Local(argsOnly = true) BlockPos pos, @Local(name = "k") int bonus) {
+        reflectivity = getReflectivity() + bonus;
+        carbonize$trySpread(world, pos, newPos, reflectivity + (pos.subtract(newPos).getY() > 0 ? -25 : 25), random, currentAge);
         if (!CONFIG.increasedFireSpreadRange() && !world.isRaining()) return;
 
         if (random.nextBoolean()) return;
@@ -104,43 +96,62 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
                         .multiply(2)
                         .multiply(offset.getX() + offset.getY() + offset.getZ())
                 ).multiply(offset.getX() + offset.getY() + offset.getZ()).subtract(offset);
-        carbonize$trySpread(world, pos, diagonal.add(pos), spreadFactor + (diagonal.getY() > 0 ? -15 : 15), random, currentAge);
-        carbonize$trySpread(world, pos, oppDiagonal.add(pos), spreadFactor + (oppDiagonal.getY() > 0 ? -15 : 15), random, currentAge);
+        carbonize$trySpread(world, pos, diagonal.add(pos), reflectivity + (diagonal.getY() > 0 ? -15 : 15), random, currentAge);
+        carbonize$trySpread(world, pos, oppDiagonal.add(pos), reflectivity + (oppDiagonal.getY() > 0 ? -15 : 15), random, currentAge);
 
         if (random.nextBoolean()) return;
         offset = offset.multiply(2);
-        carbonize$trySpread(world, pos, offset.add(pos), spreadFactor + (offset.getY() > 0 ? -50 : 50), random, currentAge);
+        carbonize$trySpread(world, pos, offset.add(pos), reflectivity + (offset.getY() > 0 ? -50 : 50), random, currentAge);
     }
 
+    //TODO: make fire spread blocked by non flammable blocks in the way.
     @Unique
-    private void carbonize$trySpread(World world, BlockPos posFrom, BlockPos pos, int spreadFactor, Random random, int currentAge) {
+    private void carbonize$trySpread(World world, BlockPos posFrom, BlockPos pos, int reflectivity, Random random, int currentAge) {
         int i = this.getSpreadChance(world.getBlockState(pos));
-        if (random.nextInt(spreadFactor) < i) {
+        if (random.nextInt(reflectivity) < i) {
+
             BlockState state = world.getBlockState(pos);
             var dx = posFrom.getX() - pos.getX();
             var dy = posFrom.getY() - pos.getY();
             var dz = posFrom.getZ() - pos.getZ();
             //Inverse square law
-            var heat = getDeltaTemperature() / Math.max(dx * dx + dy * dy + dz * dz, 1);
+            var heat = getMaxTemperature() / Math.max(dx * dx + dy * dy + dz * dz, 1);
             heat = heat - (world.hasRain(pos) ? 250 : 0);
             heat = heat + 20 * currentAge;
 
-            var moment = random.nextInt(heat);
-            if (moment < 500) {
+            var moment = Math.signum(heat) * random.nextInt(Math.max(Math.abs(heat), 1));
+            if (moment >= -100 && moment <= 200) {
+                tryIgniteTnt(world, pos, state);
+            } else if (moment >= -300 && moment <= 600) {
+                if (tryIgniteTnt(world, pos, state)) return;
+
                 assert world.getServer() != null;
                 for (var burnRecipe : world.getServer().getRecipeManager().listAllOfType(CarbonizeCommon.BURN_RECIPE_TYPE))
                     if (burnRecipe.isInput(state, asFireType())) {
                         world.setBlockState(pos, burnRecipe.burnBlock().getDefaultState());
                         break;
                     }
-            } else if (moment < 1000) {
+            } else if (moment >= -400 && moment <= 800) {
+                if (tryIgniteTnt(world, pos, state)) return;
+
                 int newAge = Math.max(0, Math.min(15, currentAge - 5 + random.nextInt(10)));
                 world.setBlockState(pos, this.getStateWithAge(world, pos, newAge), Block.NOTIFY_ALL);
-            } else world.removeBlock(pos, false);
-
-            Block block = state.getBlock();
-            if (block instanceof TntBlock) TntBlock.primeTnt(world, pos);
+            } else {
+                if (state.getBlock() instanceof TntBlock) {
+                    world.createExplosion(null, pos.getX(), pos.getY() + 0.0625, pos.getZ(), 4.0F, World.ExplosionSourceType.TNT);
+                } else world.removeBlock(pos, false);
+            }
         }
+    }
+
+    @Unique
+    private boolean tryIgniteTnt(World world, BlockPos pos, BlockState state) {
+        Block block = state.getBlock();
+        if (block instanceof TntBlock) {
+            TntBlock.primeTnt(world, pos);
+            return true;
+        }
+        return false;
     }
 
 
@@ -204,7 +215,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     protected void override$scheduleBlockTick(ServerWorld world, BlockPos pos, Block block, int i) {
         if ((Object) this instanceof ModularFireBlock fireBlock) {
             block = fireBlock.getType().asFireBlock();
-            i = (int) Math.ceil(i * getTickSpeedModifier());
+            i = (int) Math.ceil(i * getTickSpeedFactor());
         }
         world.scheduleBlockTick(pos, block, i);
     }
@@ -213,7 +224,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     protected void override$onBlockAdded(World world, BlockPos pos, Block block, int i) {
         if ((Object) this instanceof ModularFireBlock fireBlock) {
             block = fireBlock.getType().asFireBlock();
-            i = (int) Math.ceil(i * getTickSpeedModifier());
+            i = (int) Math.ceil(i * getTickSpeedFactor());
         }
         world.scheduleBlockTick(pos, block, i);
     }
@@ -230,6 +241,7 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     private boolean orEmber(FireBlock fireBlock, BlockState state) {
         return isFlammable(state) || state.isOf(CarbonizeCommon.CHARCOAL_SET.emberPlanks);
     }
+    //TODO: this is breaking fire blocks. Soul soot is losing fire when its flammable.
     @Redirect(method = "getStateForPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;isFlammable(Lnet/minecraft/block/BlockState;)Z"))
     private boolean orEmber$(FireBlock fireBlock, BlockState state) {
         return isFlammable(state) || state.isOf(CarbonizeCommon.CHARCOAL_SET.emberPlanks);
@@ -309,18 +321,18 @@ public class FireMixin extends AbstractFireMixin implements FireAccess {
     }
 
     @Override
-    public int getDeltaTemperature() {
-        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getDeltaTemperature() : 1600;
+    public int getMaxTemperature() {
+        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getMaxTemperature() : 1100;
     }
 
     @Override
-    public int getGlobalSpreadFactor() {
-        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getGlobalSpreadFactor() : 400;
+    public int getReflectivity() {
+        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getReflectivity() : 400;
     }
 
     @Override
-    public double getTickSpeedModifier() {
-        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getTickSpeedModifier() : 1;
+    public double getTickSpeedFactor() {
+        return (Object)this instanceof ModularFireBlock fireBlock ? fireBlock.getType().getTickSpeedFactor() : 1;
     }
 
     @Override

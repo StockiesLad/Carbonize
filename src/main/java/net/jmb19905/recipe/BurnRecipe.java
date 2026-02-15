@@ -54,7 +54,7 @@ public class BurnRecipe implements Recipe<SimpleInventory> {
     }
 
     public boolean isInput(BlockState state, FireType fireType) {
-        return input.test(state) && this.fireType.equals(fireType);
+        return input.test(state) && this.fireType.equals(fireType) && fireType.isBlockFlammable(state);
     }
 
     public TagOrBlockPredicate input() {

@@ -41,4 +41,14 @@ public interface FireView extends AbstractFireView {
         if (this instanceof FireCapability capability)
             consumer.accept(capability);
     }
+
+    @Override
+    default double getEmissivity() {
+        return (double) Math.max(1, Math.abs(getMaxTemperature())) /  getReflectivity();
+    }
+
+    @Override
+    default int getDeltaTemperature() {
+        return Math.abs(getMaxTemperature());
+    }
 }
