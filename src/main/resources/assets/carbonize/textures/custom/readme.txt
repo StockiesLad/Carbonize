@@ -1,0 +1,1 @@
+This is just for asset dev reasons. It's not required by Minecraft

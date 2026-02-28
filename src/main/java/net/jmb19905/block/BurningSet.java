@@ -17,6 +17,8 @@ import java.util.function.ToIntFunction;
 
 import static net.jmb19905.util.BlockHelper.registerBlockAndItem;
 
+//TODO: rename charcoal to charred
+//TODO: add leaf transparency
 public class BurningSet {
     private static final Queue<Runnable> TASKS = new ArrayDeque<>();
     private static final List<BurningSet> ALL_SETS = new ArrayList<>();
@@ -28,6 +30,7 @@ public class BurningSet {
     public final Block
             charringWood,
 
+            emberLeaves,
             emberStack,
             emberLog,
             emberPlanks,
@@ -36,6 +39,7 @@ public class BurningSet {
             emberFence,
             emberFenceGate,
 
+            sootLeaves,
             sootStack,
             sootLog,
             sootPlanks,
@@ -44,6 +48,7 @@ public class BurningSet {
             sootFence,
             sootFenceGate,
 
+            charcoalLeaves,
             charcoalBlock,
             charcoalStack,
             charcoalLog,
@@ -58,9 +63,12 @@ public class BurningSet {
         this.fireType = fireType;
         ALL_SETS.add(this);
         ToIntFunction<BlockState> luminanceFunc = state -> fireType.asFireBlock().getDefaultState().getLuminance();
-        
-        charringWood = register("charring_wood", new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(luminanceFunc).sounds(BlockSoundGroup.WOOD).dropsNothing()));
+        var leaves = fireType == FireType.SOUL_FIRE_TYPE ? "wart" : "leaves";
+        var leafCopy = fireType == FireType.SOUL_FIRE_TYPE ? Blocks.WARPED_WART_BLOCK : Blocks.OAK_LEAVES;
 
+        charringWood = register("charring_wood", new CharringWoodBlock(FabricBlockSettings.create().nonOpaque().luminance(luminanceFunc).dropsNothing()));
+
+        emberLeaves = register("ember_" + leaves, new EmberBlock(FabricBlockSettings.copy(leafCopy).luminance(luminanceFunc).mapColor(state -> MapColor.ORANGE), fireType));
         emberLog = register("ember_log", new EmberPillarBlock(FabricBlockSettings.create().luminance(luminanceFunc).mapColor(state -> MapColor.ORANGE).instrument(Instrument.BASS).strength(2.0f).sounds(BlockSoundGroup.WOOD).burnable(), this::getFireType));
         emberPlanks = register("ember_planks", new EmberBlock(FabricBlockSettings.copy(emberLog).strength(2F, 3F), fireType));
         emberStack = register("ember_stack", new EmberStackBlock(FabricBlockSettings.copy(emberLog), fireType));
@@ -69,6 +77,7 @@ public class BurningSet {
         emberFence = register("ember_fence", new EmberFenceBlock(FabricBlockSettings.copy(emberPlanks), fireType));
         emberFenceGate = register("ember_fence_gate", new EmberFenceGateBlock(FabricBlockSettings.copy(emberPlanks), FlammableFaller.EMBER_WOOD_TYPE, fireType));
 
+        sootLeaves = register("soot_" + leaves, new Block(FabricBlockSettings.copy(Blocks.OAK_LEAVES).luminance(luminanceFunc).mapColor(state -> MapColor.ORANGE)));
         sootLog = register("soot_log",  new PillarBlock(FabricBlockSettings.create().mapColor(state -> MapColor.BLACK).instrument(Instrument.BASS).strength(1.0f).sounds(BlockSoundGroup.WOOD).burnable()));
         sootPlanks = register("soot_planks", new Block(FabricBlockSettings.copy(sootLog).strength(1.0F, 1.5F)));
         sootStack = register( "soot_stack", new StackBlock(FabricBlockSettings.copy(sootLog).nonOpaque()));
@@ -77,6 +86,7 @@ public class BurningSet {
         sootFence = register("soot_fence", new FenceBlock(FabricBlockSettings.copy(sootPlanks)));
         sootFenceGate = register("soot_fence_gate", new FenceGateBlock(FabricBlockSettings.copy(sootPlanks), FlammableFaller.BURNT_WOOD_TYPE));
 
+        charcoalLeaves = register("charcoal_" + leaves, new Block(FabricBlockSettings.copy(sootLeaves)));
         charcoalBlock = register("charcoal_block", new Block(FabricBlockSettings.copy(Blocks.COAL_BLOCK)));
         charcoalLog = register("charcoal_log", new FlammableFallingPillarBlock(FabricBlockSettings.copy(sootLog)));
         charcoalPlanks = register("charcoal_planks", new FlammableFallingBlock(FabricBlockSettings.copy(sootPlanks)));

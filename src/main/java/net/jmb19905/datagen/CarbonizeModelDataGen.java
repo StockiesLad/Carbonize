@@ -36,13 +36,12 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
 
         BurningSet.iterateSets(set -> {
             blockStateModelGenerator.registerSimpleCubeAll(set.charringWood);
-            blockStateModelGenerator.registerSimpleCubeAll(set.charcoalBlock);
 
             Map<String, List<Block>> map = new HashMap<>();
             set.getAllBlocks().forEach(block -> {
                 var blockId = Registries.BLOCK.getId(block).getPath();
-                if (blockId.equals(Registries.BLOCK.getId(set.charcoalBlock).getPath()))
-                    return;
+                //if (blockId.equals(Registries.BLOCK.getId(set.charcoalBlock).getPath()))
+                  //  return;
                 for (var type : List.of("charcoal", "soot", "ember")) {
                     if (blockId.contains(type)) {
                         map.putIfAbsent(type, new ArrayList<>());
@@ -66,6 +65,9 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
                         blockStateModelGenerator.registerLog(block).log(block);
                     else if (block instanceof StackBlock)
                         registerStack(blockStateModelGenerator, block, planks);
+                    else if (block instanceof Block && block != planks) {
+                        blockStateModelGenerator.registerSimpleCubeAll(block);
+                    }
                 });
             });
         });

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "carbonize:block/charcoal_block"
+    "all": "carbonize:block/soul_soot_wart"
   }
 }

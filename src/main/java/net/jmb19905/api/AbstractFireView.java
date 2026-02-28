@@ -35,9 +35,32 @@ public interface AbstractFireView {
     int getBlockSpreadChance(BlockState state);
     int getBlockBurnChance(BlockState state);
 
+    /**
+     * Temperature of the fire.
+     *
+     * <p>
+     *     The default value for normal fire is 1100 degrees Celsius.
+     * </p>
+     *
+     * @see net.jmb19905.mixin.FireMixin FireMixin
+     * @apiNote The temperatures can be negative. See {@link net.jmb19905.mixin.SoulFireMixin SoulFireMixin}
+     * @return The maximum temperature
+     */
     int getMaxTemperature();
+    /**
+     * Opposite of emissivity. It measures how much heat is stored.
+     * @return The amount of heat preserved in a fire.
+     */
     int getReflectivity();
     double getTickSpeedFactor();
+    /**
+     * The difference of the fire to its environment.
+     * @return Absolute value of the max temperature.
+     */
     int getDeltaTemperature();
+    /**
+     * A value that measures how effective the fire is at emitting its heat.
+     * @return Not limited to but ideally treated as a percentage.
+     */
     double getEmissivity();
 }

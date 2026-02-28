@@ -29,8 +29,6 @@ import static net.jmb19905.block.ember.AbstractEmberBlock.Stage.*;
 import static net.minecraft.state.property.Properties.AGE_15;
 
 /**
- * TODO: make spread based on firetype and block flammability settings (automatic)
- * TODO: make small chance to turn into charring wood.
  * TODO: do smoldering, charring and sooting textures
  * TODO: add partial flammability for soul & charcoal.
  * TODO: add hot charcoal & soot just after burning (make it release smoke)
@@ -147,18 +145,9 @@ public interface AbstractEmberBlock {
                                     burnRecipe.successResult()).getDefaultState(), thisState);
 
                     if (stage == CHARRING)
-                        if (random.nextInt(3) == 0) world.setBlockState(thisPos, newState);
+                        if (random.nextBoolean()) world.setBlockState(thisPos, newState);
                         else world.breakBlock(thisPos, false);
                     else world.setBlockState(thisPos, newState);
-
-                    for (Direction direction : Direction.values()) {
-                        var sidePos = thisPos.offset(direction);
-                        var sideState = world.getBlockState(sidePos);
-
-                        if (sideState.getBlock() == getFireType().asFireBlock())
-                            world.removeBlock(sidePos, false);
-                    }
-
                     return;
                 }
             }
