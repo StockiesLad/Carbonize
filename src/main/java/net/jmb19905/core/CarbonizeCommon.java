@@ -30,6 +30,7 @@ import static net.jmb19905.core.CarbonizeConstants.CONFIG;
 import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 
 //TODO: organise registration into specific registry classes (CarbonizeBlocks)
+//TODO: add nether wood stacks
 public class CarbonizeCommon implements ModInitializer {
 
 	public static final BurningSet CHARCOAL_SET = new BurningSet(FireType.DEFAULT_FIRE_TYPE);

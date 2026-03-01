@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.jmb19905.api.FireType;
 import net.jmb19905.block.BurningSet;
 import net.jmb19905.block.StackBlock;
+import net.jmb19905.block.ember.AbstractEmberBlock;
 import net.jmb19905.core.CarbonizeCommon;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
@@ -14,6 +15,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.*;
 
+import static net.jmb19905.block.ember.AbstractEmberBlock.Stage.BURNING;
 import static net.jmb19905.core.CarbonizeConstants.MOD_ID;
 import static net.minecraft.data.client.BlockStateModelGenerator.buildBlockStateVariants;
 import static net.minecraft.data.client.BlockStateModelGenerator.createSingletonBlockState;
@@ -40,8 +42,8 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
             Map<String, List<Block>> map = new HashMap<>();
             set.getAllBlocks().forEach(block -> {
                 var blockId = Registries.BLOCK.getId(block).getPath();
-                //if (blockId.equals(Registries.BLOCK.getId(set.charcoalBlock).getPath()))
-                  //  return;
+                if (blockId.equals(Registries.BLOCK.getId(set.charcoalBlock).getPath()))
+                    return;
                 for (var type : List.of("charcoal", "soot", "ember")) {
                     if (blockId.contains(type)) {
                         map.putIfAbsent(type, new ArrayList<>());
@@ -52,6 +54,9 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
             });
 
             map.forEach((type, blocks) -> {
+                //if (type.contains("ember"))
+                //    return;
+
                 var planks = blocks.stream()
                         .filter(block -> Registries.BLOCK.getId(block).getPath().contains("planks"))
                         .findFirst().orElseThrow();
@@ -64,7 +69,9 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
                     else if (block instanceof PillarBlock)
                         blockStateModelGenerator.registerLog(block).log(block);
                     else if (block instanceof StackBlock)
-                        registerStack(blockStateModelGenerator, block, planks);
+                        if (block instanceof AbstractEmberBlock)
+                            registerEmberStack(blockStateModelGenerator, block, planks);
+                        else registerStack(blockStateModelGenerator, block, planks);
                     else if (block instanceof Block && block != planks) {
                         blockStateModelGenerator.registerSimpleCubeAll(block);
                     }
@@ -76,6 +83,37 @@ public class CarbonizeModelDataGen extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(CarbonizeCommon.ASH, Models.GENERATED);
+    }
+
+    //TODO: smoldering rules: -80 brightness +80 contrast.
+    // 32% opacity with charcoal and soot for charring and sooting respectively
+    public void registerEmberStack(
+            BlockStateModelGenerator generator,
+            Block emberStack, Block emberTexture) {
+        var emberTextureId = Registries.BLOCK.getId(emberTexture).toString();
+        var emberModelId = Registries.BLOCK.getId(emberStack).toString();
+
+        emberTextureId = MOD_ID + ":block/" + emberTextureId.split(":")[1];
+        emberModelId = MOD_ID + ":block/" + emberModelId.split(":")[1];
+        var emberModel = STACK_MODEL.upload(emberStack, TextureMap.texture(emberTexture), generator.modelCollector);
+
+        var blockStateSupplier = MultipartBlockStateSupplier.create(emberStack);
+        for (AbstractEmberBlock.Stage stage : AbstractEmberBlock.Stage.values()) {
+            var model = emberModel;
+            if (stage != BURNING) {
+                var textureId = new Identifier(emberTextureId.replace("ember", stage.name().toLowerCase()));
+                var modelId = new Identifier(emberModelId.replace("ember", stage.name().toLowerCase()));
+                model = STACK_MODEL.upload(modelId, TextureMap.texture(textureId), generator.modelCollector);
+            }
+
+            blockStateSupplier = blockStateSupplier.with(When.create().set(AbstractEmberBlock.STAGE, stage),
+                    BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R0).put(VariantSettings.MODEL, model),
+                    BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90).put(VariantSettings.MODEL, model),
+                    BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180).put(VariantSettings.MODEL, model),
+                    BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270).put(VariantSettings.MODEL, model));
+        }
+
+        generator.blockStateCollector.accept(blockStateSupplier);
     }
 
     public void registerStack(BlockStateModelGenerator generator, Block stack, Block texture) {

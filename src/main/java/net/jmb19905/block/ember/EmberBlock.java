@@ -11,6 +11,9 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 
+//TODO: make fire blocks accelerate lifecycle
+//TODO: add dynamic luminance for stage.
+//Makes stacks fall
 @SuppressWarnings("deprecation")
 public class EmberBlock extends Block implements AbstractEmberBlock {
     private final FireType fireType;

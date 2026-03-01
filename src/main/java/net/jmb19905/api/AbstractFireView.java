@@ -52,6 +52,10 @@ public interface AbstractFireView {
      * @return The amount of heat preserved in a fire.
      */
     int getReflectivity();
+    /**
+     * The factor that multiplies against the ticking speed of a fire.
+     * @return A constant tick speed factor.
+     */
     double getTickSpeedFactor();
     /**
      * The difference of the fire to its environment.
