@@ -1,13 +1,184 @@
 {
-  "variants": {
-    "type=bottom": {
-      "model": "carbonize:block/soul_ember_slab"
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_slab"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "bottom"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "type=double": {
-      "model": "carbonize:block/soul_ember_planks"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_slab_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "top"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "type=top": {
-      "model": "carbonize:block/soul_ember_slab_top"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_planks"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "double"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_slab"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "bottom"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_slab_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "top"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_planks"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "double"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_slab"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "bottom"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_slab_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "top"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_planks"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "double"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_slab"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "bottom"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_slab_top"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "top"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_planks"
+      },
+      "when": {
+        "AND": [
+          {
+            "type": "double"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
     }
-  }
+  ]
 }

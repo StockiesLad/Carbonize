@@ -11,7 +11,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 
-//TODO: make fire blocks accelerate lifecycle
+//TODO: make fire and lava blocks accelerate lifecycle
 //TODO: add dynamic luminance for stage.
 //Makes stacks fall
 @SuppressWarnings("deprecation")

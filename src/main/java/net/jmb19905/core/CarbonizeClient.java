@@ -18,6 +18,6 @@ public class CarbonizeClient implements ClientModInitializer {
 		}));
 
 		var set = CarbonizeCommon.CHARCOAL_SET;
-		INSTANCE.putBlocks(RenderLayer.getCutout(), set.charcoalLeaves, set.sootLeaves, set.emberLeaves);
+		INSTANCE.putBlocks(RenderLayer.getCutout(), set.charredLeaves, set.sootLeaves, set.emberLeaves);
 	}
 }

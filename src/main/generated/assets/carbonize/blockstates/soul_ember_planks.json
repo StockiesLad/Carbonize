@@ -1,7 +1,36 @@
 {
-  "variants": {
-    "": {
-      "model": "carbonize:block/soul_ember_planks"
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_planks"
+      },
+      "when": {
+        "stage": "smoldering"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_planks"
+      },
+      "when": {
+        "stage": "burning"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_planks"
+      },
+      "when": {
+        "stage": "charring"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_planks"
+      },
+      "when": {
+        "stage": "sooting"
+      }
     }
-  }
+  ]
 }

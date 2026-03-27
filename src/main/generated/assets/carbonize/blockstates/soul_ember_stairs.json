@@ -1,209 +1,4384 @@
 {
-  "variants": {
-    "facing=east,half=bottom,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 270
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=bottom,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=bottom,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=bottom,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=bottom,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=top,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=top,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=top,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=top,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=east,half=top,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "x": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=bottom,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=bottom,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=bottom,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=bottom,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=bottom,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=top,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=top,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=top,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=top,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=north,half=top,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=bottom,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=bottom,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=bottom,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=bottom,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=bottom,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=top,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=top,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=top,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=top,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=south,half=top,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "x": 180,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=bottom,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=bottom,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=bottom,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=bottom,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=bottom,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=top,shape=inner_left": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=top,shape=inner_right": {
-      "model": "carbonize:block/soul_ember_stairs_inner",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=top,shape=outer_left": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=top,shape=outer_right": {
-      "model": "carbonize:block/soul_ember_stairs_outer",
-      "uvlock": true,
-      "x": 180,
-      "y": 270
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "facing=west,half=top,shape=straight": {
-      "model": "carbonize:block/soul_ember_stairs",
-      "uvlock": true,
-      "x": 180,
-      "y": 180
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "straight"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "inner_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_left"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "top"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "east"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "south"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "west"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "AND": [
+              {
+                "facing": "north"
+              },
+              {
+                "half": "bottom"
+              },
+              {
+                "shape": "outer_right"
+              }
+            ]
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
     }
-  }
+  ]
 }

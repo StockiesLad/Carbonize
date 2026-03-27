@@ -1,7 +1,36 @@
 {
-  "variants": {
-    "": {
-      "model": "carbonize:block/ember_leaves"
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/smoldering_leaves"
+      },
+      "when": {
+        "stage": "smoldering"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/ember_leaves"
+      },
+      "when": {
+        "stage": "burning"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/charring_leaves"
+      },
+      "when": {
+        "stage": "charring"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/sooting_leaves"
+      },
+      "when": {
+        "stage": "sooting"
+      }
     }
-  }
+  ]
 }

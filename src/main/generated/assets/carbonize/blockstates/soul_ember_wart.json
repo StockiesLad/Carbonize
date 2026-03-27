@@ -1,7 +1,36 @@
 {
-  "variants": {
-    "": {
-      "model": "carbonize:block/soul_ember_wart"
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_wart"
+      },
+      "when": {
+        "stage": "smoldering"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_wart"
+      },
+      "when": {
+        "stage": "burning"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_wart"
+      },
+      "when": {
+        "stage": "charring"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_wart"
+      },
+      "when": {
+        "stage": "sooting"
+      }
     }
-  }
+  ]
 }

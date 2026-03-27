@@ -17,8 +17,6 @@ import java.util.function.ToIntFunction;
 
 import static net.jmb19905.util.BlockHelper.registerBlockAndItem;
 
-//TODO: rename charcoal to charred
-//TODO: add leaf transparency
 public class BurningSet {
     private static final Queue<Runnable> TASKS = new ArrayDeque<>();
     private static final List<BurningSet> ALL_SETS = new ArrayList<>();
@@ -48,17 +46,16 @@ public class BurningSet {
             sootFence,
             sootFenceGate,
 
-            charcoalLeaves,
+            charredLeaves,
             charcoalBlock,
-            charcoalStack,
-            charcoalLog,
-            charcoalPlanks,
-            charcoalStairs,
-            charcoalSlab,
-            charcoalFence,
-            charcoalFenceGate;
+            charredStack,
+            charredLog,
+            charredPlanks,
+            charredStairs,
+            charredSlab,
+            charredFence,
+            charredFenceGate;
 
-    //TODO: make soot release more smoke
     public BurningSet(FireType fireType) {
         this.fireType = fireType;
         ALL_SETS.add(this);
@@ -86,26 +83,26 @@ public class BurningSet {
         sootFence = register("soot_fence", new FenceBlock(FabricBlockSettings.copy(sootPlanks)));
         sootFenceGate = register("soot_fence_gate", new FenceGateBlock(FabricBlockSettings.copy(sootPlanks), FlammableFaller.BURNT_WOOD_TYPE));
 
-        charcoalLeaves = register("charcoal_" + leaves, new Block(FabricBlockSettings.copy(sootLeaves)));
+        charredLeaves = register("charcoal_" + leaves, new Block(FabricBlockSettings.copy(sootLeaves)));
         charcoalBlock = register("charcoal_block", new Block(FabricBlockSettings.copy(Blocks.COAL_BLOCK)));
-        charcoalLog = register("charcoal_log", new FlammableFallingPillarBlock(FabricBlockSettings.copy(sootLog)));
-        charcoalPlanks = register("charcoal_planks", new FlammableFallingBlock(FabricBlockSettings.copy(sootPlanks)));
-        charcoalStack = register( "charcoal_stack", new FlammableFallingStackBlock(FabricBlockSettings.copy(sootLog).nonOpaque()));
-        charcoalStairs = register("charcoal_stairs", new FlammableFallingStairsBlock(sootPlanks.getDefaultState(), FabricBlockSettings.copy(sootPlanks)));
-        charcoalSlab = register( "charcoal_slab", new FlammableFallingSlabBlock(FabricBlockSettings.copy(sootPlanks)));
-        charcoalFence = register("charcoal_fence", new FlammableFallingFenceBlock(FabricBlockSettings.copy(sootPlanks)));
-        charcoalFenceGate = register("charcoal_fence_gate", new FlammableFallingFenceGateBlock(FabricBlockSettings.copy(sootPlanks)));
+        charredLog = register("charcoal_log", new FlammableFallingPillarBlock(FabricBlockSettings.copy(sootLog)));
+        charredPlanks = register("charcoal_planks", new FlammableFallingBlock(FabricBlockSettings.copy(sootPlanks)));
+        charredStack = register( "charcoal_stack", new FlammableFallingStackBlock(FabricBlockSettings.copy(sootLog).nonOpaque()));
+        charredStairs = register("charcoal_stairs", new FlammableFallingStairsBlock(sootPlanks.getDefaultState(), FabricBlockSettings.copy(sootPlanks)));
+        charredSlab = register( "charcoal_slab", new FlammableFallingSlabBlock(FabricBlockSettings.copy(sootPlanks)));
+        charredFence = register("charcoal_fence", new FlammableFallingFenceBlock(FabricBlockSettings.copy(sootPlanks)));
+        charredFenceGate = register("charcoal_fence_gate", new FlammableFallingFenceGateBlock(FabricBlockSettings.copy(sootPlanks)));
 
         this.type = fireType.getSerialId().replace("_fire", "").replace("default", "");
         
         FuelRegistry.INSTANCE.add(charcoalBlock, 16000);
-        FuelRegistry.INSTANCE.add(charcoalStack, 1600 * 5);
-        FuelRegistry.INSTANCE.add(charcoalLog, 1600 * 4);
-        FuelRegistry.INSTANCE.add(charcoalPlanks, 1600 * 4);
-        FuelRegistry.INSTANCE.add(charcoalStairs, 1600 * 3);
-        FuelRegistry.INSTANCE.add(charcoalFence, 1600 * 4);
-        FuelRegistry.INSTANCE.add(charcoalFenceGate, 1600 * 4);
-        FuelRegistry.INSTANCE.add(charcoalSlab, 1600 * 2);
+        FuelRegistry.INSTANCE.add(charredStack, 1600 * 5);
+        FuelRegistry.INSTANCE.add(charredLog, 1600 * 4);
+        FuelRegistry.INSTANCE.add(charredPlanks, 1600 * 4);
+        FuelRegistry.INSTANCE.add(charredStairs, 1600 * 3);
+        FuelRegistry.INSTANCE.add(charredFence, 1600 * 4);
+        FuelRegistry.INSTANCE.add(charredFenceGate, 1600 * 4);
+        FuelRegistry.INSTANCE.add(charredSlab, 1600 * 2);
     }
     
     public FireType getFireType() {

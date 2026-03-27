@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "carbonize:block/charring_planks",
+    "side": "carbonize:block/charring_planks",
+    "top": "carbonize:block/charring_planks"
+  }
+}

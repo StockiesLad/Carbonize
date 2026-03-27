@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "carbonize:block/sooting_planks",
+    "side": "carbonize:block/sooting_planks",
+    "top": "carbonize:block/sooting_planks"
+  }
+}

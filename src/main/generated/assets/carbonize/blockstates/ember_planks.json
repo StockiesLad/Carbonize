@@ -1,7 +1,36 @@
 {
-  "variants": {
-    "": {
-      "model": "carbonize:block/ember_planks"
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/smoldering_planks"
+      },
+      "when": {
+        "stage": "smoldering"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/ember_planks"
+      },
+      "when": {
+        "stage": "burning"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/charring_planks"
+      },
+      "when": {
+        "stage": "charring"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/sooting_planks"
+      },
+      "when": {
+        "stage": "sooting"
+      }
     }
-  }
+  ]
 }

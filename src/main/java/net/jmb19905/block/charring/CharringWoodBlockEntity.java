@@ -56,7 +56,7 @@ public class CharringWoodBlockEntity extends BlockEntity implements RenderDataBl
         this.dataCache = null;
         this.parentState = Blocks.OAK_PLANKS.getDefaultState();
         this.mediumState = state;
-        this.finalState = CarbonizeCommon.CHARCOAL_SET.charcoalPlanks.getDefaultState();
+        this.finalState = CarbonizeCommon.CHARCOAL_SET.charredPlanks.getDefaultState();
 
     }
 

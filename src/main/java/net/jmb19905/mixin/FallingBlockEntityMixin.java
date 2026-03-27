@@ -76,7 +76,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/FallingBlockEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"), cancellable = true)
     private void tick$dropAsItem(CallbackInfo ci){
         FallingBlockEntity instance = (FallingBlockEntity) (Object) this;
-        if (instance.getBlockState().isOf(CarbonizeCommon.ASH_LAYER) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charcoalLog) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charcoalPlanks)) {
+        if (instance.getBlockState().isOf(CarbonizeCommon.ASH_LAYER) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charredLog) || instance.getBlockState().isOf(CarbonizeCommon.CHARCOAL_SET.charredPlanks)) {
             Block.dropStacks(instance.getBlockState(), instance.getWorld(), instance.getBlockPos());
             this.setVelocity(this.getVelocity().multiply(0.98));
             ci.cancel();

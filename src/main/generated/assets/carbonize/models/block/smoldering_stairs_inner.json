@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "carbonize:block/smoldering_planks",
+    "side": "carbonize:block/smoldering_planks",
+    "top": "carbonize:block/smoldering_planks"
+  }
+}

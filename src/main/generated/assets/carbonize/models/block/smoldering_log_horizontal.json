@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "carbonize:block/smoldering_log_top",
+    "side": "carbonize:block/smoldering_log"
+  }
+}

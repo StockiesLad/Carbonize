@@ -2,7 +2,85 @@
   "multipart": [
     {
       "apply": {
+        "model": "carbonize:block/soul_smoldering_fence_post"
+      },
+      "when": {
+        "stage": "smoldering"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_fence_side",
+        "uvlock": true
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_fence_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_fence_side",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_fence_side",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
         "model": "carbonize:block/soul_ember_fence_post"
+      },
+      "when": {
+        "stage": "burning"
       }
     },
     {
@@ -11,7 +89,14 @@
         "uvlock": true
       },
       "when": {
-        "north": "true"
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
       }
     },
     {
@@ -21,7 +106,14 @@
         "y": 90
       },
       "when": {
-        "east": "true"
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
       }
     },
     {
@@ -31,7 +123,14 @@
         "y": 180
       },
       "when": {
-        "south": "true"
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
       }
     },
     {
@@ -41,7 +140,164 @@
         "y": 270
       },
       "when": {
-        "west": "true"
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_fence_post"
+      },
+      "when": {
+        "stage": "charring"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_fence_side",
+        "uvlock": true
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_fence_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_fence_side",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_fence_side",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_fence_post"
+      },
+      "when": {
+        "stage": "sooting"
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_fence_side",
+        "uvlock": true
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_fence_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_fence_side",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_fence_side",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
       }
     }
   ]

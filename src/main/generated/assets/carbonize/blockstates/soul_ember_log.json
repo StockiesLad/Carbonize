@@ -1,16 +1,196 @@
 {
-  "variants": {
-    "axis=x": {
-      "model": "carbonize:block/soul_ember_log_horizontal",
-      "x": 90,
-      "y": 90
+  "multipart": [
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_log"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "axis=y": {
-      "model": "carbonize:block/soul_ember_log"
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_log_horizontal",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
     },
-    "axis=z": {
-      "model": "carbonize:block/soul_ember_log_horizontal",
-      "x": 90
+    {
+      "apply": {
+        "model": "carbonize:block/soul_smoldering_log_horizontal",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "stage": "smoldering"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_log"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_log_horizontal",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_ember_log_horizontal",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "stage": "burning"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_log"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_log_horizontal",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_charring_log_horizontal",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "stage": "charring"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_log"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_log_horizontal",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "carbonize:block/soul_sooting_log_horizontal",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "stage": "sooting"
+          }
+        ]
+      }
     }
-  }
+  ]
 }

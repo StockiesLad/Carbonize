@@ -29,7 +29,6 @@ import static net.jmb19905.block.ember.AbstractEmberBlock.Stage.*;
 import static net.minecraft.state.property.Properties.AGE_15;
 
 /**
- * TODO: do smoldering, charring and sooting textures
  * TODO: add partial flammability for soul & charcoal.
  * TODO: add hot charcoal & soot just after burning (make it release smoke)
  * TODO: smoldering foliage
@@ -182,28 +181,29 @@ public interface AbstractEmberBlock {
     }
 
     default void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (random.nextInt(state.get(STAGE).equals(BURNING) ? 48 : 72) == 0)
+        var stage = state.get(STAGE);
+        if (random.nextInt(stage.equals(BURNING) ? 48 : 72) == 0)
             world.playSound((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.25F + random.nextFloat() / 2, random.nextFloat() * 0.7f + 0.3f, false);
 
         double x = (double) pos.getX() + random.nextDouble();
         double y = (double) pos.getY() + random.nextDouble();
         double z = (double) pos.getZ() + random.nextDouble();
 
-        if (state.get(STAGE) == SMOLDERING) {
-            if (random.nextFloat() > 0.95f) {
-                world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y + 1, z, 0.0, 0.07, 0.0);
-            } else {
-                world.addParticle(ParticleTypes.LARGE_SMOKE, x, y, z, 0.0, 0.0, 0.0);
-            }
-        } else {
-            world.addParticle(getFireType().asFlameParticle(), x, y, z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+        if (stage != SMOLDERING) {
+            world.addParticle(getFireType().asFlameParticle(), x, y, z, -0.01 + random.nextFloat() / 50, random.nextFloat() / 50, -0.01 + random.nextFloat() / 50);
 
             if (world.getBlockState(pos.up()).isAir()) return;
 
-            x = (double)pos.getX() + random.nextDouble();
-            z = (double)pos.getZ() + random.nextDouble();
-            world.addParticle(getFireType().asFlameParticle(), x, y, z, - 0.01 + random.nextFloat() / 50, random.nextFloat() / 50, - 0.01 + random.nextFloat() / 50);
+            x = (double) pos.getX() + random.nextDouble();
+            z = (double) pos.getZ() + random.nextDouble();
+            world.addParticle(getFireType().asFlameParticle(), x, y, z, -0.01 + random.nextFloat() / 50, random.nextFloat() / 50, -0.01 + random.nextFloat() / 50);
         }
+
+        if (stage != BURNING)
+            for (int i = 0; i < stage.ordinal(); i++)
+                if (random.nextFloat() > 0.95f)
+                    world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y + 1, z, 0.0, 0.07, 0.0);
+                else world.addParticle(ParticleTypes.LARGE_SMOKE, x, y, z, 0.0, 0.0, 0.0);
     }
 
     record Tag2Block(TagKey<Block> tag, Block block) {}

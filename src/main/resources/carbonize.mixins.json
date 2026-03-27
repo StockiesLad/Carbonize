@@ -16,6 +16,7 @@
     "IBlockSetType",
     "IFireBlock",
     "IWoodType",
+    "ModelMixin",
     "PressurePlateMixin",
     "ServerWorldMixin",
     "SignMixin",

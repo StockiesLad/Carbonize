@@ -49,6 +49,6 @@ public class CarbonizeBlockTagDataGen extends FabricTagProvider.BlockTagProvider
 
         var fences = getOrCreateTagBuilder(BlockTags.FENCES);
         fences.setReplace(false);
-        BurningSet.iterateSets(set -> fences.add(set.charcoalFence));
+        BurningSet.iterateSets(set -> fences.add(set.charredFence));
     }
 }
